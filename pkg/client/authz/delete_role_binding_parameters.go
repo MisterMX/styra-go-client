@@ -59,29 +59,17 @@ func NewDeleteRoleBindingParamsWithHTTPClient(client *http.Client) *DeleteRoleBi
 */
 type DeleteRoleBindingParams struct {
 
-	/* Recursive.
+	/* IfMatch.
 
-	   if set to 'false', only deletes the role binding configuration and does not delete associated objects
+	   if set to '*', will return success if not found
 	*/
-	Recursive *string
+	IfMatch *string
 
-	/* Resource.
+	/* ID.
 
-	   resource id
+	   rolebinding ID
 	*/
-	Resource string
-
-	/* Resourcetype.
-
-	   resource type
-	*/
-	Resourcetype string
-
-	/* Rolebinding.
-
-	   role binding id
-	*/
-	Rolebinding string
+	ID string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -136,48 +124,26 @@ func (o *DeleteRoleBindingParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
-// WithRecursive adds the recursive to the delete role binding params
-func (o *DeleteRoleBindingParams) WithRecursive(recursive *string) *DeleteRoleBindingParams {
-	o.SetRecursive(recursive)
+// WithIfMatch adds the ifMatch to the delete role binding params
+func (o *DeleteRoleBindingParams) WithIfMatch(ifMatch *string) *DeleteRoleBindingParams {
+	o.SetIfMatch(ifMatch)
 	return o
 }
 
-// SetRecursive adds the recursive to the delete role binding params
-func (o *DeleteRoleBindingParams) SetRecursive(recursive *string) {
-	o.Recursive = recursive
+// SetIfMatch adds the ifMatch to the delete role binding params
+func (o *DeleteRoleBindingParams) SetIfMatch(ifMatch *string) {
+	o.IfMatch = ifMatch
 }
 
-// WithResource adds the resource to the delete role binding params
-func (o *DeleteRoleBindingParams) WithResource(resource string) *DeleteRoleBindingParams {
-	o.SetResource(resource)
+// WithID adds the id to the delete role binding params
+func (o *DeleteRoleBindingParams) WithID(id string) *DeleteRoleBindingParams {
+	o.SetID(id)
 	return o
 }
 
-// SetResource adds the resource to the delete role binding params
-func (o *DeleteRoleBindingParams) SetResource(resource string) {
-	o.Resource = resource
-}
-
-// WithResourcetype adds the resourcetype to the delete role binding params
-func (o *DeleteRoleBindingParams) WithResourcetype(resourcetype string) *DeleteRoleBindingParams {
-	o.SetResourcetype(resourcetype)
-	return o
-}
-
-// SetResourcetype adds the resourcetype to the delete role binding params
-func (o *DeleteRoleBindingParams) SetResourcetype(resourcetype string) {
-	o.Resourcetype = resourcetype
-}
-
-// WithRolebinding adds the rolebinding to the delete role binding params
-func (o *DeleteRoleBindingParams) WithRolebinding(rolebinding string) *DeleteRoleBindingParams {
-	o.SetRolebinding(rolebinding)
-	return o
-}
-
-// SetRolebinding adds the rolebinding to the delete role binding params
-func (o *DeleteRoleBindingParams) SetRolebinding(rolebinding string) {
-	o.Rolebinding = rolebinding
+// SetID adds the id to the delete role binding params
+func (o *DeleteRoleBindingParams) SetID(id string) {
+	o.ID = id
 }
 
 // WriteToRequest writes these params to a swagger request
@@ -188,35 +154,16 @@ func (o *DeleteRoleBindingParams) WriteToRequest(r runtime.ClientRequest, reg st
 	}
 	var res []error
 
-	if o.Recursive != nil {
+	if o.IfMatch != nil {
 
-		// query param recursive
-		var qrRecursive string
-
-		if o.Recursive != nil {
-			qrRecursive = *o.Recursive
-		}
-		qRecursive := qrRecursive
-		if qRecursive != "" {
-
-			if err := r.SetQueryParam("recursive", qRecursive); err != nil {
-				return err
-			}
+		// header param If-Match
+		if err := r.SetHeaderParam("If-Match", *o.IfMatch); err != nil {
+			return err
 		}
 	}
 
-	// path param resource
-	if err := r.SetPathParam("resource", o.Resource); err != nil {
-		return err
-	}
-
-	// path param resourcetype
-	if err := r.SetPathParam("resourcetype", o.Resourcetype); err != nil {
-		return err
-	}
-
-	// path param rolebinding
-	if err := r.SetPathParam("rolebinding", o.Rolebinding); err != nil {
+	// path param id
+	if err := r.SetPathParam("id", o.ID); err != nil {
 		return err
 	}
 

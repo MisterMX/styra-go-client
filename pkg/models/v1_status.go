@@ -19,33 +19,16 @@ import (
 // swagger:model v1.Status
 type V1Status struct {
 
-	// code
+	// authz migration
 	// Required: true
-	Code *string `json:"code"`
-
-	// message
-	// Required: true
-	Message *string `json:"message"`
-
-	// timestamp
-	// Required: true
-	// Format: date-time
-	Timestamp *strfmt.DateTime `json:"timestamp"`
+	AuthzMigration *string `json:"authz_migration"`
 }
 
 // Validate validates this v1 status
 func (m *V1Status) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateCode(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateMessage(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateTimestamp(formats); err != nil {
+	if err := m.validateAuthzMigration(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -55,31 +38,9 @@ func (m *V1Status) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *V1Status) validateCode(formats strfmt.Registry) error {
+func (m *V1Status) validateAuthzMigration(formats strfmt.Registry) error {
 
-	if err := validate.Required("code", "body", m.Code); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *V1Status) validateMessage(formats strfmt.Registry) error {
-
-	if err := validate.Required("message", "body", m.Message); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *V1Status) validateTimestamp(formats strfmt.Registry) error {
-
-	if err := validate.Required("timestamp", "body", m.Timestamp); err != nil {
-		return err
-	}
-
-	if err := validate.FormatOf("timestamp", "body", "date-time", m.Timestamp.String(), formats); err != nil {
+	if err := validate.Required("authz_migration", "body", m.AuthzMigration); err != nil {
 		return err
 	}
 

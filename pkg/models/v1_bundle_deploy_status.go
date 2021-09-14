@@ -24,8 +24,7 @@ type V1BundleDeployStatus struct {
 	BuildErrors map[string]string `json:"build_errors"`
 
 	// primary bundle to activate
-	// Required: true
-	Primary *V1BundleActivation `json:"primary"`
+	Primary *V1BundleActivation `json:"primary,omitempty"`
 }
 
 // Validate validates this v1 bundle deploy status
@@ -56,9 +55,8 @@ func (m *V1BundleDeployStatus) validateBuildErrors(formats strfmt.Registry) erro
 }
 
 func (m *V1BundleDeployStatus) validatePrimary(formats strfmt.Registry) error {
-
-	if err := validate.Required("primary", "body", m.Primary); err != nil {
-		return err
+	if swag.IsZero(m.Primary) { // not required
+		return nil
 	}
 
 	if m.Primary != nil {

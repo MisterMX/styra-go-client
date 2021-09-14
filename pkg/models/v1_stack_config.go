@@ -20,6 +20,14 @@ import (
 // swagger:model v1.StackConfig
 type V1StackConfig struct {
 
+	// authorization config
+	// Read Only: true
+	Authz *V1AuthzConfig `json:"authz,omitempty"`
+
+	// datasources created for the stack
+	// Read Only: true
+	Datasources []*V1DatasourceConfig `json:"datasources"`
+
 	// description
 	// Required: true
 	Description *string `json:"description"`
@@ -47,6 +55,10 @@ type V1StackConfig struct {
 	// source control
 	SourceControl *V1SourceControlConfig `json:"source_control,omitempty"`
 
+	// status
+	// Required: true
+	Status *string `json:"status"`
+
 	// type
 	// Required: true
 	Type *string `json:"type"`
@@ -58,6 +70,14 @@ type V1StackConfig struct {
 // Validate validates this v1 stack config
 func (m *V1StackConfig) Validate(formats strfmt.Registry) error {
 	var res []error
+
+	if err := m.validateAuthz(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateDatasources(formats); err != nil {
+		res = append(res, err)
+	}
 
 	if err := m.validateDescription(formats); err != nil {
 		res = append(res, err)
@@ -87,6 +107,10 @@ func (m *V1StackConfig) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateStatus(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateType(formats); err != nil {
 		res = append(res, err)
 	}
@@ -94,6 +118,47 @@ func (m *V1StackConfig) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *V1StackConfig) validateAuthz(formats strfmt.Registry) error {
+	if swag.IsZero(m.Authz) { // not required
+		return nil
+	}
+
+	if m.Authz != nil {
+		if err := m.Authz.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("authz")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *V1StackConfig) validateDatasources(formats strfmt.Registry) error {
+	if swag.IsZero(m.Datasources) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.Datasources); i++ {
+		if swag.IsZero(m.Datasources[i]) { // not required
+			continue
+		}
+
+		if m.Datasources[i] != nil {
+			if err := m.Datasources[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("datasources" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
 	return nil
 }
 
@@ -193,6 +258,15 @@ func (m *V1StackConfig) validateSourceControl(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *V1StackConfig) validateStatus(formats strfmt.Registry) error {
+
+	if err := validate.Required("status", "body", m.Status); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *V1StackConfig) validateType(formats strfmt.Registry) error {
 
 	if err := validate.Required("type", "body", m.Type); err != nil {
@@ -205,6 +279,14 @@ func (m *V1StackConfig) validateType(formats strfmt.Registry) error {
 // ContextValidate validate this v1 stack config based on the context it is used
 func (m *V1StackConfig) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
+
+	if err := m.contextValidateAuthz(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateDatasources(ctx, formats); err != nil {
+		res = append(res, err)
+	}
 
 	if err := m.contextValidateMetadata(ctx, formats); err != nil {
 		res = append(res, err)
@@ -221,6 +303,42 @@ func (m *V1StackConfig) ContextValidate(ctx context.Context, formats strfmt.Regi
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *V1StackConfig) contextValidateAuthz(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Authz != nil {
+		if err := m.Authz.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("authz")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *V1StackConfig) contextValidateDatasources(ctx context.Context, formats strfmt.Registry) error {
+
+	if err := validate.ReadOnly(ctx, "datasources", "body", []*V1DatasourceConfig(m.Datasources)); err != nil {
+		return err
+	}
+
+	for i := 0; i < len(m.Datasources); i++ {
+
+		if m.Datasources[i] != nil {
+			if err := m.Datasources[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("datasources" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
 	return nil
 }
 

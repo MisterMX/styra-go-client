@@ -42,7 +42,9 @@ type ClientService interface {
 }
 
 /*
-  CreateToken creates or update a token if if none match header is set to tries to create a token otherwise will try to either update or create depending on whether an unexpired token with that ID already exists token creation errors with a 409 code if an unexpired one already exists on success returns the token secret valid for the TTL whose default value is 10 years token updates return nothing unless regenerate is true in which case it returns the new secret w a r n i n g if allow path patterns is unset or an empty list all paths are allowed
+  CreateToken creates or update a token
+
+  If If-None-Match header is set to *, tries to create a token, otherwise will try to either update or create depending on whether an unexpired token with that ID already exists. Token creation errors with a 409 code if an unexpired one already exists, on success returns the token secret (valid for the TTL whose default value is ~10 years). Token updates return nothing unless `regenerate` is true, in which case it returns the new secret. WARNING: If allow_path_patterns is unset or an empty list, all paths are allowed.
 */
 func (a *Client) CreateToken(params *CreateTokenParams, opts ...ClientOption) (*CreateTokenOK, error) {
 	// TODO: Validate the params before sending

@@ -21,8 +21,8 @@ type V1WorkspacePutRequest struct {
 	// github
 	Github *V1GithubConfiguration `json:"github,omitempty"`
 
-	// metadata
-	Metadata *V1ObjectMeta `json:"metadata,omitempty"`
+	// metrics exporter
+	MetricsExporter *V1MetricsExporterConfig `json:"metrics_exporter,omitempty"`
 
 	// source control
 	SourceControl *V1SourceControlConfig `json:"source_control,omitempty"`
@@ -36,7 +36,7 @@ func (m *V1WorkspacePutRequest) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateMetadata(formats); err != nil {
+	if err := m.validateMetricsExporter(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -67,15 +67,15 @@ func (m *V1WorkspacePutRequest) validateGithub(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *V1WorkspacePutRequest) validateMetadata(formats strfmt.Registry) error {
-	if swag.IsZero(m.Metadata) { // not required
+func (m *V1WorkspacePutRequest) validateMetricsExporter(formats strfmt.Registry) error {
+	if swag.IsZero(m.MetricsExporter) { // not required
 		return nil
 	}
 
-	if m.Metadata != nil {
-		if err := m.Metadata.Validate(formats); err != nil {
+	if m.MetricsExporter != nil {
+		if err := m.MetricsExporter.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("metadata")
+				return ve.ValidateName("metrics_exporter")
 			}
 			return err
 		}
@@ -109,7 +109,7 @@ func (m *V1WorkspacePutRequest) ContextValidate(ctx context.Context, formats str
 		res = append(res, err)
 	}
 
-	if err := m.contextValidateMetadata(ctx, formats); err != nil {
+	if err := m.contextValidateMetricsExporter(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -137,12 +137,12 @@ func (m *V1WorkspacePutRequest) contextValidateGithub(ctx context.Context, forma
 	return nil
 }
 
-func (m *V1WorkspacePutRequest) contextValidateMetadata(ctx context.Context, formats strfmt.Registry) error {
+func (m *V1WorkspacePutRequest) contextValidateMetricsExporter(ctx context.Context, formats strfmt.Registry) error {
 
-	if m.Metadata != nil {
-		if err := m.Metadata.ContextValidate(ctx, formats); err != nil {
+	if m.MetricsExporter != nil {
+		if err := m.MetricsExporter.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("metadata")
+				return ve.ValidateName("metrics_exporter")
 			}
 			return err
 		}

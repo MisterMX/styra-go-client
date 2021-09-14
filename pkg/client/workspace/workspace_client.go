@@ -42,6 +42,8 @@ type ClientService interface {
 
 	UpdateWorkspace(params *UpdateWorkspaceParams, opts ...ClientOption) (*UpdateWorkspaceOK, error)
 
+	Func3(params *Func3Params, opts ...ClientOption) (*Func3OK, error)
+
 	SetTransport(transport runtime.ClientTransport)
 }
 
@@ -122,7 +124,9 @@ func (a *Client) DeleteUserBranchWorkspace(params *DeleteUserBranchWorkspacePara
 }
 
 /*
-  GetSourceControlFilesBranchWorkspace gets files in source control for the current user
+  GetSourceControlFilesBranchWorkspace gets the list of files for the styra d a s created branch
+
+  Gets the list of files for the branch that the Styra DAS creates when modifying rego in the Styra DAS UI and pushing the changes to GitHub in a branch for review.
 */
 func (a *Client) GetSourceControlFilesBranchWorkspace(params *GetSourceControlFilesBranchWorkspaceParams, opts ...ClientOption) (*GetSourceControlFilesBranchWorkspaceOK, error) {
 	// TODO: Validate the params before sending
@@ -160,7 +164,7 @@ func (a *Client) GetSourceControlFilesBranchWorkspace(params *GetSourceControlFi
 }
 
 /*
-  GetSourceControlFilesMasterWorkspace gets files in source control for the master branch
+  GetSourceControlFilesMasterWorkspace gets the list of files in the currently chosen branch
 */
 func (a *Client) GetSourceControlFilesMasterWorkspace(params *GetSourceControlFilesMasterWorkspaceParams, opts ...ClientOption) (*GetSourceControlFilesMasterWorkspaceOK, error) {
 	// TODO: Validate the params before sending
@@ -270,6 +274,46 @@ func (a *Client) UpdateWorkspace(params *UpdateWorkspaceParams, opts ...ClientOp
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for UpdateWorkspace: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  Func3 verifies git configuration
+
+  verifies that the repository can be accessed with the provided credentials
+*/
+func (a *Client) Func3(params *Func3Params, opts ...ClientOption) (*Func3OK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewFunc3Params()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "func3",
+		Method:             "POST",
+		PathPattern:        "/v1/workspace/source-control/verify-config",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &Func3Reader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*Func3OK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for func3: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 

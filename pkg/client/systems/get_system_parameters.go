@@ -14,6 +14,7 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // NewGetSystemParams creates a new GetSystemParams object,
@@ -58,6 +59,30 @@ func NewGetSystemParamsWithHTTPClient(client *http.Client) *GetSystemParams {
    Typically these are written to a http.Request.
 */
 type GetSystemParams struct {
+
+	/* Datasources.
+
+	   set to 'false' to omit datasources from the output
+	*/
+	Datasources *bool
+
+	/* Errors.
+
+	   set to 'false' to omit errors/warnings from the output
+	*/
+	Errors *bool
+
+	/* Modules.
+
+	   set to 'false' to omit modules from the output
+	*/
+	Modules *bool
+
+	/* Policies.
+
+	   set to 'false' to omit policies from the output
+	*/
+	Policies *bool
 
 	/* System.
 
@@ -118,6 +143,50 @@ func (o *GetSystemParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithDatasources adds the datasources to the get system params
+func (o *GetSystemParams) WithDatasources(datasources *bool) *GetSystemParams {
+	o.SetDatasources(datasources)
+	return o
+}
+
+// SetDatasources adds the datasources to the get system params
+func (o *GetSystemParams) SetDatasources(datasources *bool) {
+	o.Datasources = datasources
+}
+
+// WithErrors adds the errors to the get system params
+func (o *GetSystemParams) WithErrors(errors *bool) *GetSystemParams {
+	o.SetErrors(errors)
+	return o
+}
+
+// SetErrors adds the errors to the get system params
+func (o *GetSystemParams) SetErrors(errors *bool) {
+	o.Errors = errors
+}
+
+// WithModules adds the modules to the get system params
+func (o *GetSystemParams) WithModules(modules *bool) *GetSystemParams {
+	o.SetModules(modules)
+	return o
+}
+
+// SetModules adds the modules to the get system params
+func (o *GetSystemParams) SetModules(modules *bool) {
+	o.Modules = modules
+}
+
+// WithPolicies adds the policies to the get system params
+func (o *GetSystemParams) WithPolicies(policies *bool) *GetSystemParams {
+	o.SetPolicies(policies)
+	return o
+}
+
+// SetPolicies adds the policies to the get system params
+func (o *GetSystemParams) SetPolicies(policies *bool) {
+	o.Policies = policies
+}
+
 // WithSystem adds the system to the get system params
 func (o *GetSystemParams) WithSystem(system string) *GetSystemParams {
 	o.SetSystem(system)
@@ -136,6 +205,74 @@ func (o *GetSystemParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 		return err
 	}
 	var res []error
+
+	if o.Datasources != nil {
+
+		// query param datasources
+		var qrDatasources bool
+
+		if o.Datasources != nil {
+			qrDatasources = *o.Datasources
+		}
+		qDatasources := swag.FormatBool(qrDatasources)
+		if qDatasources != "" {
+
+			if err := r.SetQueryParam("datasources", qDatasources); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.Errors != nil {
+
+		// query param errors
+		var qrErrors bool
+
+		if o.Errors != nil {
+			qrErrors = *o.Errors
+		}
+		qErrors := swag.FormatBool(qrErrors)
+		if qErrors != "" {
+
+			if err := r.SetQueryParam("errors", qErrors); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.Modules != nil {
+
+		// query param modules
+		var qrModules bool
+
+		if o.Modules != nil {
+			qrModules = *o.Modules
+		}
+		qModules := swag.FormatBool(qrModules)
+		if qModules != "" {
+
+			if err := r.SetQueryParam("modules", qModules); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.Policies != nil {
+
+		// query param policies
+		var qrPolicies bool
+
+		if o.Policies != nil {
+			qrPolicies = *o.Policies
+		}
+		qPolicies := swag.FormatBool(qrPolicies)
+		if qPolicies != "" {
+
+			if err := r.SetQueryParam("policies", qPolicies); err != nil {
+				return err
+			}
+		}
+	}
 
 	// path param system
 	if err := r.SetPathParam("system", o.System); err != nil {

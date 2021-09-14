@@ -34,12 +34,14 @@ type V1Decision struct {
 	Columns []*V1ColumnValue `json:"columns"`
 
 	// cursor
-	// Required: true
-	Cursor *string `json:"cursor"`
+	Cursor string `json:"cursor,omitempty"`
 
 	// unique decision ID
+	DecisionID string `json:"decision_id,omitempty"`
+
+	// decision type
 	// Required: true
-	DecisionID *string `json:"decision_id"`
+	DecisionType *string `json:"decision_type"`
 
 	// erased fields
 	Erased []string `json:"erased"`
@@ -111,11 +113,7 @@ func (m *V1Decision) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateCursor(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateDecisionID(formats); err != nil {
+	if err := m.validateDecisionType(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -200,18 +198,9 @@ func (m *V1Decision) validateColumns(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *V1Decision) validateCursor(formats strfmt.Registry) error {
+func (m *V1Decision) validateDecisionType(formats strfmt.Registry) error {
 
-	if err := validate.Required("cursor", "body", m.Cursor); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *V1Decision) validateDecisionID(formats strfmt.Registry) error {
-
-	if err := validate.Required("decision_id", "body", m.DecisionID); err != nil {
+	if err := validate.Required("decision_type", "body", m.DecisionType); err != nil {
 		return err
 	}
 

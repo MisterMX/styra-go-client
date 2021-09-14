@@ -30,9 +30,11 @@ type V1BundleDistributionS3Config struct {
 	// Required: true
 	DiscoveryPath *string `json:"discovery_path"`
 
+	// AWS endpoint
+	Endpoint string `json:"endpoint,omitempty"`
+
 	// if provided, OPA uses this 'services[_].credentials.s3_signing' config to connect directly to S3 for bundle downloads
-	// Required: true
-	OpaCredentials *V1BundleDistributionS3ConfigOpaCredentials `json:"opa_credentials"`
+	OpaCredentials *V1BundleDistributionS3ConfigOpaCredentials `json:"opa_credentials,omitempty"`
 
 	// bundle path
 	// Required: true
@@ -92,9 +94,8 @@ func (m *V1BundleDistributionS3Config) validateDiscoveryPath(formats strfmt.Regi
 }
 
 func (m *V1BundleDistributionS3Config) validateOpaCredentials(formats strfmt.Registry) error {
-
-	if err := validate.Required("opa_credentials", "body", m.OpaCredentials); err != nil {
-		return err
+	if swag.IsZero(m.OpaCredentials) { // not required
+		return nil
 	}
 
 	if m.OpaCredentials != nil {

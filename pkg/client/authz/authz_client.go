@@ -32,9 +32,11 @@ type ClientOption func(*runtime.ClientOperation)
 type ClientService interface {
 	CheckPermissions(params *CheckPermissionsParams, opts ...ClientOption) (*CheckPermissionsOK, error)
 
+	CreateRoleBinding(params *CreateRoleBindingParams, opts ...ClientOption) (*CreateRoleBindingOK, error)
+
 	DeleteRoleBinding(params *DeleteRoleBindingParams, opts ...ClientOption) (*DeleteRoleBindingOK, error)
 
-	GetMigrationMarker(params *GetMigrationMarkerParams, opts ...ClientOption) (*GetMigrationMarkerOK, error)
+	DeleteRoleBindingSubjects(params *DeleteRoleBindingSubjectsParams, opts ...ClientOption) (*DeleteRoleBindingSubjectsOK, error)
 
 	GetRoleBinding(params *GetRoleBindingParams, opts ...ClientOption) (*GetRoleBindingOK, error)
 
@@ -44,13 +46,15 @@ type ClientService interface {
 
 	ListRoles(params *ListRolesParams, opts ...ClientOption) (*ListRolesOK, error)
 
-	QueryRoleBindings(params *QueryRoleBindingsParams, opts ...ClientOption) (*QueryRoleBindingsOK, error)
+	MergeRoleBindingSubjects(params *MergeRoleBindingSubjectsParams, opts ...ClientOption) (*MergeRoleBindingSubjectsOK, error)
 
-	UpdateMigrationMarker(params *UpdateMigrationMarkerParams, opts ...ClientOption) (*UpdateMigrationMarkerOK, error)
+	ResetRoleBindings(params *ResetRoleBindingsParams, opts ...ClientOption) (*ResetRoleBindingsOK, error)
+
+	UpdateMigrationStatus(params *UpdateMigrationStatusParams, opts ...ClientOption) (*UpdateMigrationStatusOK, error)
 
 	UpdateRoleBinding(params *UpdateRoleBindingParams, opts ...ClientOption) (*UpdateRoleBindingOK, error)
 
-	UpdateRoleBindings(params *UpdateRoleBindingsParams, opts ...ClientOption) (*UpdateRoleBindingsOK, error)
+	UpdateRoleBindingSubjects(params *UpdateRoleBindingSubjectsParams, opts ...ClientOption) (*UpdateRoleBindingSubjectsOK, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -94,7 +98,45 @@ func (a *Client) CheckPermissions(params *CheckPermissionsParams, opts ...Client
 }
 
 /*
-  DeleteRoleBinding deletes a resource role biding
+  CreateRoleBinding creates or update rolebinding
+*/
+func (a *Client) CreateRoleBinding(params *CreateRoleBindingParams, opts ...ClientOption) (*CreateRoleBindingOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewCreateRoleBindingParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "CreateRoleBinding",
+		Method:             "POST",
+		PathPattern:        "/v2/authz/rolebindings",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &CreateRoleBindingReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*CreateRoleBindingOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for CreateRoleBinding: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  DeleteRoleBinding deletes rolebinding
 */
 func (a *Client) DeleteRoleBinding(params *DeleteRoleBindingParams, opts ...ClientOption) (*DeleteRoleBindingOK, error) {
 	// TODO: Validate the params before sending
@@ -104,7 +146,7 @@ func (a *Client) DeleteRoleBinding(params *DeleteRoleBindingParams, opts ...Clie
 	op := &runtime.ClientOperation{
 		ID:                 "DeleteRoleBinding",
 		Method:             "DELETE",
-		PathPattern:        "/v1/authz/rolebindings/{resourcetype}/{resource}/{rolebinding}",
+		PathPattern:        "/v2/authz/rolebindings/{id}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
@@ -132,22 +174,22 @@ func (a *Client) DeleteRoleBinding(params *DeleteRoleBindingParams, opts ...Clie
 }
 
 /*
-  GetMigrationMarker gets migration marker
+  DeleteRoleBindingSubjects deletes rolebinding subjects
 */
-func (a *Client) GetMigrationMarker(params *GetMigrationMarkerParams, opts ...ClientOption) (*GetMigrationMarkerOK, error) {
+func (a *Client) DeleteRoleBindingSubjects(params *DeleteRoleBindingSubjectsParams, opts ...ClientOption) (*DeleteRoleBindingSubjectsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewGetMigrationMarkerParams()
+		params = NewDeleteRoleBindingSubjectsParams()
 	}
 	op := &runtime.ClientOperation{
-		ID:                 "GetMigrationMarker",
-		Method:             "GET",
-		PathPattern:        "/v2/authz/rolebindings/marker",
+		ID:                 "DeleteRoleBindingSubjects",
+		Method:             "DELETE",
+		PathPattern:        "/v2/authz/rolebindings/{id}/subjects",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
 		Params:             params,
-		Reader:             &GetMigrationMarkerReader{formats: a.formats},
+		Reader:             &DeleteRoleBindingSubjectsReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	}
@@ -159,18 +201,18 @@ func (a *Client) GetMigrationMarker(params *GetMigrationMarkerParams, opts ...Cl
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetMigrationMarkerOK)
+	success, ok := result.(*DeleteRoleBindingSubjectsOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for GetMigrationMarker: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	msg := fmt.Sprintf("unexpected success response for DeleteRoleBindingSubjects: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
 /*
-  GetRoleBinding gets a role binding
+  GetRoleBinding gets rolebinding
 */
 func (a *Client) GetRoleBinding(params *GetRoleBindingParams, opts ...ClientOption) (*GetRoleBindingOK, error) {
 	// TODO: Validate the params before sending
@@ -180,7 +222,7 @@ func (a *Client) GetRoleBinding(params *GetRoleBindingParams, opts ...ClientOpti
 	op := &runtime.ClientOperation{
 		ID:                 "GetRoleBinding",
 		Method:             "GET",
-		PathPattern:        "/v1/authz/rolebindings/{resourcetype}/{resource}/{rolebinding}",
+		PathPattern:        "/v2/authz/rolebindings/{id}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
@@ -284,7 +326,7 @@ func (a *Client) ListRoleBindings(params *ListRoleBindingsParams, opts ...Client
 }
 
 /*
-  ListRoles lists styra defined roles
+  ListRoles lists roles
 */
 func (a *Client) ListRoles(params *ListRolesParams, opts ...ClientOption) (*ListRolesOK, error) {
 	// TODO: Validate the params before sending
@@ -322,22 +364,22 @@ func (a *Client) ListRoles(params *ListRolesParams, opts ...ClientOption) (*List
 }
 
 /*
-  QueryRoleBindings queries role bindings
+  MergeRoleBindingSubjects merges rolebinding subjects
 */
-func (a *Client) QueryRoleBindings(params *QueryRoleBindingsParams, opts ...ClientOption) (*QueryRoleBindingsOK, error) {
+func (a *Client) MergeRoleBindingSubjects(params *MergeRoleBindingSubjectsParams, opts ...ClientOption) (*MergeRoleBindingSubjectsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewQueryRoleBindingsParams()
+		params = NewMergeRoleBindingSubjectsParams()
 	}
 	op := &runtime.ClientOperation{
-		ID:                 "QueryRoleBindings",
-		Method:             "POST",
-		PathPattern:        "/v2/authz/rolebindings",
+		ID:                 "MergeRoleBindingSubjects",
+		Method:             "PUT",
+		PathPattern:        "/v2/authz/rolebindings/{id}/subjects",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
 		Params:             params,
-		Reader:             &QueryRoleBindingsReader{formats: a.formats},
+		Reader:             &MergeRoleBindingSubjectsReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	}
@@ -349,33 +391,33 @@ func (a *Client) QueryRoleBindings(params *QueryRoleBindingsParams, opts ...Clie
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*QueryRoleBindingsOK)
+	success, ok := result.(*MergeRoleBindingSubjectsOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for QueryRoleBindings: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	msg := fmt.Sprintf("unexpected success response for MergeRoleBindingSubjects: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
 /*
-  UpdateMigrationMarker updates migration marker
+  ResetRoleBindings resets rolebindings
 */
-func (a *Client) UpdateMigrationMarker(params *UpdateMigrationMarkerParams, opts ...ClientOption) (*UpdateMigrationMarkerOK, error) {
+func (a *Client) ResetRoleBindings(params *ResetRoleBindingsParams, opts ...ClientOption) (*ResetRoleBindingsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewUpdateMigrationMarkerParams()
+		params = NewResetRoleBindingsParams()
 	}
 	op := &runtime.ClientOperation{
-		ID:                 "UpdateMigrationMarker",
+		ID:                 "ResetRoleBindings",
 		Method:             "PUT",
-		PathPattern:        "/v2/authz/rolebindings/marker",
+		PathPattern:        "/v2/authz/reset/rolebindings",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
 		Params:             params,
-		Reader:             &UpdateMigrationMarkerReader{formats: a.formats},
+		Reader:             &ResetRoleBindingsReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	}
@@ -387,13 +429,51 @@ func (a *Client) UpdateMigrationMarker(params *UpdateMigrationMarkerParams, opts
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*UpdateMigrationMarkerOK)
+	success, ok := result.(*ResetRoleBindingsOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for UpdateMigrationMarker: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	msg := fmt.Sprintf("unexpected success response for ResetRoleBindings: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  UpdateMigrationStatus updates migration status
+*/
+func (a *Client) UpdateMigrationStatus(params *UpdateMigrationStatusParams, opts ...ClientOption) (*UpdateMigrationStatusOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewUpdateMigrationStatusParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "UpdateMigrationStatus",
+		Method:             "PUT",
+		PathPattern:        "/v2/authz/migration/status",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &UpdateMigrationStatusReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*UpdateMigrationStatusOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for UpdateMigrationStatus: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
@@ -436,22 +516,22 @@ func (a *Client) UpdateRoleBinding(params *UpdateRoleBindingParams, opts ...Clie
 }
 
 /*
-  UpdateRoleBindings updates role bindings
+  UpdateRoleBindingSubjects updates rolebinding subjects
 */
-func (a *Client) UpdateRoleBindings(params *UpdateRoleBindingsParams, opts ...ClientOption) (*UpdateRoleBindingsOK, error) {
+func (a *Client) UpdateRoleBindingSubjects(params *UpdateRoleBindingSubjectsParams, opts ...ClientOption) (*UpdateRoleBindingSubjectsOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewUpdateRoleBindingsParams()
+		params = NewUpdateRoleBindingSubjectsParams()
 	}
 	op := &runtime.ClientOperation{
-		ID:                 "UpdateRoleBindings",
-		Method:             "PUT",
-		PathPattern:        "/v2/authz/rolebindings",
+		ID:                 "UpdateRoleBindingSubjects",
+		Method:             "POST",
+		PathPattern:        "/v2/authz/rolebindings/{id}/subjects",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
 		Params:             params,
-		Reader:             &UpdateRoleBindingsReader{formats: a.formats},
+		Reader:             &UpdateRoleBindingSubjectsReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	}
@@ -463,13 +543,13 @@ func (a *Client) UpdateRoleBindings(params *UpdateRoleBindingsParams, opts ...Cl
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*UpdateRoleBindingsOK)
+	success, ok := result.(*UpdateRoleBindingSubjectsOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for UpdateRoleBindings: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	msg := fmt.Sprintf("unexpected success response for UpdateRoleBindingSubjects: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 

@@ -19,6 +19,10 @@ import (
 // swagger:model v1.ProviderConfig
 type V1ProviderConfig struct {
 
+	// allow idp initiated
+	// Required: true
+	AllowIdpInitiated *bool `json:"allow_idp_initiated"`
+
 	// allowed domains
 	// Required: true
 	AllowedDomains []string `json:"allowed_domains"`
@@ -34,6 +38,10 @@ type V1ProviderConfig struct {
 	// client secret
 	// Required: true
 	ClientSecret *string `json:"client_secret"`
+
+	// email attribute
+	// Required: true
+	EmailAttribute *string `json:"email_attribute"`
 
 	// enabled
 	// Required: true
@@ -51,6 +59,14 @@ type V1ProviderConfig struct {
 	// Required: true
 	Jit *bool `json:"jit"`
 
+	// key certificate
+	// Required: true
+	KeyCertificate *string `json:"key_certificate"`
+
+	// metadata
+	// Required: true
+	Metadata *string `json:"metadata"`
+
 	// proxy url
 	// Required: true
 	ProxyURL *string `json:"proxy_url"`
@@ -63,6 +79,10 @@ type V1ProviderConfig struct {
 	// Required: true
 	TokenURL *string `json:"token_url"`
 
+	// type
+	// Required: true
+	Type *string `json:"type"`
+
 	// user info url
 	// Required: true
 	UserInfoURL *string `json:"user_info_url"`
@@ -71,6 +91,10 @@ type V1ProviderConfig struct {
 // Validate validates this v1 provider config
 func (m *V1ProviderConfig) Validate(formats strfmt.Registry) error {
 	var res []error
+
+	if err := m.validateAllowIdpInitiated(formats); err != nil {
+		res = append(res, err)
+	}
 
 	if err := m.validateAllowedDomains(formats); err != nil {
 		res = append(res, err)
@@ -85,6 +109,10 @@ func (m *V1ProviderConfig) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateClientSecret(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateEmailAttribute(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -104,6 +132,14 @@ func (m *V1ProviderConfig) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateKeyCertificate(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateMetadata(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateProxyURL(formats); err != nil {
 		res = append(res, err)
 	}
@@ -116,6 +152,10 @@ func (m *V1ProviderConfig) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateType(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateUserInfoURL(formats); err != nil {
 		res = append(res, err)
 	}
@@ -123,6 +163,15 @@ func (m *V1ProviderConfig) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *V1ProviderConfig) validateAllowIdpInitiated(formats strfmt.Registry) error {
+
+	if err := validate.Required("allow_idp_initiated", "body", m.AllowIdpInitiated); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -156,6 +205,15 @@ func (m *V1ProviderConfig) validateClientID(formats strfmt.Registry) error {
 func (m *V1ProviderConfig) validateClientSecret(formats strfmt.Registry) error {
 
 	if err := validate.Required("client_secret", "body", m.ClientSecret); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *V1ProviderConfig) validateEmailAttribute(formats strfmt.Registry) error {
+
+	if err := validate.Required("email_attribute", "body", m.EmailAttribute); err != nil {
 		return err
 	}
 
@@ -198,6 +256,24 @@ func (m *V1ProviderConfig) validateJit(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *V1ProviderConfig) validateKeyCertificate(formats strfmt.Registry) error {
+
+	if err := validate.Required("key_certificate", "body", m.KeyCertificate); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *V1ProviderConfig) validateMetadata(formats strfmt.Registry) error {
+
+	if err := validate.Required("metadata", "body", m.Metadata); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *V1ProviderConfig) validateProxyURL(formats strfmt.Registry) error {
 
 	if err := validate.Required("proxy_url", "body", m.ProxyURL); err != nil {
@@ -219,6 +295,15 @@ func (m *V1ProviderConfig) validateScopes(formats strfmt.Registry) error {
 func (m *V1ProviderConfig) validateTokenURL(formats strfmt.Registry) error {
 
 	if err := validate.Required("token_url", "body", m.TokenURL); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *V1ProviderConfig) validateType(formats strfmt.Registry) error {
+
+	if err := validate.Required("type", "body", m.Type); err != nil {
 		return err
 	}
 

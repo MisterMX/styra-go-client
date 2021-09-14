@@ -31,6 +31,9 @@ type V1GitRepoConfig struct {
 	// Required: true
 	Reference *string `json:"reference"`
 
+	// SSHCredentials including ssh private key and passphrase for ssh-based auth
+	SSHCredentials *V1SSHCredentials `json:"ssh_credentials,omitempty"`
+
 	// Repository URL
 	// Required: true
 	URL *string `json:"url"`
@@ -49,6 +52,10 @@ func (m *V1GitRepoConfig) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateReference(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateSSHCredentials(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -89,6 +96,23 @@ func (m *V1GitRepoConfig) validateReference(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *V1GitRepoConfig) validateSSHCredentials(formats strfmt.Registry) error {
+	if swag.IsZero(m.SSHCredentials) { // not required
+		return nil
+	}
+
+	if m.SSHCredentials != nil {
+		if err := m.SSHCredentials.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("ssh_credentials")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (m *V1GitRepoConfig) validateURL(formats strfmt.Registry) error {
 
 	if err := validate.Required("url", "body", m.URL); err != nil {
@@ -98,8 +122,31 @@ func (m *V1GitRepoConfig) validateURL(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this v1 git repo config based on context it is used
+// ContextValidate validate this v1 git repo config based on the context it is used
 func (m *V1GitRepoConfig) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateSSHCredentials(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *V1GitRepoConfig) contextValidateSSHCredentials(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.SSHCredentials != nil {
+		if err := m.SSHCredentials.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("ssh_credentials")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

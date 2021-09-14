@@ -29,6 +29,12 @@ func (o *ValidateStackComplianceReader) ReadResponse(response runtime.ClientResp
 			return nil, err
 		}
 		return result, nil
+	case 202:
+		result := NewValidateStackComplianceAccepted()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return result, nil
 	case 404:
 		result := NewValidateStackComplianceNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -68,6 +74,27 @@ func (o *ValidateStackComplianceOK) readResponse(response runtime.ClientResponse
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
 		return err
 	}
+
+	return nil
+}
+
+// NewValidateStackComplianceAccepted creates a ValidateStackComplianceAccepted with default headers values
+func NewValidateStackComplianceAccepted() *ValidateStackComplianceAccepted {
+	return &ValidateStackComplianceAccepted{}
+}
+
+/* ValidateStackComplianceAccepted describes a response with status code 202, with default header values.
+
+Accepted
+*/
+type ValidateStackComplianceAccepted struct {
+}
+
+func (o *ValidateStackComplianceAccepted) Error() string {
+	return fmt.Sprintf("[POST /v1/stacks/{stack}/validate/compliance][%d] validateStackComplianceAccepted ", 202)
+}
+
+func (o *ValidateStackComplianceAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	return nil
 }

@@ -22,24 +22,16 @@ type V2RoleBindingsPostResponse struct {
 	// request id
 	RequestID string `json:"request_id,omitempty"`
 
-	// result
+	// rolebinding
 	// Required: true
-	Result *V2RoleBindingsConfig `json:"result"`
-
-	// revision
-	// Required: true
-	Revision *int64 `json:"revision"`
+	Rolebinding *V2RoleBindingConfig `json:"rolebinding"`
 }
 
 // Validate validates this v2 role bindings post response
 func (m *V2RoleBindingsPostResponse) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateResult(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateRevision(formats); err != nil {
+	if err := m.validateRolebinding(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -49,28 +41,19 @@ func (m *V2RoleBindingsPostResponse) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *V2RoleBindingsPostResponse) validateResult(formats strfmt.Registry) error {
+func (m *V2RoleBindingsPostResponse) validateRolebinding(formats strfmt.Registry) error {
 
-	if err := validate.Required("result", "body", m.Result); err != nil {
+	if err := validate.Required("rolebinding", "body", m.Rolebinding); err != nil {
 		return err
 	}
 
-	if m.Result != nil {
-		if err := m.Result.Validate(formats); err != nil {
+	if m.Rolebinding != nil {
+		if err := m.Rolebinding.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("result")
+				return ve.ValidateName("rolebinding")
 			}
 			return err
 		}
-	}
-
-	return nil
-}
-
-func (m *V2RoleBindingsPostResponse) validateRevision(formats strfmt.Registry) error {
-
-	if err := validate.Required("revision", "body", m.Revision); err != nil {
-		return err
 	}
 
 	return nil
@@ -80,7 +63,7 @@ func (m *V2RoleBindingsPostResponse) validateRevision(formats strfmt.Registry) e
 func (m *V2RoleBindingsPostResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.contextValidateResult(ctx, formats); err != nil {
+	if err := m.contextValidateRolebinding(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -90,12 +73,12 @@ func (m *V2RoleBindingsPostResponse) ContextValidate(ctx context.Context, format
 	return nil
 }
 
-func (m *V2RoleBindingsPostResponse) contextValidateResult(ctx context.Context, formats strfmt.Registry) error {
+func (m *V2RoleBindingsPostResponse) contextValidateRolebinding(ctx context.Context, formats strfmt.Registry) error {
 
-	if m.Result != nil {
-		if err := m.Result.ContextValidate(ctx, formats); err != nil {
+	if m.Rolebinding != nil {
+		if err := m.Rolebinding.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("result")
+				return ve.ValidateName("rolebinding")
 			}
 			return err
 		}

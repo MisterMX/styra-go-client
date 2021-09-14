@@ -14,6 +14,7 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // NewGetStackParams creates a new GetStackParams object,
@@ -58,6 +59,12 @@ func NewGetStackParamsWithHTTPClient(client *http.Client) *GetStackParams {
    Typically these are written to a http.Request.
 */
 type GetStackParams struct {
+
+	/* Datasources.
+
+	   set to 'false' to omit datasources from the output
+	*/
+	Datasources *bool
 
 	/* Stack.
 
@@ -118,6 +125,17 @@ func (o *GetStackParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithDatasources adds the datasources to the get stack params
+func (o *GetStackParams) WithDatasources(datasources *bool) *GetStackParams {
+	o.SetDatasources(datasources)
+	return o
+}
+
+// SetDatasources adds the datasources to the get stack params
+func (o *GetStackParams) SetDatasources(datasources *bool) {
+	o.Datasources = datasources
+}
+
 // WithStack adds the stack to the get stack params
 func (o *GetStackParams) WithStack(stack string) *GetStackParams {
 	o.SetStack(stack)
@@ -136,6 +154,23 @@ func (o *GetStackParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Regi
 		return err
 	}
 	var res []error
+
+	if o.Datasources != nil {
+
+		// query param datasources
+		var qrDatasources bool
+
+		if o.Datasources != nil {
+			qrDatasources = *o.Datasources
+		}
+		qDatasources := swag.FormatBool(qrDatasources)
+		if qDatasources != "" {
+
+			if err := r.SetQueryParam("datasources", qDatasources); err != nil {
+				return err
+			}
+		}
+	}
 
 	// path param stack
 	if err := r.SetPathParam("stack", o.Stack); err != nil {

@@ -7,6 +7,7 @@ package models
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
@@ -19,22 +20,55 @@ import (
 // swagger:model v2.RoleBindingsPostRequest
 type V2RoleBindingsPostRequest struct {
 
+	// id
+	// Required: true
+	ID *string `json:"id"`
+
 	// resource filter
 	// Required: true
 	ResourceFilter *V2ResourceFilter `json:"resource_filter"`
+
+	// role id
+	// Required: true
+	RoleID *string `json:"role_id"`
+
+	// subjects
+	// Required: true
+	Subjects []*V2Subject `json:"subjects"`
 }
 
 // Validate validates this v2 role bindings post request
 func (m *V2RoleBindingsPostRequest) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateID(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateResourceFilter(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateRoleID(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateSubjects(formats); err != nil {
 		res = append(res, err)
 	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *V2RoleBindingsPostRequest) validateID(formats strfmt.Registry) error {
+
+	if err := validate.Required("id", "body", m.ID); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -56,11 +90,49 @@ func (m *V2RoleBindingsPostRequest) validateResourceFilter(formats strfmt.Regist
 	return nil
 }
 
+func (m *V2RoleBindingsPostRequest) validateRoleID(formats strfmt.Registry) error {
+
+	if err := validate.Required("role_id", "body", m.RoleID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *V2RoleBindingsPostRequest) validateSubjects(formats strfmt.Registry) error {
+
+	if err := validate.Required("subjects", "body", m.Subjects); err != nil {
+		return err
+	}
+
+	for i := 0; i < len(m.Subjects); i++ {
+		if swag.IsZero(m.Subjects[i]) { // not required
+			continue
+		}
+
+		if m.Subjects[i] != nil {
+			if err := m.Subjects[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("subjects" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
 // ContextValidate validate this v2 role bindings post request based on the context it is used
 func (m *V2RoleBindingsPostRequest) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.contextValidateResourceFilter(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateSubjects(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -79,6 +151,24 @@ func (m *V2RoleBindingsPostRequest) contextValidateResourceFilter(ctx context.Co
 			}
 			return err
 		}
+	}
+
+	return nil
+}
+
+func (m *V2RoleBindingsPostRequest) contextValidateSubjects(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Subjects); i++ {
+
+		if m.Subjects[i] != nil {
+			if err := m.Subjects[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("subjects" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
 	}
 
 	return nil

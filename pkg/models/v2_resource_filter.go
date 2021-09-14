@@ -19,24 +19,24 @@ import (
 // swagger:model v2.ResourceFilter
 type V2ResourceFilter struct {
 
-	// systems
+	// id
 	// Required: true
-	Systems *V2Filter `json:"systems"`
+	ID *string `json:"id"`
 
-	// workspaces
+	// kind
 	// Required: true
-	Workspaces *V2Filter `json:"workspaces"`
+	Kind *string `json:"kind"`
 }
 
 // Validate validates this v2 resource filter
 func (m *V2ResourceFilter) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateSystems(formats); err != nil {
+	if err := m.validateID(formats); err != nil {
 		res = append(res, err)
 	}
 
-	if err := m.validateWorkspaces(formats); err != nil {
+	if err := m.validateKind(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -46,85 +46,26 @@ func (m *V2ResourceFilter) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *V2ResourceFilter) validateSystems(formats strfmt.Registry) error {
+func (m *V2ResourceFilter) validateID(formats strfmt.Registry) error {
 
-	if err := validate.Required("systems", "body", m.Systems); err != nil {
+	if err := validate.Required("id", "body", m.ID); err != nil {
 		return err
-	}
-
-	if m.Systems != nil {
-		if err := m.Systems.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("systems")
-			}
-			return err
-		}
 	}
 
 	return nil
 }
 
-func (m *V2ResourceFilter) validateWorkspaces(formats strfmt.Registry) error {
+func (m *V2ResourceFilter) validateKind(formats strfmt.Registry) error {
 
-	if err := validate.Required("workspaces", "body", m.Workspaces); err != nil {
+	if err := validate.Required("kind", "body", m.Kind); err != nil {
 		return err
-	}
-
-	if m.Workspaces != nil {
-		if err := m.Workspaces.Validate(formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("workspaces")
-			}
-			return err
-		}
 	}
 
 	return nil
 }
 
-// ContextValidate validate this v2 resource filter based on the context it is used
+// ContextValidate validates this v2 resource filter based on context it is used
 func (m *V2ResourceFilter) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
-	var res []error
-
-	if err := m.contextValidateSystems(ctx, formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.contextValidateWorkspaces(ctx, formats); err != nil {
-		res = append(res, err)
-	}
-
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
-	return nil
-}
-
-func (m *V2ResourceFilter) contextValidateSystems(ctx context.Context, formats strfmt.Registry) error {
-
-	if m.Systems != nil {
-		if err := m.Systems.ContextValidate(ctx, formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("systems")
-			}
-			return err
-		}
-	}
-
-	return nil
-}
-
-func (m *V2ResourceFilter) contextValidateWorkspaces(ctx context.Context, formats strfmt.Registry) error {
-
-	if m.Workspaces != nil {
-		if err := m.Workspaces.ContextValidate(ctx, formats); err != nil {
-			if ve, ok := err.(*errors.Validation); ok {
-				return ve.ValidateName("workspaces")
-			}
-			return err
-		}
-	}
-
 	return nil
 }
 

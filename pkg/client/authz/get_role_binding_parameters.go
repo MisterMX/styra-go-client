@@ -59,23 +59,11 @@ func NewGetRoleBindingParamsWithHTTPClient(client *http.Client) *GetRoleBindingP
 */
 type GetRoleBindingParams struct {
 
-	/* Resource.
+	/* ID.
 
-	   resource id
+	   rolebinding ID
 	*/
-	Resource string
-
-	/* Resourcetype.
-
-	   resource type
-	*/
-	Resourcetype string
-
-	/* Rolebinding.
-
-	   role binding id
-	*/
-	Rolebinding string
+	ID string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -130,37 +118,15 @@ func (o *GetRoleBindingParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
-// WithResource adds the resource to the get role binding params
-func (o *GetRoleBindingParams) WithResource(resource string) *GetRoleBindingParams {
-	o.SetResource(resource)
+// WithID adds the id to the get role binding params
+func (o *GetRoleBindingParams) WithID(id string) *GetRoleBindingParams {
+	o.SetID(id)
 	return o
 }
 
-// SetResource adds the resource to the get role binding params
-func (o *GetRoleBindingParams) SetResource(resource string) {
-	o.Resource = resource
-}
-
-// WithResourcetype adds the resourcetype to the get role binding params
-func (o *GetRoleBindingParams) WithResourcetype(resourcetype string) *GetRoleBindingParams {
-	o.SetResourcetype(resourcetype)
-	return o
-}
-
-// SetResourcetype adds the resourcetype to the get role binding params
-func (o *GetRoleBindingParams) SetResourcetype(resourcetype string) {
-	o.Resourcetype = resourcetype
-}
-
-// WithRolebinding adds the rolebinding to the get role binding params
-func (o *GetRoleBindingParams) WithRolebinding(rolebinding string) *GetRoleBindingParams {
-	o.SetRolebinding(rolebinding)
-	return o
-}
-
-// SetRolebinding adds the rolebinding to the get role binding params
-func (o *GetRoleBindingParams) SetRolebinding(rolebinding string) {
-	o.Rolebinding = rolebinding
+// SetID adds the id to the get role binding params
+func (o *GetRoleBindingParams) SetID(id string) {
+	o.ID = id
 }
 
 // WriteToRequest writes these params to a swagger request
@@ -171,18 +137,8 @@ func (o *GetRoleBindingParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 	}
 	var res []error
 
-	// path param resource
-	if err := r.SetPathParam("resource", o.Resource); err != nil {
-		return err
-	}
-
-	// path param resourcetype
-	if err := r.SetPathParam("resourcetype", o.Resourcetype); err != nil {
-		return err
-	}
-
-	// path param rolebinding
-	if err := r.SetPathParam("rolebinding", o.Rolebinding); err != nil {
+	// path param id
+	if err := r.SetPathParam("id", o.ID); err != nil {
 		return err
 	}
 

@@ -23,16 +23,16 @@ type V2RolesListResponse struct {
 	// request id
 	RequestID string `json:"request_id,omitempty"`
 
-	// result
+	// roles
 	// Required: true
-	Result []*V2RoleConfig `json:"result"`
+	Roles []*V2RoleConfig `json:"roles"`
 }
 
 // Validate validates this v2 roles list response
 func (m *V2RolesListResponse) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateResult(formats); err != nil {
+	if err := m.validateRoles(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -42,21 +42,21 @@ func (m *V2RolesListResponse) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *V2RolesListResponse) validateResult(formats strfmt.Registry) error {
+func (m *V2RolesListResponse) validateRoles(formats strfmt.Registry) error {
 
-	if err := validate.Required("result", "body", m.Result); err != nil {
+	if err := validate.Required("roles", "body", m.Roles); err != nil {
 		return err
 	}
 
-	for i := 0; i < len(m.Result); i++ {
-		if swag.IsZero(m.Result[i]) { // not required
+	for i := 0; i < len(m.Roles); i++ {
+		if swag.IsZero(m.Roles[i]) { // not required
 			continue
 		}
 
-		if m.Result[i] != nil {
-			if err := m.Result[i].Validate(formats); err != nil {
+		if m.Roles[i] != nil {
+			if err := m.Roles[i].Validate(formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("result" + "." + strconv.Itoa(i))
+					return ve.ValidateName("roles" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
@@ -71,7 +71,7 @@ func (m *V2RolesListResponse) validateResult(formats strfmt.Registry) error {
 func (m *V2RolesListResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.contextValidateResult(ctx, formats); err != nil {
+	if err := m.contextValidateRoles(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -81,14 +81,14 @@ func (m *V2RolesListResponse) ContextValidate(ctx context.Context, formats strfm
 	return nil
 }
 
-func (m *V2RolesListResponse) contextValidateResult(ctx context.Context, formats strfmt.Registry) error {
+func (m *V2RolesListResponse) contextValidateRoles(ctx context.Context, formats strfmt.Registry) error {
 
-	for i := 0; i < len(m.Result); i++ {
+	for i := 0; i < len(m.Roles); i++ {
 
-		if m.Result[i] != nil {
-			if err := m.Result[i].ContextValidate(ctx, formats); err != nil {
+		if m.Roles[i] != nil {
+			if err := m.Roles[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("result" + "." + strconv.Itoa(i))
+					return ve.ValidateName("roles" + "." + strconv.Itoa(i))
 				}
 				return err
 			}

@@ -61,8 +61,26 @@ func NewValidateStackComplianceParamsWithHTTPClient(client *http.Client) *Valida
 */
 type ValidateStackComplianceParams struct {
 
+	/* Asyncdelay.
+
+	   set delay of asynchronous response HTTP(202); range [1s - compliance-api-timeout].
+	*/
+	Asyncdelay *string
+
+	/* Asyncresponse.
+
+	   get asynchronous response; see HTTP(202) Location parameter
+	*/
+	Asyncresponse *string
+
 	// Body.
 	Body *models.V1StacksComplianceRequest
+
+	/* Interval.
+
+	   if set to 'latest', get most recent cached results for specified stack.
+	*/
+	Interval *string
 
 	/* System.
 
@@ -123,6 +141,28 @@ func (o *ValidateStackComplianceParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithAsyncdelay adds the asyncdelay to the validate stack compliance params
+func (o *ValidateStackComplianceParams) WithAsyncdelay(asyncdelay *string) *ValidateStackComplianceParams {
+	o.SetAsyncdelay(asyncdelay)
+	return o
+}
+
+// SetAsyncdelay adds the asyncdelay to the validate stack compliance params
+func (o *ValidateStackComplianceParams) SetAsyncdelay(asyncdelay *string) {
+	o.Asyncdelay = asyncdelay
+}
+
+// WithAsyncresponse adds the asyncresponse to the validate stack compliance params
+func (o *ValidateStackComplianceParams) WithAsyncresponse(asyncresponse *string) *ValidateStackComplianceParams {
+	o.SetAsyncresponse(asyncresponse)
+	return o
+}
+
+// SetAsyncresponse adds the asyncresponse to the validate stack compliance params
+func (o *ValidateStackComplianceParams) SetAsyncresponse(asyncresponse *string) {
+	o.Asyncresponse = asyncresponse
+}
+
 // WithBody adds the body to the validate stack compliance params
 func (o *ValidateStackComplianceParams) WithBody(body *models.V1StacksComplianceRequest) *ValidateStackComplianceParams {
 	o.SetBody(body)
@@ -132,6 +172,17 @@ func (o *ValidateStackComplianceParams) WithBody(body *models.V1StacksCompliance
 // SetBody adds the body to the validate stack compliance params
 func (o *ValidateStackComplianceParams) SetBody(body *models.V1StacksComplianceRequest) {
 	o.Body = body
+}
+
+// WithInterval adds the interval to the validate stack compliance params
+func (o *ValidateStackComplianceParams) WithInterval(interval *string) *ValidateStackComplianceParams {
+	o.SetInterval(interval)
+	return o
+}
+
+// SetInterval adds the interval to the validate stack compliance params
+func (o *ValidateStackComplianceParams) SetInterval(interval *string) {
+	o.Interval = interval
 }
 
 // WithSystem adds the system to the validate stack compliance params
@@ -152,9 +203,60 @@ func (o *ValidateStackComplianceParams) WriteToRequest(r runtime.ClientRequest, 
 		return err
 	}
 	var res []error
+
+	if o.Asyncdelay != nil {
+
+		// query param asyncdelay
+		var qrAsyncdelay string
+
+		if o.Asyncdelay != nil {
+			qrAsyncdelay = *o.Asyncdelay
+		}
+		qAsyncdelay := qrAsyncdelay
+		if qAsyncdelay != "" {
+
+			if err := r.SetQueryParam("asyncdelay", qAsyncdelay); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.Asyncresponse != nil {
+
+		// query param asyncresponse
+		var qrAsyncresponse string
+
+		if o.Asyncresponse != nil {
+			qrAsyncresponse = *o.Asyncresponse
+		}
+		qAsyncresponse := qrAsyncresponse
+		if qAsyncresponse != "" {
+
+			if err := r.SetQueryParam("asyncresponse", qAsyncresponse); err != nil {
+				return err
+			}
+		}
+	}
 	if o.Body != nil {
 		if err := r.SetBodyParam(o.Body); err != nil {
 			return err
+		}
+	}
+
+	if o.Interval != nil {
+
+		// query param interval
+		var qrInterval string
+
+		if o.Interval != nil {
+			qrInterval = *o.Interval
+		}
+		qInterval := qrInterval
+		if qInterval != "" {
+
+			if err := r.SetQueryParam("interval", qInterval); err != nil {
+				return err
+			}
 		}
 	}
 

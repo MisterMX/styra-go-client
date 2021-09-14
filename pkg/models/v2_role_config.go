@@ -22,6 +22,14 @@ type V2RoleConfig struct {
 	// id
 	// Required: true
 	ID *string `json:"id"`
+
+	// metadata
+	// Required: true
+	Metadata *V1ObjectMeta `json:"metadata"`
+
+	// resource kind
+	// Required: true
+	ResourceKind *string `json:"resource_kind"`
 }
 
 // Validate validates this v2 role config
@@ -29,6 +37,14 @@ func (m *V2RoleConfig) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateID(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateMetadata(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateResourceKind(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -47,8 +63,58 @@ func (m *V2RoleConfig) validateID(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this v2 role config based on context it is used
+func (m *V2RoleConfig) validateMetadata(formats strfmt.Registry) error {
+
+	if err := validate.Required("metadata", "body", m.Metadata); err != nil {
+		return err
+	}
+
+	if m.Metadata != nil {
+		if err := m.Metadata.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("metadata")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *V2RoleConfig) validateResourceKind(formats strfmt.Registry) error {
+
+	if err := validate.Required("resource_kind", "body", m.ResourceKind); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validate this v2 role config based on the context it is used
 func (m *V2RoleConfig) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateMetadata(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *V2RoleConfig) contextValidateMetadata(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Metadata != nil {
+		if err := m.Metadata.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("metadata")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

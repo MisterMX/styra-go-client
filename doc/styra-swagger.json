@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "Styra is entirely API-driven.\n\nThe APIs are divided in 5 sections:\n* Policies: Manage policies\n* Bundles: Downloading policies and their data as bundles\n* Data: Access data and execute policies\n* Datasources: Configure and manage datasources\n\nNearly every API requires authentication. When making an API call you provide an Authorization HTTP\nheader that includes a token `Authorization: Bearer \u003cYOURTOKENHERE\u003e`.\n\n\nTo request a token you need to have an Styra account, and create a token via the API Tokens menu",
+        "description": "Styra DAS is entirely API-driven.\n\nAccess to the APIs requires authentication that should be provided as an Authorization HTTP header including a Styra DAS-issued token:\n\n`Authorization: Bearer \u003cYOURTOKENHERE\u003e`\n\nTo request a token you need to have an Styra account, and create a token via the API Tokens menu.",
         "title": "Styra API",
         "termsOfService": "https://doc-policies.s3-us-west-2.amazonaws.com/terms.html",
         "contact": {
@@ -268,7 +268,7 @@
                 "tags": [
                     "authz"
                 ],
-                "summary": "Delete a resource role biding",
+                "summary": "Delete a resource role binding",
                 "operationId": "DeleteRoleBinding",
                 "parameters": [
                     {
@@ -912,18 +912,76 @@
                     "application/json"
                 ],
                 "tags": [
-                    "analysis"
+                    "decisions"
                 ],
                 "summary": "Search decision logs",
                 "operationId": "SearchDecisionLogsGet",
                 "parameters": [
                     {
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/v1.DecisionsRequest"
-                        }
+                        "type": "string",
+                        "description": "continue from cursor position of previous query",
+                        "name": "cursor",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "minimum decision time",
+                        "name": "start_time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "maximum decision time",
+                        "name": "end_time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "search query",
+                        "name": "search",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "system ID",
+                        "name": "system",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "stack ID",
+                        "name": "stack",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "maximum number of decisions to return",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "comma-separated list of ALL, UNKNOWN, ADVICE, ALLOWED, DENIED, ERROR",
+                        "name": "result_kind",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "ASC, DESC (default)",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "client time zone offset e.g. -07:00, +3:00, Z. Local time expressions in query are adjusted with this offset",
+                        "name": "default_timezone",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "return only essential decision fields",
+                        "name": "compact",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -943,7 +1001,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "analysis"
+                    "decisions"
                 ],
                 "summary": "Search decision logs",
                 "operationId": "SearchDecisionLogsPost",
@@ -953,7 +1011,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v1.DecisionsRequest"
+                            "$ref": "#/definitions/v1.DecisionsGetRequest"
                         }
                     }
                 ],
@@ -962,6 +1020,38 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/v1.DecisionsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/decisions/{cursor}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "decisions"
+                ],
+                "summary": "Get a single decision",
+                "operationId": "GetDecision",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "decision cursor value",
+                        "name": "cursor",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.DecisionResponse"
                         }
                     }
                 }
@@ -1088,6 +1178,7 @@
                 "operationId": "GetProvider",
                 "parameters": [
                     {
+                        "pattern": ".+",
                         "type": "string",
                         "description": "provider ID",
                         "name": "providerId",
@@ -1120,10 +1211,11 @@
                 "tags": [
                     "identity-providers"
                 ],
-                "summary": "Create or uppdate provider",
+                "summary": "Create or update provider",
                 "operationId": "UpdateProvider",
                 "parameters": [
                     {
+                        "pattern": ".+",
                         "type": "string",
                         "description": "provider ID",
                         "name": "providerId",
@@ -1166,6 +1258,7 @@
                 "operationId": "DeleteProvider",
                 "parameters": [
                     {
+                        "pattern": ".+",
                         "type": "string",
                         "description": "provider ID",
                         "name": "providerId",
@@ -1231,6 +1324,12 @@
                         "schema": {
                             "$ref": "#/definitions/v1.InvitationsPostRequest"
                         }
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "set to false to avoid sending an email",
+                        "name": "email",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1799,6 +1898,265 @@
                 }
             }
         },
+        "/v1/relay/clients": {
+            "get": {
+                "tags": [
+                    "relay-server"
+                ],
+                "summary": "Get clients",
+                "operationId": "GetClients",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/protocol.ClientsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/relay/register/{key}": {
+            "get": {
+                "tags": [
+                    "relay-server"
+                ],
+                "summary": "Register Client",
+                "operationId": "RegisterClient",
+                "parameters": [
+                    {
+                        "pattern": "[a-zA-Z0-9-]*",
+                        "type": "string",
+                        "description": "key to register the relay client with",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/relay/{key}/{path}": {
+            "get": {
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "tags": [
+                    "relay-server"
+                ],
+                "summary": "Relays HTTP GET requests",
+                "operationId": "RelayGET",
+                "parameters": [
+                    {
+                        "pattern": "[a-zA-Z0-9-]*",
+                        "type": "string",
+                        "description": "identifies the relay client that should execute relayed request",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "pattern": ".*",
+                        "type": "string",
+                        "description": "path to be queried on the base-url that relay client is configured with",
+                        "name": "path",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "put": {
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "tags": [
+                    "relay-server"
+                ],
+                "summary": "Relays HTTP PUT requests",
+                "operationId": "RelayPUT",
+                "parameters": [
+                    {
+                        "pattern": "[a-zA-Z0-9-]*",
+                        "type": "string",
+                        "description": "identifies the relay client that should execute relayed request",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "pattern": ".*",
+                        "type": "string",
+                        "description": "path to be queried on the base-url that relay client is configured with",
+                        "name": "path",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "tags": [
+                    "relay-server"
+                ],
+                "summary": "Relays HTTP POST requests",
+                "operationId": "RelayPOST",
+                "parameters": [
+                    {
+                        "pattern": "[a-zA-Z0-9-]*",
+                        "type": "string",
+                        "description": "identifies the relay client that should execute relayed request",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "pattern": ".*",
+                        "type": "string",
+                        "description": "path to be queried on the base-url that relay client is configured with",
+                        "name": "path",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "tags": [
+                    "relay-server"
+                ],
+                "summary": "Relays HTTP DELETE requests",
+                "operationId": "RelayDELETE",
+                "parameters": [
+                    {
+                        "pattern": "[a-zA-Z0-9-]*",
+                        "type": "string",
+                        "description": "identifies the relay client that should execute relayed request",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "pattern": ".*",
+                        "type": "string",
+                        "description": "path to be queried on the base-url that relay client is configured with",
+                        "name": "path",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "head": {
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "tags": [
+                    "relay-server"
+                ],
+                "summary": "Relays HTTP HEAD requests",
+                "operationId": "RelayHEAD",
+                "parameters": [
+                    {
+                        "pattern": "[a-zA-Z0-9-]*",
+                        "type": "string",
+                        "description": "identifies the relay client that should execute relayed request",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "pattern": ".*",
+                        "type": "string",
+                        "description": "path to be queried on the base-url that relay client is configured with",
+                        "name": "path",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "patch": {
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "*/*"
+                ],
+                "tags": [
+                    "relay-server"
+                ],
+                "summary": "Relays HTTP PATCH requests",
+                "operationId": "RelayPATCH",
+                "parameters": [
+                    {
+                        "pattern": "[a-zA-Z0-9-]*",
+                        "type": "string",
+                        "description": "identifies the relay client that should execute relayed request",
+                        "name": "key",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "pattern": ".*",
+                        "type": "string",
+                        "description": "path to be queried on the base-url that relay client is configured with",
+                        "name": "path",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/v1/secrets": {
             "get": {
                 "consumes": [
@@ -1943,152 +2301,6 @@
                 }
             }
         },
-        "/v1/signup/login": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "login"
-                ],
-                "summary": "lists the available login providers",
-                "operationId": "Login",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/v1.LoginListResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/signup/login/oauth2/callback": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "login"
-                ],
-                "summary": "handle callback for OAuth2 authentication",
-                "operationId": "OAuth2Callback",
-                "responses": {
-                    "302": {
-                        "description": "Redirecting"
-                    }
-                }
-            }
-        },
-        "/v1/signup/login/{id}": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "login"
-                ],
-                "summary": "logs in user using the identity provider specified by id",
-                "operationId": "Login",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Id of the Login Provider (usually the name)",
-                        "name": "Provider Id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "302": {
-                        "description": "Redirecting"
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "login"
-                ],
-                "summary": "logs in user using the identity provider specified by id",
-                "operationId": "Login",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Id of the Login Provider (usually the name)",
-                        "name": "Provider Id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "302": {
-                        "description": "Redirecting"
-                    }
-                }
-            }
-        },
-        "/v1/signup/session": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "session"
-                ],
-                "summary": "returns authenticated users id",
-                "operationId": "WhoAmI",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/v1.SessionResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Not Authorized",
-                        "schema": {
-                            "$ref": "#/definitions/v1.ErrorResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "session"
-                ],
-                "summary": "deletes user's session",
-                "operationId": "Logout",
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
         "/v1/stacks": {
             "get": {
                 "consumes": [
@@ -2143,8 +2355,9 @@
                 }
             }
         },
-        "/v1/stacks/{id}/branch": {
-            "get": {
+        "/v1/stacks/source-control/verify-config": {
+            "post": {
+                "description": "verifies that the repository can be accessed with the provided credentials",
                 "consumes": [
                     "application/json"
                 ],
@@ -2154,7 +2367,47 @@
                 "tags": [
                     "stacks"
                 ],
-                "summary": "Get files in source control for the current user",
+                "summary": "verifies git configuration",
+                "operationId": "func2",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.VerifyConfigRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.VerifyConfigResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Config",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/stacks/{id}/branch": {
+            "get": {
+                "description": "Gets the list of files for the branch that the Styra DAS creates when modifying rego in the Styra DAS UI and pushing the changes to GitHub in a branch for review.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "stacks"
+                ],
+                "summary": "Gets the list of files for the Styra DAS-created branch.",
                 "operationId": "GetSourceControlFilesBranchStack",
                 "parameters": [
                     {
@@ -2269,7 +2522,7 @@
                 "tags": [
                     "stacks"
                 ],
-                "summary": "Get files in source control for the master branch",
+                "summary": "Gets the list of files in the currently chosen branch.",
                 "operationId": "GetSourceControlFilesMasterStack",
                 "parameters": [
                     {
@@ -2318,6 +2571,12 @@
                         "name": "stack",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "set to 'false' to omit datasources from the output",
+                        "name": "datasources",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -2445,6 +2704,24 @@
                         "name": "system",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "set delay of asynchronous response HTTP(202); range [1s - compliance-api-timeout].",
+                        "name": "asyncdelay",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "get asynchronous response; see HTTP(202) Location parameter",
+                        "name": "asyncresponse",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "if set to 'latest', get most recent cached results for specified stack.",
+                        "name": "interval",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -2453,6 +2730,9 @@
                         "schema": {
                             "$ref": "#/definitions/v1.StacksComplianceResponse"
                         }
+                    },
+                    "202": {
+                        "description": "Accepted"
                     },
                     "404": {
                         "description": "Not Found",
@@ -2527,6 +2807,42 @@
                         "type": "boolean",
                         "description": "if set to 'true', returns only minimal configuration information for each system",
                         "name": "compact",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "set to 'false' to omit policies from the output",
+                        "name": "policies",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "set to 'false' to omit modules from the output",
+                        "name": "modules",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "set to 'false' to omit datasources from the output",
+                        "name": "datasources",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "set to 'false' to omit errors/warnings from the output",
+                        "name": "errors",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "set to 'false' to omit authz info from the output",
+                        "name": "authz",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "set to 'false' to omit metadata from the output",
+                        "name": "metadata",
                         "in": "query"
                     },
                     {
@@ -2636,8 +2952,9 @@
                 }
             }
         },
-        "/v1/systems/{id}/branch": {
-            "get": {
+        "/v1/systems/source-control/verify-config": {
+            "post": {
+                "description": "verifies that the repository can be accessed with the provided credentials",
                 "consumes": [
                     "application/json"
                 ],
@@ -2647,7 +2964,47 @@
                 "tags": [
                     "systems"
                 ],
-                "summary": "Get files in source control for the current user",
+                "summary": "verifies git configuration",
+                "operationId": "func1",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.VerifyConfigRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.VerifyConfigResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Config",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/systems/{id}/branch": {
+            "get": {
+                "description": "Gets the list of files for the branch that the Styra DAS creates when modifying rego in the Styra DAS UI and pushing the changes to GitHub in a branch for review.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "systems"
+                ],
+                "summary": "Gets the list of files for the Styra DAS-created branch.",
                 "operationId": "GetSourceControlFilesBranchSystem",
                 "parameters": [
                     {
@@ -2762,7 +3119,7 @@
                 "tags": [
                     "systems"
                 ],
-                "summary": "Get files in source control for the master branch",
+                "summary": "Gets the list of files in the currently chosen branch.",
                 "operationId": "GetSourceControlFilesMasterSystem",
                 "parameters": [
                     {
@@ -2811,6 +3168,30 @@
                         "name": "system",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "set to 'false' to omit errors/warnings from the output",
+                        "name": "errors",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "set to 'false' to omit policies from the output",
+                        "name": "policies",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "set to 'false' to omit modules from the output",
+                        "name": "modules",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "set to 'false' to omit datasources from the output",
+                        "name": "datasources",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -2969,7 +3350,7 @@
                 "tags": [
                     "systems"
                 ],
-                "summary": "Get system assets",
+                "summary": "Get system asset",
                 "operationId": "GetAsset",
                 "parameters": [
                     {
@@ -2990,12 +3371,6 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema":{
-                            "type":"file"
-                        }
-                    },
                     "404": {
                         "description": "Not Found",
                         "schema": {
@@ -3260,6 +3635,92 @@
                 }
             }
         },
+        "/v1/systems/{system}/default-policies": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "systems"
+                ],
+                "summary": "Get default system policies",
+                "operationId": "GetDefaultPolicies",
+                "parameters": [
+                    {
+                        "pattern": ".*",
+                        "type": "string",
+                        "description": "system ID",
+                        "name": "system",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.SystemsGetDefaultPoliciesResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/systems/{system}/default-policies/{path}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "systems"
+                ],
+                "summary": "Get default system policy",
+                "operationId": "GetDefaultPolicy",
+                "parameters": [
+                    {
+                        "pattern": ".*",
+                        "type": "string",
+                        "description": "system ID",
+                        "name": "system",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "pattern": ".*",
+                        "type": "string",
+                        "description": "policy path",
+                        "name": "path",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.SystemsGetDefaultPolicyResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/systems/{system}/discovery": {
             "get": {
                 "consumes": [
@@ -3427,6 +3888,24 @@
                         "name": "system",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "set delay of asynchronous response HTTP(202); range [1s - compliance-api-timeout].",
+                        "name": "asyncdelay",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "get asynchronous response; see HTTP(202) Location parameter.",
+                        "name": "asyncresponse",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "if set to 'latest', get most recent cached results for specified system.",
+                        "name": "interval",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -3435,6 +3914,9 @@
                         "schema": {
                             "$ref": "#/definitions/v1.SystemsComplianceResponse"
                         }
+                    },
+                    "202": {
+                        "description": "Accepted"
                     },
                     "404": {
                         "description": "Not Found",
@@ -3487,253 +3969,6 @@
                         "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/v1.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/tenants": {
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "tenants"
-                ],
-                "summary": "Receives a tenant list to update the system",
-                "operationId": "UpdateTenants",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/v1.TenantsPutRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/v1.TenantsPutResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/tenants-config": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "tenants-config"
-                ],
-                "summary": "Get tenant config for the authenticated user",
-                "operationId": "GetTenantConfig",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/v1.TenantConfigGetResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/v1.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not found",
-                        "schema": {
-                            "$ref": "#/definitions/v1.ErrorResponse"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "tenants-config"
-                ],
-                "summary": "Create or update tenant config",
-                "operationId": "UpdateTenantConfig",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/v1.TenantConfigPutRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/v1.TenantConfigPutResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not found",
-                        "schema": {
-                            "$ref": "#/definitions/v1.ErrorResponse"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "tenants-config"
-                ],
-                "summary": "Create tenant config for the authenticated user",
-                "operationId": "CreateTenantConfig",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/v1.TenantConfigPostResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/v1.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not found",
-                        "schema": {
-                            "$ref": "#/definitions/v1.ErrorResponse"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "tenants-config"
-                ],
-                "summary": "Delete tenant config",
-                "operationId": "DeleteTenantConfig",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/v1.TenantConfigDeleteResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/v1.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/tenants-config/tackle": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "tenants-config"
-                ],
-                "summary": "Adapts Tackle request into a config manager request",
-                "operationId": "TackleHandler",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/v2.TackleInfo"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
-        "/v1/tenants/active": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "tenants"
-                ],
-                "summary": "Returns Status 200 OK if environment and root user for tenant are ready. 404 otherwise.",
-                "operationId": "TenantActive",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/v1.ResponseHeader"
-                        }
-                    },
-                    "404": {
-                        "description": "Not found",
-                        "schema": {
-                            "$ref": "#/definitions/v1.ErrorResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/tenants/state": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "tenants"
-                ],
-                "summary": "Tenant state",
-                "operationId": "TenantState",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/v1.TenantsStateResponse"
                         }
                     }
                 }
@@ -4053,6 +4288,7 @@
                 }
             },
             "put": {
+                "description": "If If-None-Match header is set to *, tries to create a token, otherwise will try to either update or create depending on whether an unexpired token with that ID already exists. Token creation errors with a 409 code if an unexpired one already exists, on success returns the token secret (valid for the TTL whose default value is ~10 years). Token updates return nothing unless `regenerate` is true, in which case it returns the new secret. WARNING: If allow_path_patterns is unset or an empty list, all paths are allowed.",
                 "consumes": [
                     "application/json"
                 ],
@@ -4062,7 +4298,7 @@
                 "tags": [
                     "tokens"
                 ],
-                "summary": "Create or update a token. If If-None-Match header is set to *, tries to create a token, otherwise will try to either update or create depending on whether an unexpired token with that ID already exists. Token creation errors with a 409 code if an unexpired one already exists, on success returns the token secret (valid for the TTL whose default value is ~10 years). Token updates return nothing unless `regenerate` is true, in which case it returns the new secret. WARNING: If allow_path_patterns is unset or an empty list, all paths are allowed.",
+                "summary": "Create or update a token",
                 "operationId": "CreateToken",
                 "parameters": [
                     {
@@ -4330,8 +4566,9 @@
                 }
             }
         },
-        "/v1/workspace/{id}/branch": {
-            "get": {
+        "/v1/workspace/source-control/verify-config": {
+            "post": {
+                "description": "verifies that the repository can be accessed with the provided credentials",
                 "consumes": [
                     "application/json"
                 ],
@@ -4341,7 +4578,47 @@
                 "tags": [
                     "workspace"
                 ],
-                "summary": "Get files in source control for the current user",
+                "summary": "verifies git configuration",
+                "operationId": "func3",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.VerifyConfigRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.VerifyConfigResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Config",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/workspace/{id}/branch": {
+            "get": {
+                "description": "Gets the list of files for the branch that the Styra DAS creates when modifying rego in the Styra DAS UI and pushing the changes to GitHub in a branch for review.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "workspace"
+                ],
+                "summary": "Gets the list of files for the Styra DAS-created branch.",
                 "operationId": "GetSourceControlFilesBranchWorkspace",
                 "parameters": [
                     {
@@ -4456,7 +4733,7 @@
                 "tags": [
                     "workspace"
                 ],
-                "summary": "Get files in source control for the master branch",
+                "summary": "Gets the list of files in the currently chosen branch.",
                 "operationId": "GetSourceControlFilesMasterWorkspace",
                 "parameters": [
                     {
@@ -4484,6 +4761,72 @@
                 }
             }
         },
+        "/v2/authz/migration/status": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authz"
+                ],
+                "summary": "Update migration status",
+                "operationId": "UpdateMigrationStatus",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v2.RoleBindingsPutStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v2.RoleBindingsPutStatusResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v2/authz/reset/rolebindings": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authz"
+                ],
+                "summary": "Reset rolebindings",
+                "operationId": "ResetRoleBindings",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v2.RoleBindingsPutResetRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v2.RoleBindingsPutResetResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/v2/authz/rolebindings": {
             "get": {
                 "consumes": [
@@ -4497,48 +4840,49 @@
                 ],
                 "summary": "List role bindings",
                 "operationId": "ListRoleBindings",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "if set returns only rolebindings involving the specified resource kind",
+                        "name": "resource_kind",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "if set returns only rolebindings involving the specified resource id",
+                        "name": "resource_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "if set returns only rolebindings involving the specified role id",
+                        "name": "role_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "if set returns only rolebindings involving the specified subject kind",
+                        "name": "subject_kind",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "if set returns only rolebindings involving the specified subject id",
+                        "name": "subject_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "if set to 'true', returns only internal rolebindings",
+                        "name": "internal",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/v2.RoleBindingsListResponse"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "authz"
-                ],
-                "summary": "Update role bindings",
-                "operationId": "UpdateRoleBindings",
-                "parameters": [
-                    {
-                        "name": "body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/v2.RoleBindingsPutRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/v2.RoleBindingsPutResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid Parameter",
-                        "schema": {
-                            "$ref": "#/definitions/v2.RoleBindingsPutResponse"
                         }
                     }
                 }
@@ -4553,8 +4897,8 @@
                 "tags": [
                     "authz"
                 ],
-                "summary": "Query role bindings",
-                "operationId": "QueryRoleBindings",
+                "summary": "Create or update rolebinding",
+                "operationId": "CreateRoleBinding",
                 "parameters": [
                     {
                         "name": "body",
@@ -4563,6 +4907,12 @@
                         "schema": {
                             "$ref": "#/definitions/v2.RoleBindingsPostRequest"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "if set to '*', will not update existing rolebinding",
+                        "name": "If-None-Match",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -4577,11 +4927,23 @@
                         "schema": {
                             "$ref": "#/definitions/v2.RoleBindingsPostResponse"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ErrorResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ErrorResponse"
+                        }
                     }
                 }
             }
         },
-        "/v2/authz/rolebindings/marker": {
+        "/v2/authz/rolebindings/{id}": {
             "get": {
                 "consumes": [
                     "application/json"
@@ -4592,17 +4954,78 @@
                 "tags": [
                     "authz"
                 ],
-                "summary": "Get migration marker",
-                "operationId": "GetMigrationMarker",
+                "summary": "Get rolebinding",
+                "operationId": "GetRoleBinding",
+                "parameters": [
+                    {
+                        "pattern": ".*",
+                        "type": "string",
+                        "description": "rolebinding ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v2.RoleBindingsGetMarkerResponse"
+                            "$ref": "#/definitions/v2.RoleBindingsGetResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ErrorResponse"
                         }
                     }
                 }
             },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authz"
+                ],
+                "summary": "Delete rolebinding",
+                "operationId": "DeleteRoleBinding",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "if set to '*', will return success if not found",
+                        "name": "If-Match",
+                        "in": "header"
+                    },
+                    {
+                        "pattern": ".*",
+                        "type": "string",
+                        "description": "rolebinding ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v2.RoleBindingsDeleteResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/v2/authz/rolebindings/{id}/subjects": {
             "put": {
                 "consumes": [
                     "application/json"
@@ -4613,15 +5036,15 @@
                 "tags": [
                     "authz"
                 ],
-                "summary": "Update migration marker",
-                "operationId": "UpdateMigrationMarker",
+                "summary": "Merge rolebinding subjects",
+                "operationId": "MergeRoleBindingSubjects",
                 "parameters": [
                     {
                         "name": "body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/v2.RoleBindingsPutMarkerRequest"
+                            "$ref": "#/definitions/v2.RoleBindingsPutSubjectsRequest"
                         }
                     }
                 ],
@@ -4629,7 +5052,105 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/v2.RoleBindingsPutMarkerResponse"
+                            "$ref": "#/definitions/v2.RoleBindingsPutSubjectsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Parameter",
+                        "schema": {
+                            "$ref": "#/definitions/v2.RoleBindingsPostResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authz"
+                ],
+                "summary": "Update rolebinding subjects",
+                "operationId": "UpdateRoleBindingSubjects",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v2.RoleBindingsPostSubjectsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v2.RoleBindingsPostSubjectsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Parameter",
+                        "schema": {
+                            "$ref": "#/definitions/v2.RoleBindingsPostResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authz"
+                ],
+                "summary": "Delete rolebinding subjects",
+                "operationId": "DeleteRoleBindingSubjects",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v2.RoleBindingsDeleteSubjectsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v2.RoleBindingsDeleteSubjectsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid Parameter",
+                        "schema": {
+                            "$ref": "#/definitions/v2.RoleBindingsPostResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/v1.ErrorResponse"
                         }
                     }
                 }
@@ -4646,8 +5167,16 @@
                 "tags": [
                     "authz"
                 ],
-                "summary": "List Styra-defined roles",
+                "summary": "List roles",
                 "operationId": "ListRoles",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "if set returns only roles applicable to specific resource kind",
+                        "name": "resource_kind",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -4739,6 +5268,557 @@
             }
         },
         "crypto.Signature.signatures": {},
+        "datasources.AWS.Common": {
+            "type": "object",
+            "required": [
+                "region",
+                "credentials"
+            ],
+            "properties": {
+                "credentials": {
+                    "description": "Secret ID with AWS credentials",
+                    "type": "string"
+                },
+                "region": {
+                    "description": "AWS region",
+                    "type": "string"
+                }
+            }
+        },
+        "datasources.AWS.ECR": {
+            "title": "aws/ecr",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.Common"
+                },
+                {
+                    "$ref": "#/definitions/datasources.RateLimiter"
+                },
+                {
+                    "$ref": "#/definitions/datasources.Poller"
+                },
+                {
+                    "$ref": "#/definitions/datasources.AWS.Common"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "RegistryId": {
+                            "description": "Registry ID",
+                            "type": "string"
+                        },
+                        "category": {
+                            "description": "Must be `aws/ecr`"
+                        },
+                        "type": {
+                            "description": "Must be `pull`"
+                        }
+                    }
+                }
+            ],
+            "x-datasource": true,
+            "example": {
+                "category": "aws/ecr",
+                "credentials": "aws_creds",
+                "on_premises": false,
+                "region": "us-east-1",
+                "type": "pull"
+            }
+        },
+        "datasources.Bundle.S3": {
+            "title": "bundle/s3",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.Common"
+                },
+                {
+                    "$ref": "#/definitions/datasources.Poller"
+                },
+                {
+                    "$ref": "#/definitions/datasources.AWS.Common"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "bucket",
+                        "path"
+                    ],
+                    "properties": {
+                        "bucket": {
+                            "description": "S3 Bucket",
+                            "type": "string"
+                        },
+                        "category": {
+                            "description": "Must be `bundle/s3`"
+                        },
+                        "endpoint": {
+                            "description": "Endpoint to S3 storage",
+                            "type": "string"
+                        },
+                        "path": {
+                            "description": "S3 Path within a Bucket",
+                            "type": "string"
+                        },
+                        "type": {
+                            "description": "Must be `pull`"
+                        }
+                    }
+                }
+            ],
+            "x-datasource": true,
+            "example": {
+                "bucket": "foo",
+                "category": "bundle/s3",
+                "credentials": "s3_creds",
+                "endpoint": "https://s3.example.com",
+                "on_premises": false,
+                "path": "bar/xyz",
+                "region": "us-east-1",
+                "type": "pull"
+            }
+        },
+        "datasources.Common": {
+            "type": "object",
+            "required": [
+                "category",
+                "type",
+                "on_premises"
+            ],
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "on_premises": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "pull",
+                        "push"
+                    ]
+                }
+            }
+        },
+        "datasources.Git.Blame": {
+            "title": "git/blame",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.Git.Common"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "category": {
+                            "description": "Must be `git/blame`"
+                        },
+                        "path_regexp": {
+                            "type": "string",
+                            "default": ".*"
+                        },
+                        "type": {
+                            "description": "Must be `pull`"
+                        }
+                    }
+                }
+            ],
+            "x-datasource": true,
+            "example": {
+                "category": "git/blame",
+                "on_premises": false,
+                "path_regexp\"": "^foo.+bar$",
+                "reference\"": "refs/heads/main",
+                "ssh_credentials": {
+                    "private_key": "git_ssh_key"
+                },
+                "type": "pull",
+                "url": "https://git.example.com"
+            }
+        },
+        "datasources.Git.Common": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.Common"
+                },
+                {
+                    "$ref": "#/definitions/datasources.Poller"
+                },
+                {
+                    "$ref": "#/definitions/datasources.RateLimiter"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "url"
+                    ],
+                    "properties": {
+                        "credentials": {
+                            "description": "Secret ID with credentials",
+                            "type": "string"
+                        },
+                        "reference": {
+                            "type": "string",
+                            "default": "refs/heads/master"
+                        },
+                        "ssh_credentials": {
+                            "type": "object",
+                            "required": [
+                                "private_key"
+                            ],
+                            "properties": {
+                                "passphrase": {
+                                    "description": "Secret ID with passphrase",
+                                    "type": "string"
+                                },
+                                "private_key": {
+                                    "description": "Secret ID with private key",
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "timeout": {
+                            "type": "string",
+                            "default": "60s"
+                        },
+                        "tls_ca_certificate": {
+                            "description": "`The property is not used`",
+                            "type": "string"
+                        },
+                        "tls_certificate": {
+                            "description": "`The property is not used`",
+                            "type": "string"
+                        },
+                        "tls_key": {
+                            "description": "`The property is not used`",
+                            "type": "string"
+                        },
+                        "tls_server_name": {
+                            "description": "`The property is not used`",
+                            "type": "string"
+                        },
+                        "tls_verify_server": {
+                            "description": "`The property is not used`",
+                            "type": "boolean"
+                        },
+                        "url": {
+                            "description": "Git URL",
+                            "type": "string"
+                        }
+                    }
+                }
+            ]
+        },
+        "datasources.Git.Content": {
+            "title": "git/content",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.Git.Common"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "category": {
+                            "description": "Must be `git/content`"
+                        },
+                        "type": {
+                            "description": "Must be `pull`"
+                        }
+                    }
+                }
+            ],
+            "x-datasource": true,
+            "example": {
+                "category": "git/content",
+                "on_premises": false,
+                "reference\"": "refs/heads/main",
+                "ssh_credentials": {
+                    "private_key": "git_ssh_key"
+                },
+                "type": "pull",
+                "url": "https://git.example.com"
+            }
+        },
+        "datasources.Git.Rego": {
+            "title": "git/rego",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.Git.Common"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "category": {
+                            "description": "Must be `git/rego`"
+                        },
+                        "path": {
+                            "type": "string"
+                        },
+                        "type": {
+                            "description": "Must be `pull`"
+                        }
+                    }
+                }
+            ],
+            "x-datasource": true,
+            "example": {
+                "category": "git/rego",
+                "on_premises": false,
+                "path": "foo/bar",
+                "reference\"": "refs/heads/main",
+                "ssh_credentials": {
+                    "private_key": "git_ssh_key"
+                },
+                "type": "pull",
+                "url": "https://git.example.com"
+            }
+        },
+        "datasources.HTTP": {
+            "title": "http",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.Common"
+                },
+                {
+                    "$ref": "#/definitions/datasources.Poller"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "url"
+                    ],
+                    "properties": {
+                        "ca_certificate": {
+                            "description": "Custom CA certificate",
+                            "type": "string"
+                        },
+                        "category": {
+                            "description": "Must be `http`"
+                        },
+                        "headers": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/datasources.HTTP.Header"
+                            }
+                        },
+                        "policy_filter": {
+                            "type": "string"
+                        },
+                        "policy_query": {
+                            "type": "string"
+                        },
+                        "skip_tls_verification": {
+                            "description": "Skip TLS verification",
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "type": {
+                            "description": "Must be `pull`"
+                        },
+                        "url": {
+                            "type": "string"
+                        }
+                    }
+                }
+            ],
+            "x-datasource": true,
+            "example": {
+                "ca_certificate": "-----BEGIN CERTIFICATE REQUEST----- MIIB9TCCAWACAQAwgbgxGTAXBgNVBAoMEFF1b1ZhZGlzIExpbWl0ZWQxHDAaBgNV BAsME0RvY3VtZW50IERlcGFydG1lbnQxOTA3BgNVBAMMMFdoeSBhcmUgeW91IGRl Y29kaW5nIG1lPyAgVGhpcyBpcyBvbmx5IGEgdGVzdCEhITERMA8GA1UEBwwISGFt aWx0b24xETAPBgNVBAgMCFBlbWJyb2tlMQswCQYDVQQGEwJCTTEPMA0GCSqGSIb3 DQEJARYAMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCJ9WRanG/fUvcfKiGl EL4aRLjGt537mZ28UU9/3eiJeJznNSOuNLnF+hmabAu7H0LT4K7EdqfF+XUZW/2j RKRYcvOUDGF9A7OjW7UfKk1In3+6QDCi7X34RE161jqoaJjrm/T18TOKcgkkhRzE apQnIDm0Ea/HVzX/PiSOGuertwIDAQABMAsGCSqGSIb3DQEBBQOBgQBzMJdAV4QP Awel8LzGx5uMOshezF/KfP67wJ93UW+N7zXY6AwPgoLj4Kjw+WtU684JL8Dtr9FX ozakE+8p06BpxegR4BR3FMHf6p+0jQxUEAkAyb/mVgm66TyghDGC6/YkiKoZptXQ 98TwDIK/39WEB/V607As+KoYazQG8drorw== -----END CERTIFICATE REQUEST-----\n",
+                "category": "http",
+                "headers": {
+                    "name": "TOKEN",
+                    "secret_id": "http_token"
+                },
+                "on_premises": false,
+                "polling_interval": "60s",
+                "type": "pull"
+            }
+        },
+        "datasources.HTTP.Header": {
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "description": "Header's name",
+                    "type": "string"
+                },
+                "secret_id": {
+                    "description": "Secret ID where the Header's value is stored",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "Header's value",
+                    "type": "string"
+                }
+            }
+        },
+        "datasources.Kubernetes.Resources": {
+            "title": "kubernetes/resources",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.Common"
+                },
+                {
+                    "$ref": "#/definitions/datasources.RateLimiter"
+                },
+                {
+                    "$ref": "#/definitions/datasources.Poller"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "category": {
+                            "description": "Must be `kubernetes/resources`"
+                        },
+                        "masks": {
+                            "description": "strip out resource properties given their relative path",
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "namespaces": {
+                            "description": "allows to include/exclude namespaces",
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "boolean"
+                            }
+                        },
+                        "on_premises": {
+                            "description": "Must be `true`"
+                        },
+                        "selectors": {
+                            "description": "field selectors per resource [group]",
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        },
+                        "type": {
+                            "description": "Must be `pull`"
+                        }
+                    }
+                }
+            ],
+            "x-datasource": true,
+            "example": {
+                "category": "kubernetes/resources",
+                "masks": {
+                    "argoproj.io/workflows": [
+                        "*"
+                    ],
+                    "pods": [
+                        "spec.afinity",
+                        "spec/livenessProbe",
+                        "status",
+                        "metadata.annotations.'kubectl.kubernetes.io/last-applied-configuration'"
+                    ]
+                },
+                "namespaces": {
+                    "": false,
+                    "*": false,
+                    "nsName": true
+                },
+                "on_premises": true,
+                "rate_limit": 3,
+                "selectors": {
+                    "ingress": "metadata.namespace==default",
+                    "pods": "status.phase!=Running,spec.restartPolicy=Always"
+                },
+                "type": "pull"
+            }
+        },
+        "datasources.ParallelismLimiter": {
+            "type": "object",
+            "properties": {
+                "parallel": {
+                    "description": "the maximum level of parallelism allowed",
+                    "type": "integer",
+                    "default": 10
+                }
+            }
+        },
+        "datasources.PolicyLibrary": {
+            "title": "policy-library",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.Common"
+                },
+                {
+                    "$ref": "#/definitions/datasources.Poller"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "category": {
+                            "description": "Must be `policy-library`"
+                        },
+                        "type": {
+                            "description": "Must be `pull`"
+                        }
+                    }
+                }
+            ],
+            "x-datasource": true
+        },
+        "datasources.Poller": {
+            "type": "object",
+            "properties": {
+                "polling_interval": {
+                    "type": "string",
+                    "default": "30s"
+                }
+            }
+        },
+        "datasources.RateLimiter": {
+            "type": "object",
+            "properties": {
+                "rate_limit": {
+                    "description": "requests per second",
+                    "type": "number",
+                    "default": 3
+                }
+            }
+        },
+        "datasources.Rest": {
+            "title": "rest",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.Common"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "category": {
+                            "description": "Must be `rest`"
+                        },
+                        "content_type": {
+                            "type": "string"
+                        },
+                        "type": {
+                            "description": "Must be `push`"
+                        }
+                    }
+                }
+            ],
+            "x-datasource": true,
+            "example": {
+                "category": "rest",
+                "content_type": "application/json",
+                "on_premises": false,
+                "type": "push"
+            }
+        },
         "decision.Decision": {
             "required": [
                 "input",
@@ -4816,6 +5896,35 @@
             "properties": {
                 "revision": {
                     "type": "string"
+                }
+            }
+        },
+        "protocol.Client": {
+            "properties": {
+                "client_key": {
+                    "type": "string"
+                },
+                "remote_address": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "protocol.ClientsResponse": {
+            "required": [
+                "result"
+            ],
+            "properties": {
+                "request_id": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/protocol.Client"
+                    }
                 }
             }
         },
@@ -5013,7 +6122,6 @@
         },
         "v1.BundleDeployStatus": {
             "required": [
-                "primary",
                 "build_errors"
             ],
             "properties": {
@@ -5080,8 +6188,7 @@
                 "region",
                 "bucket",
                 "discovery_path",
-                "policy_path",
-                "opa_credentials"
+                "policy_path"
             ],
             "properties": {
                 "access_keys": {
@@ -5094,6 +6201,10 @@
                 },
                 "discovery_path": {
                     "description": "discovery bundle path",
+                    "type": "string"
+                },
+                "endpoint": {
+                    "description": "AWS endpoint",
                     "type": "string"
                 },
                 "opa_credentials": {
@@ -5178,10 +6289,14 @@
             "required": [
                 "check_option",
                 "operation",
+                "action",
                 "path",
                 "body"
             ],
             "properties": {
+                "action": {
+                    "type": "string"
+                },
                 "body": {
                     "type": "object"
                 },
@@ -5284,11 +6399,11 @@
         "v1.ColumnValue.value": {},
         "v1.Commit": {
             "required": [
+                "files",
+                "files_to_delete",
                 "author",
                 "email",
                 "message",
-                "files",
-                "files_to_delete",
                 "branch"
             ],
             "properties": {
@@ -5509,19 +6624,458 @@
                 }
             }
         },
-        "v1.DatasourcesPutRequest": {},
+        "v1.DatasourcesPutRequest": {
+            "oneOf": [
+                {
+                    "title": "aws/ecr",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/datasources.Common"
+                        },
+                        {
+                            "$ref": "#/definitions/datasources.RateLimiter"
+                        },
+                        {
+                            "$ref": "#/definitions/datasources.Poller"
+                        },
+                        {
+                            "$ref": "#/definitions/datasources.AWS.Common"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "RegistryId": {
+                                    "description": "Registry ID",
+                                    "type": "string"
+                                },
+                                "category": {
+                                    "description": "Must be `aws/ecr`"
+                                },
+                                "type": {
+                                    "description": "Must be `pull`"
+                                }
+                            }
+                        }
+                    ],
+                    "x-datasource": true,
+                    "example": {
+                        "category": "aws/ecr",
+                        "credentials": "aws_creds",
+                        "on_premises": false,
+                        "region": "us-east-1",
+                        "type": "pull"
+                    }
+                },
+                {
+                    "title": "bundle/s3",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/datasources.Common"
+                        },
+                        {
+                            "$ref": "#/definitions/datasources.Poller"
+                        },
+                        {
+                            "$ref": "#/definitions/datasources.AWS.Common"
+                        },
+                        {
+                            "type": "object",
+                            "required": [
+                                "bucket",
+                                "path"
+                            ],
+                            "properties": {
+                                "bucket": {
+                                    "description": "S3 Bucket",
+                                    "type": "string"
+                                },
+                                "category": {
+                                    "description": "Must be `bundle/s3`"
+                                },
+                                "endpoint": {
+                                    "description": "Endpoint to S3 storage",
+                                    "type": "string"
+                                },
+                                "path": {
+                                    "description": "S3 Path within a Bucket",
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "description": "Must be `pull`"
+                                }
+                            }
+                        }
+                    ],
+                    "x-datasource": true,
+                    "example": {
+                        "bucket": "foo",
+                        "category": "bundle/s3",
+                        "credentials": "s3_creds",
+                        "endpoint": "https://s3.example.com",
+                        "on_premises": false,
+                        "path": "bar/xyz",
+                        "region": "us-east-1",
+                        "type": "pull"
+                    }
+                },
+                {
+                    "title": "git/blame",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/datasources.Git.Common"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "category": {
+                                    "description": "Must be `git/blame`"
+                                },
+                                "path_regexp": {
+                                    "type": "string",
+                                    "default": ".*"
+                                },
+                                "type": {
+                                    "description": "Must be `pull`"
+                                }
+                            }
+                        }
+                    ],
+                    "x-datasource": true,
+                    "example": {
+                        "category": "git/blame",
+                        "on_premises": false,
+                        "path_regexp\"": "^foo.+bar$",
+                        "reference\"": "refs/heads/main",
+                        "ssh_credentials": {
+                            "private_key": "git_ssh_key"
+                        },
+                        "type": "pull",
+                        "url": "https://git.example.com"
+                    }
+                },
+                {
+                    "title": "git/content",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/datasources.Git.Common"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "category": {
+                                    "description": "Must be `git/content`"
+                                },
+                                "type": {
+                                    "description": "Must be `pull`"
+                                }
+                            }
+                        }
+                    ],
+                    "x-datasource": true,
+                    "example": {
+                        "category": "git/content",
+                        "on_premises": false,
+                        "reference\"": "refs/heads/main",
+                        "ssh_credentials": {
+                            "private_key": "git_ssh_key"
+                        },
+                        "type": "pull",
+                        "url": "https://git.example.com"
+                    }
+                },
+                {
+                    "title": "git/rego",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/datasources.Git.Common"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "category": {
+                                    "description": "Must be `git/rego`"
+                                },
+                                "path": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "description": "Must be `pull`"
+                                }
+                            }
+                        }
+                    ],
+                    "x-datasource": true,
+                    "example": {
+                        "category": "git/rego",
+                        "on_premises": false,
+                        "path": "foo/bar",
+                        "reference\"": "refs/heads/main",
+                        "ssh_credentials": {
+                            "private_key": "git_ssh_key"
+                        },
+                        "type": "pull",
+                        "url": "https://git.example.com"
+                    }
+                },
+                {
+                    "title": "http",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/datasources.Common"
+                        },
+                        {
+                            "$ref": "#/definitions/datasources.Poller"
+                        },
+                        {
+                            "type": "object",
+                            "required": [
+                                "url"
+                            ],
+                            "properties": {
+                                "ca_certificate": {
+                                    "description": "Custom CA certificate",
+                                    "type": "string"
+                                },
+                                "category": {
+                                    "description": "Must be `http`"
+                                },
+                                "headers": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/datasources.HTTP.Header"
+                                    }
+                                },
+                                "policy_filter": {
+                                    "type": "string"
+                                },
+                                "policy_query": {
+                                    "type": "string"
+                                },
+                                "skip_tls_verification": {
+                                    "description": "Skip TLS verification",
+                                    "type": "boolean",
+                                    "default": false
+                                },
+                                "type": {
+                                    "description": "Must be `pull`"
+                                },
+                                "url": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    ],
+                    "x-datasource": true,
+                    "example": {
+                        "ca_certificate": "-----BEGIN CERTIFICATE REQUEST----- MIIB9TCCAWACAQAwgbgxGTAXBgNVBAoMEFF1b1ZhZGlzIExpbWl0ZWQxHDAaBgNV BAsME0RvY3VtZW50IERlcGFydG1lbnQxOTA3BgNVBAMMMFdoeSBhcmUgeW91IGRl Y29kaW5nIG1lPyAgVGhpcyBpcyBvbmx5IGEgdGVzdCEhITERMA8GA1UEBwwISGFt aWx0b24xETAPBgNVBAgMCFBlbWJyb2tlMQswCQYDVQQGEwJCTTEPMA0GCSqGSIb3 DQEJARYAMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCJ9WRanG/fUvcfKiGl EL4aRLjGt537mZ28UU9/3eiJeJznNSOuNLnF+hmabAu7H0LT4K7EdqfF+XUZW/2j RKRYcvOUDGF9A7OjW7UfKk1In3+6QDCi7X34RE161jqoaJjrm/T18TOKcgkkhRzE apQnIDm0Ea/HVzX/PiSOGuertwIDAQABMAsGCSqGSIb3DQEBBQOBgQBzMJdAV4QP Awel8LzGx5uMOshezF/KfP67wJ93UW+N7zXY6AwPgoLj4Kjw+WtU684JL8Dtr9FX ozakE+8p06BpxegR4BR3FMHf6p+0jQxUEAkAyb/mVgm66TyghDGC6/YkiKoZptXQ 98TwDIK/39WEB/V607As+KoYazQG8drorw== -----END CERTIFICATE REQUEST-----\n",
+                        "category": "http",
+                        "headers": {
+                            "name": "TOKEN",
+                            "secret_id": "http_token"
+                        },
+                        "on_premises": false,
+                        "polling_interval": "60s",
+                        "type": "pull"
+                    }
+                },
+                {
+                    "title": "kubernetes/resources",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/datasources.Common"
+                        },
+                        {
+                            "$ref": "#/definitions/datasources.RateLimiter"
+                        },
+                        {
+                            "$ref": "#/definitions/datasources.Poller"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "category": {
+                                    "description": "Must be `kubernetes/resources`"
+                                },
+                                "masks": {
+                                    "description": "strip out resource properties given their relative path",
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "namespaces": {
+                                    "description": "allows to include/exclude namespaces",
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "on_premises": {
+                                    "description": "Must be `true`"
+                                },
+                                "selectors": {
+                                    "description": "field selectors per resource [group]",
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": {
+                                    "description": "Must be `pull`"
+                                }
+                            }
+                        }
+                    ],
+                    "x-datasource": true,
+                    "example": {
+                        "category": "kubernetes/resources",
+                        "masks": {
+                            "argoproj.io/workflows": [
+                                "*"
+                            ],
+                            "pods": [
+                                "spec.afinity",
+                                "spec/livenessProbe",
+                                "status",
+                                "metadata.annotations.'kubectl.kubernetes.io/last-applied-configuration'"
+                            ]
+                        },
+                        "namespaces": {
+                            "": false,
+                            "*": false,
+                            "nsName": true
+                        },
+                        "on_premises": true,
+                        "rate_limit": 3,
+                        "selectors": {
+                            "ingress": "metadata.namespace==default",
+                            "pods": "status.phase!=Running,spec.restartPolicy=Always"
+                        },
+                        "type": "pull"
+                    }
+                },
+                {
+                    "title": "policy-library",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/datasources.Common"
+                        },
+                        {
+                            "$ref": "#/definitions/datasources.Poller"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "category": {
+                                    "description": "Must be `policy-library`"
+                                },
+                                "type": {
+                                    "description": "Must be `pull`"
+                                }
+                            }
+                        }
+                    ],
+                    "x-datasource": true
+                },
+                {
+                    "title": "rest",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/datasources.Common"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "category": {
+                                    "description": "Must be `rest`"
+                                },
+                                "content_type": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "description": "Must be `push`"
+                                }
+                            }
+                        }
+                    ],
+                    "x-datasource": true,
+                    "example": {
+                        "category": "rest",
+                        "content_type": "application/json",
+                        "on_premises": false,
+                        "type": "push"
+                    }
+                }
+            ]
+        },
         "v1.DatasourcesPutResponse": {
+            "type": "object",
             "properties": {
                 "request_id": {
                     "type": "string"
+                },
+                "result": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/v1.DatasourcesPutRequest"
+                        },
+                        {
+                            "type": "object",
+                            "properties": {
+                                "executed": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "metadata": {
+                                    "type": "object",
+                                    "properties": {
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "created_by": {
+                                            "type": "string"
+                                        },
+                                        "created_through": {
+                                            "type": "string"
+                                        },
+                                        "last_modified_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "last_modified_by": {
+                                            "type": "string"
+                                        },
+                                        "last_modified_through": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "resources": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object"
+                                    }
+                                },
+                                "status": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    ]
                 }
             }
         },
         "v1.Decision": {
             "required": [
-                "decision_id",
-                "cursor",
-                "columns"
+                "columns",
+                "decision_type"
             ],
             "properties": {
                 "agent_id": {
@@ -5548,6 +7102,9 @@
                 },
                 "decision_id": {
                     "description": "unique decision ID",
+                    "type": "string"
+                },
+                "decision_type": {
                     "type": "string"
                 },
                 "erased": {
@@ -5625,6 +7182,19 @@
                 }
             }
         },
+        "v1.DecisionResponse": {
+            "required": [
+                "result"
+            ],
+            "properties": {
+                "request_id": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "string"
+                }
+            }
+        },
         "v1.DecisionSearchResult": {
             "required": [
                 "items"
@@ -5641,51 +7211,67 @@
                 }
             }
         },
-        "v1.DecisionsRequest": {
+        "v1.DecisionsGetRequest": {
             "required": [
-                "Cursor",
-                "StartTime",
-                "EndTime",
-                "DecisionSearch",
-                "SystemId",
-                "StackId",
-                "Limit",
-                "ResultKind",
-                "Order",
-                "DefaultTimezone"
+                "cursor",
+                "start_time",
+                "end_time",
+                "search",
+                "system",
+                "stack",
+                "limit",
+                "result_kind",
+                "order",
+                "default_timezone",
+                "compact"
             ],
             "properties": {
-                "Cursor": {
+                "compact": {
+                    "description": "return only essential decision fields",
+                    "type": "boolean"
+                },
+                "cursor": {
+                    "description": "continue from cursor position of previous query",
                     "type": "string"
                 },
-                "DecisionSearch": {
+                "default_timezone": {
+                    "description": "client time zone offset. Local time expressions in query are adjusted with this offset",
                     "type": "string"
                 },
-                "DefaultTimezone": {
-                    "type": "string"
-                },
-                "EndTime": {
+                "end_time": {
+                    "description": "maximum decision time",
                     "type": "string",
                     "format": "date-time"
                 },
-                "Limit": {
+                "limit": {
+                    "description": "maximum number of decisions to return",
                     "type": "integer",
                     "format": "int64"
                 },
-                "Order": {
+                "order": {
+                    "description": "ASC, DESC",
+                    "type": "string",
+                    "default": "DESC"
+                },
+                "result_kind": {
+                    "description": "comma-separated list of ALL, UNKNOWN, ADVICE, ALLOWED, DENIED, ERROR",
                     "type": "string"
                 },
-                "ResultKind": {
+                "search": {
+                    "description": "search query",
                     "type": "string"
                 },
-                "StackId": {
+                "stack": {
+                    "description": "stack ID",
                     "type": "string"
                 },
-                "StartTime": {
+                "start_time": {
+                    "description": "minimum decision time",
                     "type": "string",
                     "format": "date-time"
                 },
-                "SystemId": {
+                "system": {
+                    "description": "system ID",
                     "type": "string"
                 }
             }
@@ -5788,9 +7374,6 @@
             }
         },
         "v1.EntryReplayResult": {
-            "required": [
-                "decision_id"
-            ],
             "properties": {
                 "bundles": {
                     "description": "configured bundles",
@@ -5917,6 +7500,10 @@
                 "reference": {
                     "description": "Remote reference, defaults to refs/heads/master",
                     "type": "string"
+                },
+                "ssh_credentials": {
+                    "description": "SSHCredentials including ssh private key and passphrase for ssh-based auth",
+                    "$ref": "#/definitions/v1.SSHCredentials"
                 },
                 "url": {
                     "description": "Repository URL",
@@ -6062,19 +7649,45 @@
         "v1.LogEntry.error": {},
         "v1.LogEntry.input": {},
         "v1.LogEntry.result": {},
-        "v1.LoginListResponse": {
+        "v1.MetricsExporterConfig": {
             "required": [
-                "result"
+                "targets"
             ],
             "properties": {
-                "request_id": {
-                    "type": "string"
-                },
-                "result": {
+                "targets": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/definitions/v1.MetricsExporterTarget"
                     }
+                }
+            }
+        },
+        "v1.MetricsExporterTarget": {
+            "required": [
+                "plugin",
+                "token_id"
+            ],
+            "properties": {
+                "interval": {
+                    "description": "Metrics polling interval [30,3600]; defaults to 60s",
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "plugin": {
+                    "description": "Metrics output plugin name [datadog|signalfx]",
+                    "type": "string"
+                },
+                "realm": {
+                    "description": "Plugin realm",
+                    "type": "string"
+                },
+                "token_id": {
+                    "description": "Plugin bearer token reference id to secret stored in v1/secrets",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "Plugin URL",
+                    "type": "string"
                 }
             }
         },
@@ -6319,6 +7932,10 @@
         "v1.ProviderConfig": {
             "required": [
                 "id",
+                "enabled",
+                "type",
+                "jit",
+                "allowed_domains",
                 "issuer_url",
                 "auth_url",
                 "token_url",
@@ -6326,12 +7943,16 @@
                 "proxy_url",
                 "client_id",
                 "client_secret",
-                "jit",
-                "allowed_domains",
                 "scopes",
-                "enabled"
+                "metadata",
+                "key_certificate",
+                "email_attribute",
+                "allow_idp_initiated"
             ],
             "properties": {
+                "allow_idp_initiated": {
+                    "type": "boolean"
+                },
                 "allowed_domains": {
                     "type": "array",
                     "items": {
@@ -6347,6 +7968,9 @@
                 "client_secret": {
                     "type": "string"
                 },
+                "email_attribute": {
+                    "type": "string"
+                },
                 "enabled": {
                     "type": "boolean"
                 },
@@ -6359,6 +7983,12 @@
                 "jit": {
                     "type": "boolean"
                 },
+                "key_certificate": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "type": "string"
+                },
                 "proxy_url": {
                     "type": "string"
                 },
@@ -6369,6 +7999,9 @@
                     }
                 },
                 "token_url": {
+                    "type": "string"
+                },
+                "type": {
                     "type": "string"
                 },
                 "user_info_url": {
@@ -6568,7 +8201,6 @@
         },
         "v1.ReplayStats": {
             "required": [
-                "entries_observed",
                 "entries_evaluated",
                 "entries_scheduled",
                 "entries_failed",
@@ -6576,6 +8208,7 @@
                 "results_changed",
                 "batches_observed",
                 "batches_analyzed",
+                "entries_observed",
                 "batches_downloaded",
                 "batches_download_errors",
                 "batches_from_cache",
@@ -6762,13 +8395,6 @@
         "v1.ResponseErrors": {
             "properties": {
                 "processing": {
-                    "type": "string"
-                }
-            }
-        },
-        "v1.ResponseHeader": {
-            "properties": {
-                "request_id": {
                     "type": "string"
                 }
             }
@@ -6988,6 +8614,22 @@
                 }
             }
         },
+        "v1.SSHCredentials": {
+            "required": [
+                "private_key",
+                "passphrase"
+            ],
+            "properties": {
+                "passphrase": {
+                    "description": "Passphrase is looked under the key passphrase/\u003cpass\u003e",
+                    "type": "string"
+                },
+                "private_key": {
+                    "description": "PrivateKey is looked under the key private-key/\u003ckey\u003e",
+                    "type": "string"
+                }
+            }
+        },
         "v1.Secret": {
             "required": [
                 "name",
@@ -7042,8 +8684,8 @@
         },
         "v1.SecretsPutRequest": {
             "required": [
-                "description",
                 "name",
+                "description",
                 "secret"
             ],
             "properties": {
@@ -7062,39 +8704,6 @@
             "properties": {
                 "request_id": {
                     "type": "string"
-                }
-            }
-        },
-        "v1.Session": {
-            "required": [
-                "user_id"
-            ],
-            "properties": {
-                "claims": {
-                    "$ref": "#/definitions/v1.Session.claims"
-                },
-                "tenant": {
-                    "type": "string"
-                },
-                "user_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "v1.Session.claims": {},
-        "v1.SessionResponse": {
-            "required": [
-                "result"
-            ],
-            "properties": {
-                "contact": {
-                    "type": "string"
-                },
-                "request_id": {
-                    "type": "string"
-                },
-                "result": {
-                    "$ref": "#/definitions/v1.Session"
                 }
             }
         },
@@ -7125,15 +8734,29 @@
         },
         "v1.StackConfig": {
             "required": [
-                "name",
-                "type",
                 "description",
                 "read_only",
+                "name",
+                "type",
                 "id",
                 "policies",
-                "metadata"
+                "metadata",
+                "status"
             ],
             "properties": {
+                "authz": {
+                    "description": "authorization config",
+                    "$ref": "#/definitions/v1.AuthzConfig",
+                    "readOnly": true
+                },
+                "datasources": {
+                    "description": "datasources created for the stack",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/v1.DatasourceConfig"
+                    },
+                    "readOnly": true
+                },
                 "description": {
                     "type": "string"
                 },
@@ -7157,6 +8780,9 @@
                 },
                 "source_control": {
                     "$ref": "#/definitions/v1.SourceControlConfig"
+                },
+                "status": {
+                    "type": "string"
                 },
                 "type": {
                     "type": "string"
@@ -7378,20 +9004,11 @@
         },
         "v1.Status": {
             "required": [
-                "code",
-                "message",
-                "timestamp"
+                "authz_migration"
             ],
             "properties": {
-                "code": {
+                "authz_migration": {
                     "type": "string"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "timestamp": {
-                    "type": "string",
-                    "format": "date-time"
                 }
             }
         },
@@ -7402,7 +9019,8 @@
                 "id",
                 "policies",
                 "authz",
-                "metadata"
+                "metadata",
+                "status"
             ],
             "properties": {
                 "authz": {
@@ -7488,6 +9106,11 @@
                     "description": "source control system configuration",
                     "$ref": "#/definitions/v1.SourceControlConfig"
                 },
+                "status": {
+                    "description": "system status",
+                    "type": "string",
+                    "readOnly": true
+                },
                 "tokens": {
                     "description": "tokens created for the system",
                     "type": "array",
@@ -7524,21 +9147,25 @@
         },
         "v1.SystemConfig.install": {},
         "v1.SystemConfig.warnings": {
-            "required": [
-                "code",
-                "message",
-                "timestamp"
-            ],
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "message": {
-                    "type": "string"
-                },
-                "timestamp": {
-                    "type": "string",
-                    "format": "date-time"
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "code",
+                    "message",
+                    "timestamp"
+                ],
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
                 }
             }
         },
@@ -7546,6 +9173,11 @@
             "properties": {
                 "deny_on_opa_fail": {
                     "description": "true to fail close",
+                    "type": "boolean",
+                    "default": false
+                },
+                "enable_partial_eval": {
+                    "description": "true to enable partial eval for the system's bundle'",
                     "type": "boolean",
                     "default": false
                 },
@@ -7712,6 +9344,35 @@
                     "items": {
                         "$ref": "#/definitions/v1.Bundle"
                     }
+                }
+            }
+        },
+        "v1.SystemsGetDefaultPoliciesResponse": {
+            "required": [
+                "result"
+            ],
+            "properties": {
+                "request_id": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "v1.SystemsGetDefaultPolicyResponse": {
+            "required": [
+                "result"
+            ],
+            "properties": {
+                "request_id": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "string"
                 }
             }
         },
@@ -7984,178 +9645,6 @@
             }
         },
         "v1.SystemsTranslateExternalIdsResponse.result": {},
-        "v1.TenantConfigDeleteResponse": {
-            "properties": {
-                "request_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "v1.TenantConfigGetResponse": {
-            "properties": {
-                "request_id": {
-                    "type": "string"
-                },
-                "result": {
-                    "$ref": "#/definitions/v2.TenantDetails"
-                }
-            }
-        },
-        "v1.TenantConfigPostResponse": {
-            "properties": {
-                "duplicate": {
-                    "type": "boolean"
-                },
-                "request_id": {
-                    "type": "string"
-                },
-                "result": {
-                    "$ref": "#/definitions/v2.TenantDetails"
-                }
-            }
-        },
-        "v1.TenantConfigPutRequest": {
-            "required": [
-                "removed",
-                "signup_email",
-                "external_services",
-                "trial_started",
-                "root_users",
-                "claims",
-                "id",
-                "features",
-                "trial_start_time",
-                "name",
-                "org_name"
-            ],
-            "properties": {
-                "claims": {
-                    "type": "object"
-                },
-                "default_identity_provider": {
-                    "type": "string"
-                },
-                "external_services": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "$ref": "#/definitions/v2.ExternalService"
-                    }
-                },
-                "features": {
-                    "type": "object"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "org_name": {
-                    "type": "string"
-                },
-                "removed": {
-                    "type": "boolean"
-                },
-                "root_users": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "$ref": "#/definitions/v2.RootUser"
-                    }
-                },
-                "signup_email": {
-                    "type": "string"
-                },
-                "tackle_info": {
-                    "$ref": "#/definitions/v2.TackleInfo"
-                },
-                "trial_start_time": {
-                    "type": "string",
-                    "format": "date-time"
-                },
-                "trial_started": {
-                    "type": "boolean"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "v1.TenantConfigPutResponse": {
-            "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "request_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "v1.TenantState": {
-            "required": [
-                "number_current_tokens",
-                "number_desired_tokens",
-                "number_missing_tokens",
-                "number_extra_tokens"
-            ],
-            "properties": {
-                "number_current_tokens": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "number_desired_tokens": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "number_extra_tokens": {
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "number_missing_tokens": {
-                    "type": "integer",
-                    "format": "int32"
-                }
-            }
-        },
-        "v1.TenantsPutRequest": {
-            "required": [
-                "tenants",
-                "removed_tenants"
-            ],
-            "properties": {
-                "removed_tenants": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "tenants": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "$ref": "#/definitions/v2.TenantDetails"
-                    }
-                }
-            }
-        },
-        "v1.TenantsPutResponse": {
-            "properties": {
-                "request_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "v1.TenantsStateResponse": {
-            "properties": {
-                "error": {
-                    "type": "string"
-                },
-                "request_id": {
-                    "type": "string"
-                },
-                "result": {
-                    "$ref": "#/definitions/v1.TenantState"
-                }
-            }
-        },
         "v1.TesterResult": {
             "required": [
                 "location",
@@ -8555,6 +10044,88 @@
                 }
             }
         },
+        "v1.VerifiedRepoConfig": {
+            "required": [
+                "url",
+                "reference",
+                "credentials",
+                "path",
+                "sha"
+            ],
+            "properties": {
+                "credentials": {
+                    "description": "Credentials are looked under the key \u003cname\u003e/\u003ccreds\u003e",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "Path to limit the import to",
+                    "type": "string"
+                },
+                "reference": {
+                    "description": "Remote reference, defaults to refs/heads/master",
+                    "type": "string"
+                },
+                "sha": {
+                    "type": "string"
+                },
+                "ssh_credentials": {
+                    "description": "SSHCredentials including ssh private key and passphrase for ssh-based auth",
+                    "$ref": "#/definitions/v1.SSHCredentials"
+                },
+                "url": {
+                    "description": "Repository URL",
+                    "type": "string"
+                }
+            }
+        },
+        "v1.VerifyConfigRequest": {
+            "required": [
+                "id",
+                "credentials",
+                "path",
+                "url",
+                "reference"
+            ],
+            "properties": {
+                "credentials": {
+                    "description": "Credentials are looked under the key \u003cname\u003e/\u003ccreds\u003e",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "id of the entity so that the config can be checked for duplicates",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "Path to limit the import to",
+                    "type": "string"
+                },
+                "reference": {
+                    "description": "Remote reference, defaults to refs/heads/master",
+                    "type": "string"
+                },
+                "ssh_credentials": {
+                    "description": "SSHCredentials including ssh private key and passphrase for ssh-based auth",
+                    "$ref": "#/definitions/v1.SSHCredentials"
+                },
+                "url": {
+                    "description": "Repository URL",
+                    "type": "string"
+                }
+            }
+        },
+        "v1.VerifyConfigResponse": {
+            "required": [
+                "result"
+            ],
+            "properties": {
+                "request_id": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/definitions/v1.VerifiedRepoConfig"
+                }
+            }
+        },
         "v1.WorkspaceConfig": {
             "properties": {
                 "github": {
@@ -8563,8 +10134,14 @@
                 "metadata": {
                     "$ref": "#/definitions/v1.ObjectMeta"
                 },
+                "metrics_exporter": {
+                    "$ref": "#/definitions/v1.MetricsExporterConfig"
+                },
                 "source_control": {
                     "$ref": "#/definitions/v1.SourceControlConfig"
+                },
+                "status": {
+                    "$ref": "#/definitions/v1.Status"
                 }
             }
         },
@@ -8586,8 +10163,8 @@
                 "github": {
                     "$ref": "#/definitions/v1.GithubConfiguration"
                 },
-                "metadata": {
-                    "$ref": "#/definitions/v1.ObjectMeta"
+                "metrics_exporter": {
+                    "$ref": "#/definitions/v1.MetricsExporterConfig"
                 },
                 "source_control": {
                     "$ref": "#/definitions/v1.SourceControlConfig"
@@ -8619,108 +10196,37 @@
                 }
             }
         },
-        "v2.ComposedRoleBindings": {
+        "v2.ResourceFilter": {
             "required": [
-                "kind"
-            ],
-            "properties": {
-                "kind": {
-                    "type": "string"
-                },
-                "policy": {
-                    "$ref": "#/definitions/v2.ComposedRoleBindings.policy"
-                },
-                "structured": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/v2.RoleBinding"
-                    }
-                }
-            }
-        },
-        "v2.ComposedRoleBindings.policy": {},
-        "v2.Entitlement": {
-            "required": [
-                "skuid",
-                "dimension",
-                "expiration",
-                "value"
-            ],
-            "properties": {
-                "dimension": {
-                    "type": "string"
-                },
-                "expiration": {
-                    "type": "string",
-                    "format": "date-time"
-                },
-                "skuid": {
-                    "type": "string"
-                },
-                "value": {
-                    "type": "string"
-                }
-            }
-        },
-        "v2.ExternalService": {
-            "required": [
-                "type",
-                "static_ip",
-                "dns_zone",
-                "dns_name",
-                "cluster"
-            ],
-            "properties": {
-                "cluster": {
-                    "type": "string"
-                },
-                "dns_name": {
-                    "type": "string"
-                },
-                "dns_zone": {
-                    "type": "string"
-                },
-                "static_ip": {
-                    "type": "boolean"
-                },
-                "type": {
-                    "type": "string"
-                }
-            }
-        },
-        "v2.Filter": {
-            "required": [
+                "kind",
                 "id"
             ],
             "properties": {
                 "id": {
                     "type": "string"
-                }
-            }
-        },
-        "v2.ResourceFilter": {
-            "required": [
-                "workspaces",
-                "systems"
-            ],
-            "properties": {
-                "systems": {
-                    "$ref": "#/definitions/v2.Filter"
                 },
-                "workspaces": {
-                    "$ref": "#/definitions/v2.Filter"
+                "kind": {
+                    "type": "string"
                 }
             }
         },
-        "v2.RoleBinding": {
+        "v2.RoleBindingConfig": {
             "required": [
-                "description",
+                "resource_filter",
+                "role_id",
                 "subjects",
-                "role_id"
+                "id",
+                "metadata"
             ],
             "properties": {
-                "description": {
+                "id": {
                     "type": "string"
+                },
+                "metadata": {
+                    "$ref": "#/definitions/v1.ObjectMeta"
+                },
+                "resource_filter": {
+                    "$ref": "#/definitions/v2.ResourceFilter"
                 },
                 "role_id": {
                     "type": "string"
@@ -8733,87 +10239,141 @@
                 }
             }
         },
-        "v2.RoleBindingsConfig": {
-            "required": [
-                "resource_filter",
-                "rolebindings",
-                "metadata"
-            ],
+        "v2.RoleBindingsDeleteResponse": {
             "properties": {
-                "metadata": {
-                    "$ref": "#/definitions/v1.ObjectMeta"
-                },
-                "resource_filter": {
-                    "$ref": "#/definitions/v2.ResourceFilter"
-                },
-                "rolebindings": {
-                    "$ref": "#/definitions/v2.ComposedRoleBindings"
+                "request_id": {
+                    "type": "string"
                 }
             }
         },
-        "v2.RoleBindingsGetMarkerResponse": {
+        "v2.RoleBindingsDeleteSubjectsRequest": {
             "required": [
-                "migrated"
+                "subjects"
             ],
             "properties": {
-                "migrated": {
-                    "type": "boolean"
-                },
+                "subjects": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/v2.Subject"
+                    }
+                }
+            }
+        },
+        "v2.RoleBindingsDeleteSubjectsResponse": {
+            "required": [
+                "rolebinding"
+            ],
+            "properties": {
                 "request_id": {
                     "type": "string"
+                },
+                "rolebinding": {
+                    "$ref": "#/definitions/v2.RoleBindingConfig"
+                }
+            }
+        },
+        "v2.RoleBindingsGetResponse": {
+            "required": [
+                "rolebinding"
+            ],
+            "properties": {
+                "request_id": {
+                    "type": "string"
+                },
+                "rolebinding": {
+                    "$ref": "#/definitions/v2.RoleBindingConfig"
                 }
             }
         },
         "v2.RoleBindingsListResponse": {
             "required": [
-                "result",
-                "revision"
+                "rolebindings"
             ],
             "properties": {
                 "request_id": {
                     "type": "string"
                 },
-                "result": {
+                "rolebindings": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/v2.RoleBindingsConfig"
+                        "$ref": "#/definitions/v2.RoleBindingConfig"
                     }
-                },
-                "revision": {
-                    "type": "integer",
-                    "format": "int64"
                 }
             }
         },
         "v2.RoleBindingsPostRequest": {
             "required": [
-                "resource_filter"
+                "resource_filter",
+                "role_id",
+                "subjects",
+                "id"
             ],
             "properties": {
+                "id": {
+                    "type": "string"
+                },
                 "resource_filter": {
                     "$ref": "#/definitions/v2.ResourceFilter"
+                },
+                "role_id": {
+                    "type": "string"
+                },
+                "subjects": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/v2.Subject"
+                    }
                 }
             }
         },
         "v2.RoleBindingsPostResponse": {
             "required": [
-                "result",
-                "revision"
+                "rolebinding"
             ],
             "properties": {
                 "request_id": {
                     "type": "string"
                 },
-                "result": {
-                    "$ref": "#/definitions/v2.RoleBindingsConfig"
-                },
-                "revision": {
-                    "type": "integer",
-                    "format": "int64"
+                "rolebinding": {
+                    "$ref": "#/definitions/v2.RoleBindingConfig"
                 }
             }
         },
-        "v2.RoleBindingsPutMarkerRequest": {
+        "v2.RoleBindingsPostSubjectsRequest": {
+            "required": [
+                "subjects"
+            ],
+            "properties": {
+                "subjects": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/v2.Subject"
+                    }
+                }
+            }
+        },
+        "v2.RoleBindingsPostSubjectsResponse": {
+            "required": [
+                "rolebinding"
+            ],
+            "properties": {
+                "request_id": {
+                    "type": "string"
+                },
+                "rolebinding": {
+                    "$ref": "#/definitions/v2.RoleBindingConfig"
+                }
+            }
+        },
+        "v2.RoleBindingsPutResetRequest": {},
+        "v2.RoleBindingsPutResetResponse": {
+            "properties": {
+                "request_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "v2.RoleBindingsPutStatusRequest": {
             "required": [
                 "migrated"
             ],
@@ -8823,77 +10383,69 @@
                 }
             }
         },
-        "v2.RoleBindingsPutMarkerResponse": {
+        "v2.RoleBindingsPutStatusResponse": {
             "properties": {
                 "request_id": {
                     "type": "string"
                 }
             }
         },
-        "v2.RoleBindingsPutRequest": {
+        "v2.RoleBindingsPutSubjectsRequest": {
             "required": [
-                "resource_filter",
-                "rolebindings"
+                "subjects"
             ],
             "properties": {
-                "resource_filter": {
-                    "$ref": "#/definitions/v2.ResourceFilter"
-                },
-                "rolebindings": {
-                    "$ref": "#/definitions/v2.ComposedRoleBindings"
+                "subjects": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/v2.Subject"
+                    }
                 }
             }
         },
-        "v2.RoleBindingsPutResponse": {
+        "v2.RoleBindingsPutSubjectsResponse": {
+            "required": [
+                "rolebinding"
+            ],
             "properties": {
                 "request_id": {
                     "type": "string"
+                },
+                "rolebinding": {
+                    "$ref": "#/definitions/v2.RoleBindingConfig"
                 }
             }
         },
         "v2.RoleConfig": {
             "required": [
-                "id"
+                "id",
+                "resource_kind",
+                "metadata"
             ],
             "properties": {
                 "id": {
+                    "type": "string"
+                },
+                "metadata": {
+                    "$ref": "#/definitions/v1.ObjectMeta"
+                },
+                "resource_kind": {
                     "type": "string"
                 }
             }
         },
         "v2.RolesListResponse": {
             "required": [
-                "result"
+                "roles"
             ],
             "properties": {
                 "request_id": {
                     "type": "string"
                 },
-                "result": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/v2.RoleConfig"
-                    }
-                }
-            }
-        },
-        "v2.RootUser": {
-            "required": [
-                "password",
-                "encrypted_password",
-                "roles"
-            ],
-            "properties": {
-                "encrypted_password": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
                 "roles": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/definitions/v2.RoleConfig"
                     }
                 }
             }
@@ -8911,103 +10463,6 @@
                     "type": "string"
                 },
                 "kind": {
-                    "type": "string"
-                }
-            }
-        },
-        "v2.TackleInfo": {
-            "properties": {
-                "customerid": {
-                    "type": "string"
-                },
-                "entitlements": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/v2.Entitlement"
-                    }
-                },
-                "event_type": {
-                    "type": "string"
-                },
-                "marketplace": {
-                    "type": "string"
-                },
-                "productid": {
-                    "type": "string"
-                },
-                "properties": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "type": "string"
-                    }
-                },
-                "vendorid": {
-                    "type": "string"
-                }
-            }
-        },
-        "v2.TenantDetails": {
-            "required": [
-                "signup_email",
-                "claims",
-                "id",
-                "org_name",
-                "features",
-                "external_services",
-                "removed",
-                "trial_started",
-                "trial_start_time",
-                "name",
-                "root_users"
-            ],
-            "properties": {
-                "claims": {
-                    "type": "object"
-                },
-                "default_identity_provider": {
-                    "type": "string"
-                },
-                "external_services": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "$ref": "#/definitions/v2.ExternalService"
-                    }
-                },
-                "features": {
-                    "type": "object"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "org_name": {
-                    "type": "string"
-                },
-                "removed": {
-                    "type": "boolean"
-                },
-                "root_users": {
-                    "type": "object",
-                    "additionalProperties": {
-                        "$ref": "#/definitions/v2.RootUser"
-                    }
-                },
-                "signup_email": {
-                    "type": "string"
-                },
-                "tackle_info": {
-                    "$ref": "#/definitions/v2.TackleInfo"
-                },
-                "trial_start_time": {
-                    "type": "string",
-                    "format": "date-time"
-                },
-                "trial_started": {
-                    "type": "boolean"
-                },
-                "type": {
                     "type": "string"
                 }
             }
@@ -9039,22 +10494,6 @@
             "name": "invitations"
         },
         {
-            "description": "Tenants service",
-            "name": "tenants"
-        },
-        {
-            "description": "login callback handlers and redirects",
-            "name": "login"
-        },
-        {
-            "description": "signup session handler",
-            "name": "session"
-        },
-        {
-            "description": "proxy for config-manager",
-            "name": "tenants-config"
-        },
-        {
             "description": "Timeseries",
             "name": "timeseries"
         },
@@ -9071,16 +10510,20 @@
             "name": "workspace"
         },
         {
-            "description": "Downloading policies and their data as bundles",
-            "name": "bundles"
+            "description": "manages relay-clients",
+            "name": "relay-server"
         },
         {
-            "description": "Access data and execute policies",
-            "name": "data"
+            "description": "Authz management",
+            "name": "authz"
         },
         {
-            "description": "Configure and manage datasources",
-            "name": "datasources"
+            "description": "analysis",
+            "name": "decisions"
         }
-    ]
+    ],
+    "externalDocs": {
+        "description": "Styra DAS Documentation",
+        "url": "https://docs.styra.com"
+    }
 }

@@ -58,6 +58,13 @@ func NewListRolesParamsWithHTTPClient(client *http.Client) *ListRolesParams {
    Typically these are written to a http.Request.
 */
 type ListRolesParams struct {
+
+	/* ResourceKind.
+
+	   if set returns only roles applicable to specific resource kind
+	*/
+	ResourceKind *string
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -111,6 +118,17 @@ func (o *ListRolesParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithResourceKind adds the resourceKind to the list roles params
+func (o *ListRolesParams) WithResourceKind(resourceKind *string) *ListRolesParams {
+	o.SetResourceKind(resourceKind)
+	return o
+}
+
+// SetResourceKind adds the resourceKind to the list roles params
+func (o *ListRolesParams) SetResourceKind(resourceKind *string) {
+	o.ResourceKind = resourceKind
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *ListRolesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -118,6 +136,23 @@ func (o *ListRolesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 		return err
 	}
 	var res []error
+
+	if o.ResourceKind != nil {
+
+		// query param resource_kind
+		var qrResourceKind string
+
+		if o.ResourceKind != nil {
+			qrResourceKind = *o.ResourceKind
+		}
+		qResourceKind := qrResourceKind
+		if qResourceKind != "" {
+
+			if err := r.SetQueryParam("resource_kind", qResourceKind); err != nil {
+				return err
+			}
+		}
+	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
