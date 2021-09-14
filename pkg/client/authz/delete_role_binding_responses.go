@@ -50,19 +50,19 @@ func NewDeleteRoleBindingOK() *DeleteRoleBindingOK {
 OK
 */
 type DeleteRoleBindingOK struct {
-	Payload *models.V1RoleBindingsDeleteResponse
+	Payload *models.V2RoleBindingsDeleteResponse
 }
 
 func (o *DeleteRoleBindingOK) Error() string {
-	return fmt.Sprintf("[DELETE /v1/authz/rolebindings/{resourcetype}/{resource}/{rolebinding}][%d] deleteRoleBindingOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[DELETE /v2/authz/rolebindings/{id}][%d] deleteRoleBindingOK  %+v", 200, o.Payload)
 }
-func (o *DeleteRoleBindingOK) GetPayload() *models.V1RoleBindingsDeleteResponse {
+func (o *DeleteRoleBindingOK) GetPayload() *models.V2RoleBindingsDeleteResponse {
 	return o.Payload
 }
 
 func (o *DeleteRoleBindingOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1RoleBindingsDeleteResponse)
+	o.Payload = new(models.V2RoleBindingsDeleteResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -86,7 +86,7 @@ type DeleteRoleBindingNotFound struct {
 }
 
 func (o *DeleteRoleBindingNotFound) Error() string {
-	return fmt.Sprintf("[DELETE /v1/authz/rolebindings/{resourcetype}/{resource}/{rolebinding}][%d] deleteRoleBindingNotFound  %+v", 404, o.Payload)
+	return fmt.Sprintf("[DELETE /v2/authz/rolebindings/{id}][%d] deleteRoleBindingNotFound  %+v", 404, o.Payload)
 }
 func (o *DeleteRoleBindingNotFound) GetPayload() *models.V1ErrorResponse {
 	return o.Payload

@@ -77,6 +77,11 @@ type V1SystemConfig struct {
 	// source control system configuration
 	SourceControl *V1SourceControlConfig `json:"source_control,omitempty"`
 
+	// system status
+	// Required: true
+	// Read Only: true
+	Status string `json:"status"`
+
 	// tokens created for the system
 	// Read Only: true
 	Tokens []*V1Token `json:"tokens"`
@@ -142,6 +147,10 @@ func (m *V1SystemConfig) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateSourceControl(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateStatus(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -359,6 +368,15 @@ func (m *V1SystemConfig) validateSourceControl(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *V1SystemConfig) validateStatus(formats strfmt.Registry) error {
+
+	if err := validate.RequiredString("status", "body", m.Status); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *V1SystemConfig) validateTokens(formats strfmt.Registry) error {
 	if swag.IsZero(m.Tokens) { // not required
 		return nil
@@ -402,10 +420,12 @@ func (m *V1SystemConfig) validateWarnings(formats strfmt.Registry) error {
 		if err := validate.Required("warnings"+"."+k, "body", m.Warnings[k]); err != nil {
 			return err
 		}
-		if val, ok := m.Warnings[k]; ok {
-			if err := val.Validate(formats); err != nil {
-				return err
+
+		if err := m.Warnings[k].Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("warnings" + "." + k)
 			}
+			return err
 		}
 
 	}
@@ -458,6 +478,10 @@ func (m *V1SystemConfig) ContextValidate(ctx context.Context, formats strfmt.Reg
 	}
 
 	if err := m.contextValidateSourceControl(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateStatus(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -637,6 +661,15 @@ func (m *V1SystemConfig) contextValidateSourceControl(ctx context.Context, forma
 	return nil
 }
 
+func (m *V1SystemConfig) contextValidateStatus(ctx context.Context, formats strfmt.Registry) error {
+
+	if err := validate.ReadOnly(ctx, "status", "body", string(m.Status)); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (m *V1SystemConfig) contextValidateTokens(ctx context.Context, formats strfmt.Registry) error {
 
 	if err := validate.ReadOnly(ctx, "tokens", "body", []*V1Token(m.Tokens)); err != nil {
@@ -668,10 +701,11 @@ func (m *V1SystemConfig) contextValidateWarnings(ctx context.Context, formats st
 
 	for k := range m.Warnings {
 
-		if val, ok := m.Warnings[k]; ok {
-			if err := val.ContextValidate(ctx, formats); err != nil {
-				return err
+		if err := m.Warnings[k].ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("warnings" + "." + k)
 			}
+			return err
 		}
 
 	}

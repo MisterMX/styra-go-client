@@ -20,6 +20,9 @@ type V1SystemDeploymentParameters struct {
 	// true to fail close
 	DenyOnOpaFail *bool `json:"deny_on_opa_fail,omitempty"`
 
+	// true to enable partial eval for the system's bundle'
+	EnablePartialEval *bool `json:"enable_partial_eval,omitempty"`
+
 	// extra deployment settings
 	Extra interface{} `json:"extra,omitempty"`
 

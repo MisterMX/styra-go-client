@@ -19,6 +19,10 @@ import (
 // swagger:model v1.CheckPermissionInput
 type V1CheckPermissionInput struct {
 
+	// action
+	// Required: true
+	Action *string `json:"action"`
+
 	// body
 	// Required: true
 	Body interface{} `json:"body"`
@@ -40,6 +44,10 @@ type V1CheckPermissionInput struct {
 func (m *V1CheckPermissionInput) Validate(formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.validateAction(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateBody(formats); err != nil {
 		res = append(res, err)
 	}
@@ -59,6 +67,15 @@ func (m *V1CheckPermissionInput) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *V1CheckPermissionInput) validateAction(formats strfmt.Registry) error {
+
+	if err := validate.Required("action", "body", m.Action); err != nil {
+		return err
+	}
+
 	return nil
 }
 

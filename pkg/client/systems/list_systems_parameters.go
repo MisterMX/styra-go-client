@@ -60,17 +60,53 @@ func NewListSystemsParamsWithHTTPClient(client *http.Client) *ListSystemsParams 
 */
 type ListSystemsParams struct {
 
+	/* Authz.
+
+	   set to 'false' to omit authz info from the output
+	*/
+	Authz *bool
+
 	/* Compact.
 
 	   if set to 'true', returns only minimal configuration information for each system
 	*/
 	Compact *bool
 
+	/* Datasources.
+
+	   set to 'false' to omit datasources from the output
+	*/
+	Datasources *bool
+
+	/* Errors.
+
+	   set to 'false' to omit errors/warnings from the output
+	*/
+	Errors *bool
+
+	/* Metadata.
+
+	   set to 'false' to omit metadata from the output
+	*/
+	Metadata *bool
+
+	/* Modules.
+
+	   set to 'false' to omit modules from the output
+	*/
+	Modules *bool
+
 	/* Name.
 
 	   if set returns only systems with a name matching the given regex
 	*/
 	Name *string
+
+	/* Policies.
+
+	   set to 'false' to omit policies from the output
+	*/
+	Policies *bool
 
 	/* Type.
 
@@ -131,6 +167,17 @@ func (o *ListSystemsParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithAuthz adds the authz to the list systems params
+func (o *ListSystemsParams) WithAuthz(authz *bool) *ListSystemsParams {
+	o.SetAuthz(authz)
+	return o
+}
+
+// SetAuthz adds the authz to the list systems params
+func (o *ListSystemsParams) SetAuthz(authz *bool) {
+	o.Authz = authz
+}
+
 // WithCompact adds the compact to the list systems params
 func (o *ListSystemsParams) WithCompact(compact *bool) *ListSystemsParams {
 	o.SetCompact(compact)
@@ -142,6 +189,50 @@ func (o *ListSystemsParams) SetCompact(compact *bool) {
 	o.Compact = compact
 }
 
+// WithDatasources adds the datasources to the list systems params
+func (o *ListSystemsParams) WithDatasources(datasources *bool) *ListSystemsParams {
+	o.SetDatasources(datasources)
+	return o
+}
+
+// SetDatasources adds the datasources to the list systems params
+func (o *ListSystemsParams) SetDatasources(datasources *bool) {
+	o.Datasources = datasources
+}
+
+// WithErrors adds the errors to the list systems params
+func (o *ListSystemsParams) WithErrors(errors *bool) *ListSystemsParams {
+	o.SetErrors(errors)
+	return o
+}
+
+// SetErrors adds the errors to the list systems params
+func (o *ListSystemsParams) SetErrors(errors *bool) {
+	o.Errors = errors
+}
+
+// WithMetadata adds the metadata to the list systems params
+func (o *ListSystemsParams) WithMetadata(metadata *bool) *ListSystemsParams {
+	o.SetMetadata(metadata)
+	return o
+}
+
+// SetMetadata adds the metadata to the list systems params
+func (o *ListSystemsParams) SetMetadata(metadata *bool) {
+	o.Metadata = metadata
+}
+
+// WithModules adds the modules to the list systems params
+func (o *ListSystemsParams) WithModules(modules *bool) *ListSystemsParams {
+	o.SetModules(modules)
+	return o
+}
+
+// SetModules adds the modules to the list systems params
+func (o *ListSystemsParams) SetModules(modules *bool) {
+	o.Modules = modules
+}
+
 // WithName adds the name to the list systems params
 func (o *ListSystemsParams) WithName(name *string) *ListSystemsParams {
 	o.SetName(name)
@@ -151,6 +242,17 @@ func (o *ListSystemsParams) WithName(name *string) *ListSystemsParams {
 // SetName adds the name to the list systems params
 func (o *ListSystemsParams) SetName(name *string) {
 	o.Name = name
+}
+
+// WithPolicies adds the policies to the list systems params
+func (o *ListSystemsParams) WithPolicies(policies *bool) *ListSystemsParams {
+	o.SetPolicies(policies)
+	return o
+}
+
+// SetPolicies adds the policies to the list systems params
+func (o *ListSystemsParams) SetPolicies(policies *bool) {
+	o.Policies = policies
 }
 
 // WithType adds the typeVar to the list systems params
@@ -172,6 +274,23 @@ func (o *ListSystemsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 	}
 	var res []error
 
+	if o.Authz != nil {
+
+		// query param authz
+		var qrAuthz bool
+
+		if o.Authz != nil {
+			qrAuthz = *o.Authz
+		}
+		qAuthz := swag.FormatBool(qrAuthz)
+		if qAuthz != "" {
+
+			if err := r.SetQueryParam("authz", qAuthz); err != nil {
+				return err
+			}
+		}
+	}
+
 	if o.Compact != nil {
 
 		// query param compact
@@ -189,6 +308,74 @@ func (o *ListSystemsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 		}
 	}
 
+	if o.Datasources != nil {
+
+		// query param datasources
+		var qrDatasources bool
+
+		if o.Datasources != nil {
+			qrDatasources = *o.Datasources
+		}
+		qDatasources := swag.FormatBool(qrDatasources)
+		if qDatasources != "" {
+
+			if err := r.SetQueryParam("datasources", qDatasources); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.Errors != nil {
+
+		// query param errors
+		var qrErrors bool
+
+		if o.Errors != nil {
+			qrErrors = *o.Errors
+		}
+		qErrors := swag.FormatBool(qrErrors)
+		if qErrors != "" {
+
+			if err := r.SetQueryParam("errors", qErrors); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.Metadata != nil {
+
+		// query param metadata
+		var qrMetadata bool
+
+		if o.Metadata != nil {
+			qrMetadata = *o.Metadata
+		}
+		qMetadata := swag.FormatBool(qrMetadata)
+		if qMetadata != "" {
+
+			if err := r.SetQueryParam("metadata", qMetadata); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.Modules != nil {
+
+		// query param modules
+		var qrModules bool
+
+		if o.Modules != nil {
+			qrModules = *o.Modules
+		}
+		qModules := swag.FormatBool(qrModules)
+		if qModules != "" {
+
+			if err := r.SetQueryParam("modules", qModules); err != nil {
+				return err
+			}
+		}
+	}
+
 	if o.Name != nil {
 
 		// query param name
@@ -201,6 +388,23 @@ func (o *ListSystemsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 		if qName != "" {
 
 			if err := r.SetQueryParam("name", qName); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.Policies != nil {
+
+		// query param policies
+		var qrPolicies bool
+
+		if o.Policies != nil {
+			qrPolicies = *o.Policies
+		}
+		qPolicies := swag.FormatBool(qrPolicies)
+		if qPolicies != "" {
+
+			if err := r.SetQueryParam("policies", qPolicies); err != nil {
 				return err
 			}
 		}

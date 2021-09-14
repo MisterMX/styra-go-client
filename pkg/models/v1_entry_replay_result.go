@@ -23,8 +23,7 @@ type V1EntryReplayResult struct {
 	Bundles map[string]LogsBundleInfoV1 `json:"bundles,omitempty"`
 
 	// unique decision ID
-	// Required: true
-	DecisionID *string `json:"decision_id"`
+	DecisionID string `json:"decision_id,omitempty"`
 
 	// erased fields
 	Erased []string `json:"erased"`
@@ -72,10 +71,6 @@ func (m *V1EntryReplayResult) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
-	if err := m.validateDecisionID(formats); err != nil {
-		res = append(res, err)
-	}
-
 	if err := m.validateTimestamp(formats); err != nil {
 		res = append(res, err)
 	}
@@ -102,15 +97,6 @@ func (m *V1EntryReplayResult) validateBundles(formats strfmt.Registry) error {
 			}
 		}
 
-	}
-
-	return nil
-}
-
-func (m *V1EntryReplayResult) validateDecisionID(formats strfmt.Registry) error {
-
-	if err := validate.Required("decision_id", "body", m.DecisionID); err != nil {
-		return err
 	}
 
 	return nil

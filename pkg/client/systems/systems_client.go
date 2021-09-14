@@ -7,7 +7,6 @@ package systems
 
 import (
 	"fmt"
-	"io"
 
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
@@ -39,7 +38,11 @@ type ClientService interface {
 
 	DeleteUserBranchSystem(params *DeleteUserBranchSystemParams, opts ...ClientOption) (*DeleteUserBranchSystemOK, error)
 
-	GetAsset(params *GetAssetParams, writer io.Writer, opts ...ClientOption) (*GetAssetOK, error)
+	GetAsset(params *GetAssetParams, opts ...ClientOption) error
+
+	GetDefaultPolicies(params *GetDefaultPoliciesParams, opts ...ClientOption) (*GetDefaultPoliciesOK, error)
+
+	GetDefaultPolicy(params *GetDefaultPolicyParams, opts ...ClientOption) (*GetDefaultPolicyOK, error)
 
 	GetInstructions(params *GetInstructionsParams, opts ...ClientOption) (*GetInstructionsOK, error)
 
@@ -73,9 +76,11 @@ type ClientService interface {
 
 	UpdateSystemBundleDeploy(params *UpdateSystemBundleDeployParams, opts ...ClientOption) (*UpdateSystemBundleDeployOK, error)
 
-	ValidateSystemCompliance(params *ValidateSystemComplianceParams, opts ...ClientOption) (*ValidateSystemComplianceOK, error)
+	ValidateSystemCompliance(params *ValidateSystemComplianceParams, opts ...ClientOption) (*ValidateSystemComplianceOK, *ValidateSystemComplianceAccepted, error)
 
 	ValidateSystemTests(params *ValidateSystemTestsParams, opts ...ClientOption) (*ValidateSystemTestsOK, error)
+
+	Func1(params *Func1Params, opts ...ClientOption) (*Func1OK, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
@@ -233,9 +238,9 @@ func (a *Client) DeleteUserBranchSystem(params *DeleteUserBranchSystemParams, op
 }
 
 /*
-  GetAsset gets system assets
+  GetAsset gets system asset
 */
-func (a *Client) GetAsset(params *GetAssetParams, writer io.Writer, opts ...ClientOption) (*GetAssetOK, error) {
+func (a *Client) GetAsset(params *GetAssetParams, opts ...ClientOption) error {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetAssetParams()
@@ -248,7 +253,38 @@ func (a *Client) GetAsset(params *GetAssetParams, writer io.Writer, opts ...Clie
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
 		Params:             params,
-		Reader:             &GetAssetReader{formats: a.formats, writer: writer},
+		Reader:             &GetAssetReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	_, err := a.transport.Submit(op)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+/*
+  GetDefaultPolicies gets default system policies
+*/
+func (a *Client) GetDefaultPolicies(params *GetDefaultPoliciesParams, opts ...ClientOption) (*GetDefaultPoliciesOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetDefaultPoliciesParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "GetDefaultPolicies",
+		Method:             "GET",
+		PathPattern:        "/v1/systems/{system}/default-policies",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetDefaultPoliciesReader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	}
@@ -260,13 +296,51 @@ func (a *Client) GetAsset(params *GetAssetParams, writer io.Writer, opts ...Clie
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetAssetOK)
+	success, ok := result.(*GetDefaultPoliciesOK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for GetAsset: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	msg := fmt.Sprintf("unexpected success response for GetDefaultPolicies: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  GetDefaultPolicy gets default system policy
+*/
+func (a *Client) GetDefaultPolicy(params *GetDefaultPolicyParams, opts ...ClientOption) (*GetDefaultPolicyOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetDefaultPolicyParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "GetDefaultPolicy",
+		Method:             "GET",
+		PathPattern:        "/v1/systems/{system}/default-policies/{path}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetDefaultPolicyReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GetDefaultPolicyOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for GetDefaultPolicy: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
@@ -347,7 +421,9 @@ func (a *Client) GetOPADiscoveryConfig(params *GetOPADiscoveryConfigParams, opts
 }
 
 /*
-  GetSourceControlFilesBranchSystem gets files in source control for the current user
+  GetSourceControlFilesBranchSystem gets the list of files for the styra d a s created branch
+
+  Gets the list of files for the branch that the Styra DAS creates when modifying rego in the Styra DAS UI and pushing the changes to GitHub in a branch for review.
 */
 func (a *Client) GetSourceControlFilesBranchSystem(params *GetSourceControlFilesBranchSystemParams, opts ...ClientOption) (*GetSourceControlFilesBranchSystemOK, error) {
 	// TODO: Validate the params before sending
@@ -385,7 +461,7 @@ func (a *Client) GetSourceControlFilesBranchSystem(params *GetSourceControlFiles
 }
 
 /*
-  GetSourceControlFilesMasterSystem gets files in source control for the master branch
+  GetSourceControlFilesMasterSystem gets the list of files in the currently chosen branch
 */
 func (a *Client) GetSourceControlFilesMasterSystem(params *GetSourceControlFilesMasterSystemParams, opts ...ClientOption) (*GetSourceControlFilesMasterSystemOK, error) {
 	// TODO: Validate the params before sending
@@ -881,7 +957,7 @@ func (a *Client) UpdateSystemBundleDeploy(params *UpdateSystemBundleDeployParams
 /*
   ValidateSystemCompliance validates system compliance
 */
-func (a *Client) ValidateSystemCompliance(params *ValidateSystemComplianceParams, opts ...ClientOption) (*ValidateSystemComplianceOK, error) {
+func (a *Client) ValidateSystemCompliance(params *ValidateSystemComplianceParams, opts ...ClientOption) (*ValidateSystemComplianceOK, *ValidateSystemComplianceAccepted, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewValidateSystemComplianceParams()
@@ -904,15 +980,16 @@ func (a *Client) ValidateSystemCompliance(params *ValidateSystemComplianceParams
 
 	result, err := a.transport.Submit(op)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	success, ok := result.(*ValidateSystemComplianceOK)
-	if ok {
-		return success, nil
+	switch value := result.(type) {
+	case *ValidateSystemComplianceOK:
+		return value, nil, nil
+	case *ValidateSystemComplianceAccepted:
+		return nil, value, nil
 	}
-	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for ValidateSystemCompliance: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	msg := fmt.Sprintf("unexpected success response for systems: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
@@ -951,6 +1028,46 @@ func (a *Client) ValidateSystemTests(params *ValidateSystemTestsParams, opts ...
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for ValidateSystemTests: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  Func1 verifies git configuration
+
+  verifies that the repository can be accessed with the provided credentials
+*/
+func (a *Client) Func1(params *Func1Params, opts ...ClientOption) (*Func1OK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewFunc1Params()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "func1",
+		Method:             "POST",
+		PathPattern:        "/v1/systems/source-control/verify-config",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &Func1Reader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*Func1OK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for func1: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 

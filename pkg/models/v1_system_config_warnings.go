@@ -7,6 +7,7 @@ package models
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
@@ -17,7 +18,61 @@ import (
 // V1SystemConfigWarnings v1 system config warnings
 //
 // swagger:model v1.SystemConfig.warnings
-type V1SystemConfigWarnings struct {
+type V1SystemConfigWarnings []*V1SystemConfigWarningsItems0
+
+// Validate validates this v1 system config warnings
+func (m V1SystemConfigWarnings) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	for i := 0; i < len(m); i++ {
+		if swag.IsZero(m[i]) { // not required
+			continue
+		}
+
+		if m[i] != nil {
+			if err := m[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName(strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+// ContextValidate validate this v1 system config warnings based on the context it is used
+func (m V1SystemConfigWarnings) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	for i := 0; i < len(m); i++ {
+
+		if m[i] != nil {
+			if err := m[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName(strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+// V1SystemConfigWarningsItems0 v1 system config warnings items0
+//
+// swagger:model V1SystemConfigWarningsItems0
+type V1SystemConfigWarningsItems0 struct {
 
 	// code
 	// Required: true
@@ -33,8 +88,8 @@ type V1SystemConfigWarnings struct {
 	Timestamp *strfmt.DateTime `json:"timestamp"`
 }
 
-// Validate validates this v1 system config warnings
-func (m *V1SystemConfigWarnings) Validate(formats strfmt.Registry) error {
+// Validate validates this v1 system config warnings items0
+func (m *V1SystemConfigWarningsItems0) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateCode(formats); err != nil {
@@ -55,7 +110,7 @@ func (m *V1SystemConfigWarnings) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *V1SystemConfigWarnings) validateCode(formats strfmt.Registry) error {
+func (m *V1SystemConfigWarningsItems0) validateCode(formats strfmt.Registry) error {
 
 	if err := validate.Required("code", "body", m.Code); err != nil {
 		return err
@@ -64,7 +119,7 @@ func (m *V1SystemConfigWarnings) validateCode(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *V1SystemConfigWarnings) validateMessage(formats strfmt.Registry) error {
+func (m *V1SystemConfigWarningsItems0) validateMessage(formats strfmt.Registry) error {
 
 	if err := validate.Required("message", "body", m.Message); err != nil {
 		return err
@@ -73,7 +128,7 @@ func (m *V1SystemConfigWarnings) validateMessage(formats strfmt.Registry) error 
 	return nil
 }
 
-func (m *V1SystemConfigWarnings) validateTimestamp(formats strfmt.Registry) error {
+func (m *V1SystemConfigWarningsItems0) validateTimestamp(formats strfmt.Registry) error {
 
 	if err := validate.Required("timestamp", "body", m.Timestamp); err != nil {
 		return err
@@ -86,13 +141,13 @@ func (m *V1SystemConfigWarnings) validateTimestamp(formats strfmt.Registry) erro
 	return nil
 }
 
-// ContextValidate validates this v1 system config warnings based on context it is used
-func (m *V1SystemConfigWarnings) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+// ContextValidate validates this v1 system config warnings items0 based on context it is used
+func (m *V1SystemConfigWarningsItems0) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (m *V1SystemConfigWarnings) MarshalBinary() ([]byte, error) {
+func (m *V1SystemConfigWarningsItems0) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -100,8 +155,8 @@ func (m *V1SystemConfigWarnings) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *V1SystemConfigWarnings) UnmarshalBinary(b []byte) error {
-	var res V1SystemConfigWarnings
+func (m *V1SystemConfigWarningsItems0) UnmarshalBinary(b []byte) error {
+	var res V1SystemConfigWarningsItems0
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

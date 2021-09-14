@@ -29,6 +29,12 @@ func (o *ValidateSystemComplianceReader) ReadResponse(response runtime.ClientRes
 			return nil, err
 		}
 		return result, nil
+	case 202:
+		result := NewValidateSystemComplianceAccepted()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return result, nil
 	case 404:
 		result := NewValidateSystemComplianceNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -68,6 +74,27 @@ func (o *ValidateSystemComplianceOK) readResponse(response runtime.ClientRespons
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
 		return err
 	}
+
+	return nil
+}
+
+// NewValidateSystemComplianceAccepted creates a ValidateSystemComplianceAccepted with default headers values
+func NewValidateSystemComplianceAccepted() *ValidateSystemComplianceAccepted {
+	return &ValidateSystemComplianceAccepted{}
+}
+
+/* ValidateSystemComplianceAccepted describes a response with status code 202, with default header values.
+
+Accepted
+*/
+type ValidateSystemComplianceAccepted struct {
+}
+
+func (o *ValidateSystemComplianceAccepted) Error() string {
+	return fmt.Sprintf("[POST /v1/systems/{system}/validate/compliance][%d] validateSystemComplianceAccepted ", 202)
+}
+
+func (o *ValidateSystemComplianceAccepted) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	return nil
 }

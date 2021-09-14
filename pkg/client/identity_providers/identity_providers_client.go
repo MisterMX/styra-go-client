@@ -196,7 +196,7 @@ func (a *Client) ListProviders(params *ListProvidersParams, opts ...ClientOption
 }
 
 /*
-  UpdateProvider creates or uppdate provider
+  UpdateProvider creates or update provider
 */
 func (a *Client) UpdateProvider(params *UpdateProviderParams, opts ...ClientOption) (*UpdateProviderOK, error) {
 	// TODO: Validate the params before sending

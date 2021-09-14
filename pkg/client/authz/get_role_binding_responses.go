@@ -50,19 +50,19 @@ func NewGetRoleBindingOK() *GetRoleBindingOK {
 OK
 */
 type GetRoleBindingOK struct {
-	Payload *models.V1RoleBindingsGetResponse
+	Payload *models.V2RoleBindingsGetResponse
 }
 
 func (o *GetRoleBindingOK) Error() string {
-	return fmt.Sprintf("[GET /v1/authz/rolebindings/{resourcetype}/{resource}/{rolebinding}][%d] getRoleBindingOK  %+v", 200, o.Payload)
+	return fmt.Sprintf("[GET /v2/authz/rolebindings/{id}][%d] getRoleBindingOK  %+v", 200, o.Payload)
 }
-func (o *GetRoleBindingOK) GetPayload() *models.V1RoleBindingsGetResponse {
+func (o *GetRoleBindingOK) GetPayload() *models.V2RoleBindingsGetResponse {
 	return o.Payload
 }
 
 func (o *GetRoleBindingOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1RoleBindingsGetResponse)
+	o.Payload = new(models.V2RoleBindingsGetResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -86,7 +86,7 @@ type GetRoleBindingNotFound struct {
 }
 
 func (o *GetRoleBindingNotFound) Error() string {
-	return fmt.Sprintf("[GET /v1/authz/rolebindings/{resourcetype}/{resource}/{rolebinding}][%d] getRoleBindingNotFound  %+v", 404, o.Payload)
+	return fmt.Sprintf("[GET /v2/authz/rolebindings/{id}][%d] getRoleBindingNotFound  %+v", 404, o.Payload)
 }
 func (o *GetRoleBindingNotFound) GetPayload() *models.V1ErrorResponse {
 	return o.Payload

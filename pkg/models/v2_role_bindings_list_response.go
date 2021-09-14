@@ -23,24 +23,16 @@ type V2RoleBindingsListResponse struct {
 	// request id
 	RequestID string `json:"request_id,omitempty"`
 
-	// result
+	// rolebindings
 	// Required: true
-	Result []*V2RoleBindingsConfig `json:"result"`
-
-	// revision
-	// Required: true
-	Revision *int64 `json:"revision"`
+	Rolebindings []*V2RoleBindingConfig `json:"rolebindings"`
 }
 
 // Validate validates this v2 role bindings list response
 func (m *V2RoleBindingsListResponse) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateResult(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateRevision(formats); err != nil {
+	if err := m.validateRolebindings(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -50,21 +42,21 @@ func (m *V2RoleBindingsListResponse) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *V2RoleBindingsListResponse) validateResult(formats strfmt.Registry) error {
+func (m *V2RoleBindingsListResponse) validateRolebindings(formats strfmt.Registry) error {
 
-	if err := validate.Required("result", "body", m.Result); err != nil {
+	if err := validate.Required("rolebindings", "body", m.Rolebindings); err != nil {
 		return err
 	}
 
-	for i := 0; i < len(m.Result); i++ {
-		if swag.IsZero(m.Result[i]) { // not required
+	for i := 0; i < len(m.Rolebindings); i++ {
+		if swag.IsZero(m.Rolebindings[i]) { // not required
 			continue
 		}
 
-		if m.Result[i] != nil {
-			if err := m.Result[i].Validate(formats); err != nil {
+		if m.Rolebindings[i] != nil {
+			if err := m.Rolebindings[i].Validate(formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("result" + "." + strconv.Itoa(i))
+					return ve.ValidateName("rolebindings" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
@@ -75,20 +67,11 @@ func (m *V2RoleBindingsListResponse) validateResult(formats strfmt.Registry) err
 	return nil
 }
 
-func (m *V2RoleBindingsListResponse) validateRevision(formats strfmt.Registry) error {
-
-	if err := validate.Required("revision", "body", m.Revision); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 // ContextValidate validate this v2 role bindings list response based on the context it is used
 func (m *V2RoleBindingsListResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.contextValidateResult(ctx, formats); err != nil {
+	if err := m.contextValidateRolebindings(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -98,14 +81,14 @@ func (m *V2RoleBindingsListResponse) ContextValidate(ctx context.Context, format
 	return nil
 }
 
-func (m *V2RoleBindingsListResponse) contextValidateResult(ctx context.Context, formats strfmt.Registry) error {
+func (m *V2RoleBindingsListResponse) contextValidateRolebindings(ctx context.Context, formats strfmt.Registry) error {
 
-	for i := 0; i < len(m.Result); i++ {
+	for i := 0; i < len(m.Rolebindings); i++ {
 
-		if m.Result[i] != nil {
-			if err := m.Result[i].ContextValidate(ctx, formats); err != nil {
+		if m.Rolebindings[i] != nil {
+			if err := m.Rolebindings[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("result" + "." + strconv.Itoa(i))
+					return ve.ValidateName("rolebindings" + "." + strconv.Itoa(i))
 				}
 				return err
 			}

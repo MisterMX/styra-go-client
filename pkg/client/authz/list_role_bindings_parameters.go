@@ -14,6 +14,7 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // NewListRoleBindingsParams creates a new ListRoleBindingsParams object,
@@ -58,6 +59,43 @@ func NewListRoleBindingsParamsWithHTTPClient(client *http.Client) *ListRoleBindi
    Typically these are written to a http.Request.
 */
 type ListRoleBindingsParams struct {
+
+	/* Internal.
+
+	   if set to 'true', returns only internal rolebindings
+	*/
+	Internal *bool
+
+	/* ResourceID.
+
+	   if set returns only rolebindings involving the specified resource id
+	*/
+	ResourceID *string
+
+	/* ResourceKind.
+
+	   if set returns only rolebindings involving the specified resource kind
+	*/
+	ResourceKind *string
+
+	/* RoleID.
+
+	   if set returns only rolebindings involving the specified role id
+	*/
+	RoleID *string
+
+	/* SubjectID.
+
+	   if set returns only rolebindings involving the specified subject id
+	*/
+	SubjectID *string
+
+	/* SubjectKind.
+
+	   if set returns only rolebindings involving the specified subject kind
+	*/
+	SubjectKind *string
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -111,6 +149,72 @@ func (o *ListRoleBindingsParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithInternal adds the internal to the list role bindings params
+func (o *ListRoleBindingsParams) WithInternal(internal *bool) *ListRoleBindingsParams {
+	o.SetInternal(internal)
+	return o
+}
+
+// SetInternal adds the internal to the list role bindings params
+func (o *ListRoleBindingsParams) SetInternal(internal *bool) {
+	o.Internal = internal
+}
+
+// WithResourceID adds the resourceID to the list role bindings params
+func (o *ListRoleBindingsParams) WithResourceID(resourceID *string) *ListRoleBindingsParams {
+	o.SetResourceID(resourceID)
+	return o
+}
+
+// SetResourceID adds the resourceId to the list role bindings params
+func (o *ListRoleBindingsParams) SetResourceID(resourceID *string) {
+	o.ResourceID = resourceID
+}
+
+// WithResourceKind adds the resourceKind to the list role bindings params
+func (o *ListRoleBindingsParams) WithResourceKind(resourceKind *string) *ListRoleBindingsParams {
+	o.SetResourceKind(resourceKind)
+	return o
+}
+
+// SetResourceKind adds the resourceKind to the list role bindings params
+func (o *ListRoleBindingsParams) SetResourceKind(resourceKind *string) {
+	o.ResourceKind = resourceKind
+}
+
+// WithRoleID adds the roleID to the list role bindings params
+func (o *ListRoleBindingsParams) WithRoleID(roleID *string) *ListRoleBindingsParams {
+	o.SetRoleID(roleID)
+	return o
+}
+
+// SetRoleID adds the roleId to the list role bindings params
+func (o *ListRoleBindingsParams) SetRoleID(roleID *string) {
+	o.RoleID = roleID
+}
+
+// WithSubjectID adds the subjectID to the list role bindings params
+func (o *ListRoleBindingsParams) WithSubjectID(subjectID *string) *ListRoleBindingsParams {
+	o.SetSubjectID(subjectID)
+	return o
+}
+
+// SetSubjectID adds the subjectId to the list role bindings params
+func (o *ListRoleBindingsParams) SetSubjectID(subjectID *string) {
+	o.SubjectID = subjectID
+}
+
+// WithSubjectKind adds the subjectKind to the list role bindings params
+func (o *ListRoleBindingsParams) WithSubjectKind(subjectKind *string) *ListRoleBindingsParams {
+	o.SetSubjectKind(subjectKind)
+	return o
+}
+
+// SetSubjectKind adds the subjectKind to the list role bindings params
+func (o *ListRoleBindingsParams) SetSubjectKind(subjectKind *string) {
+	o.SubjectKind = subjectKind
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *ListRoleBindingsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -118,6 +222,108 @@ func (o *ListRoleBindingsParams) WriteToRequest(r runtime.ClientRequest, reg str
 		return err
 	}
 	var res []error
+
+	if o.Internal != nil {
+
+		// query param internal
+		var qrInternal bool
+
+		if o.Internal != nil {
+			qrInternal = *o.Internal
+		}
+		qInternal := swag.FormatBool(qrInternal)
+		if qInternal != "" {
+
+			if err := r.SetQueryParam("internal", qInternal); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.ResourceID != nil {
+
+		// query param resource_id
+		var qrResourceID string
+
+		if o.ResourceID != nil {
+			qrResourceID = *o.ResourceID
+		}
+		qResourceID := qrResourceID
+		if qResourceID != "" {
+
+			if err := r.SetQueryParam("resource_id", qResourceID); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.ResourceKind != nil {
+
+		// query param resource_kind
+		var qrResourceKind string
+
+		if o.ResourceKind != nil {
+			qrResourceKind = *o.ResourceKind
+		}
+		qResourceKind := qrResourceKind
+		if qResourceKind != "" {
+
+			if err := r.SetQueryParam("resource_kind", qResourceKind); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.RoleID != nil {
+
+		// query param role_id
+		var qrRoleID string
+
+		if o.RoleID != nil {
+			qrRoleID = *o.RoleID
+		}
+		qRoleID := qrRoleID
+		if qRoleID != "" {
+
+			if err := r.SetQueryParam("role_id", qRoleID); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.SubjectID != nil {
+
+		// query param subject_id
+		var qrSubjectID string
+
+		if o.SubjectID != nil {
+			qrSubjectID = *o.SubjectID
+		}
+		qSubjectID := qrSubjectID
+		if qSubjectID != "" {
+
+			if err := r.SetQueryParam("subject_id", qSubjectID); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.SubjectKind != nil {
+
+		// query param subject_kind
+		var qrSubjectKind string
+
+		if o.SubjectKind != nil {
+			qrSubjectKind = *o.SubjectKind
+		}
+		qSubjectKind := qrSubjectKind
+		if qSubjectKind != "" {
+
+			if err := r.SetQueryParam("subject_kind", qSubjectKind); err != nil {
+				return err
+			}
+		}
+	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)

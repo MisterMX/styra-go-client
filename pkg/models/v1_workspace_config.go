@@ -24,8 +24,14 @@ type V1WorkspaceConfig struct {
 	// metadata
 	Metadata *V1ObjectMeta `json:"metadata,omitempty"`
 
+	// metrics exporter
+	MetricsExporter *V1MetricsExporterConfig `json:"metrics_exporter,omitempty"`
+
 	// source control
 	SourceControl *V1SourceControlConfig `json:"source_control,omitempty"`
+
+	// status
+	Status *V1Status `json:"status,omitempty"`
 }
 
 // Validate validates this v1 workspace config
@@ -40,7 +46,15 @@ func (m *V1WorkspaceConfig) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateMetricsExporter(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.validateSourceControl(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateStatus(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -84,6 +98,23 @@ func (m *V1WorkspaceConfig) validateMetadata(formats strfmt.Registry) error {
 	return nil
 }
 
+func (m *V1WorkspaceConfig) validateMetricsExporter(formats strfmt.Registry) error {
+	if swag.IsZero(m.MetricsExporter) { // not required
+		return nil
+	}
+
+	if m.MetricsExporter != nil {
+		if err := m.MetricsExporter.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("metrics_exporter")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (m *V1WorkspaceConfig) validateSourceControl(formats strfmt.Registry) error {
 	if swag.IsZero(m.SourceControl) { // not required
 		return nil
@@ -93,6 +124,23 @@ func (m *V1WorkspaceConfig) validateSourceControl(formats strfmt.Registry) error
 		if err := m.SourceControl.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("source_control")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *V1WorkspaceConfig) validateStatus(formats strfmt.Registry) error {
+	if swag.IsZero(m.Status) { // not required
+		return nil
+	}
+
+	if m.Status != nil {
+		if err := m.Status.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("status")
 			}
 			return err
 		}
@@ -113,7 +161,15 @@ func (m *V1WorkspaceConfig) ContextValidate(ctx context.Context, formats strfmt.
 		res = append(res, err)
 	}
 
+	if err := m.contextValidateMetricsExporter(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.contextValidateSourceControl(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateStatus(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -151,12 +207,40 @@ func (m *V1WorkspaceConfig) contextValidateMetadata(ctx context.Context, formats
 	return nil
 }
 
+func (m *V1WorkspaceConfig) contextValidateMetricsExporter(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.MetricsExporter != nil {
+		if err := m.MetricsExporter.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("metrics_exporter")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
 func (m *V1WorkspaceConfig) contextValidateSourceControl(ctx context.Context, formats strfmt.Registry) error {
 
 	if m.SourceControl != nil {
 		if err := m.SourceControl.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("source_control")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *V1WorkspaceConfig) contextValidateStatus(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Status != nil {
+		if err := m.Status.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("status")
 			}
 			return err
 		}

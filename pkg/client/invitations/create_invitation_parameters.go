@@ -14,6 +14,7 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 
 	"github.com/mistermx/styra-go-client/pkg/models"
 )
@@ -63,6 +64,12 @@ type CreateInvitationParams struct {
 
 	// Body.
 	Body *models.V1InvitationsPostRequest
+
+	/* Email.
+
+	   set to false to avoid sending an email
+	*/
+	Email *bool
 
 	timeout    time.Duration
 	Context    context.Context
@@ -128,6 +135,17 @@ func (o *CreateInvitationParams) SetBody(body *models.V1InvitationsPostRequest) 
 	o.Body = body
 }
 
+// WithEmail adds the email to the create invitation params
+func (o *CreateInvitationParams) WithEmail(email *bool) *CreateInvitationParams {
+	o.SetEmail(email)
+	return o
+}
+
+// SetEmail adds the email to the create invitation params
+func (o *CreateInvitationParams) SetEmail(email *bool) {
+	o.Email = email
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *CreateInvitationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -138,6 +156,23 @@ func (o *CreateInvitationParams) WriteToRequest(r runtime.ClientRequest, reg str
 	if o.Body != nil {
 		if err := r.SetBodyParam(o.Body); err != nil {
 			return err
+		}
+	}
+
+	if o.Email != nil {
+
+		// query param email
+		var qrEmail bool
+
+		if o.Email != nil {
+			qrEmail = *o.Email
+		}
+		qEmail := swag.FormatBool(qrEmail)
+		if qEmail != "" {
+
+			if err := r.SetQueryParam("email", qEmail); err != nil {
+				return err
+			}
 		}
 	}
 
