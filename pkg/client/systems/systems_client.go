@@ -7,6 +7,7 @@ package systems
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
@@ -38,7 +39,7 @@ type ClientService interface {
 
 	DeleteUserBranchSystem(params *DeleteUserBranchSystemParams, opts ...ClientOption) (*DeleteUserBranchSystemOK, error)
 
-	GetAsset(params *GetAssetParams, opts ...ClientOption) error
+	GetAsset(params *GetAssetParams, writer io.Writer, opts ...ClientOption) (*GetAssetOK, error)
 
 	GetDefaultPolicies(params *GetDefaultPoliciesParams, opts ...ClientOption) (*GetDefaultPoliciesOK, error)
 
@@ -240,7 +241,7 @@ func (a *Client) DeleteUserBranchSystem(params *DeleteUserBranchSystemParams, op
 /*
   GetAsset gets system asset
 */
-func (a *Client) GetAsset(params *GetAssetParams, opts ...ClientOption) error {
+func (a *Client) GetAsset(params *GetAssetParams, writer io.Writer, opts ...ClientOption) (*GetAssetOK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
 		params = NewGetAssetParams()
@@ -253,7 +254,7 @@ func (a *Client) GetAsset(params *GetAssetParams, opts ...ClientOption) error {
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
 		Params:             params,
-		Reader:             &GetAssetReader{formats: a.formats},
+		Reader:             &GetAssetReader{formats: a.formats, writer: writer},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	}
@@ -261,11 +262,18 @@ func (a *Client) GetAsset(params *GetAssetParams, opts ...ClientOption) error {
 		opt(op)
 	}
 
-	_, err := a.transport.Submit(op)
+	result, err := a.transport.Submit(op)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	success, ok := result.(*GetAssetOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for GetAsset: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*

@@ -18,11 +18,18 @@ import (
 // GetAssetReader is a Reader for the GetAsset structure.
 type GetAssetReader struct {
 	formats strfmt.Registry
+	writer  io.Writer
 }
 
 // ReadResponse reads a server response into the received o.
 func (o *GetAssetReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
+	case 200:
+		result := NewGetAssetOK(o.writer)
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return result, nil
 	case 404:
 		result := NewGetAssetNotFound()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -32,6 +39,39 @@ func (o *GetAssetReader) ReadResponse(response runtime.ClientResponse, consumer 
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
+}
+
+// NewGetAssetOK creates a GetAssetOK with default headers values
+func NewGetAssetOK(writer io.Writer) *GetAssetOK {
+	return &GetAssetOK{
+
+		Payload: writer,
+	}
+}
+
+/* GetAssetOK describes a response with status code 200, with default header values.
+
+OK
+*/
+type GetAssetOK struct {
+	Payload io.Writer
+}
+
+func (o *GetAssetOK) Error() string {
+	return fmt.Sprintf("[GET /v1/systems/{system}/assets/{assettype}][%d] getAssetOK  %+v", 200, o.Payload)
+}
+func (o *GetAssetOK) GetPayload() io.Writer {
+	return o.Payload
+}
+
+func (o *GetAssetOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
 }
 
 // NewGetAssetNotFound creates a GetAssetNotFound with default headers values
