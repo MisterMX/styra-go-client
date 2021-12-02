@@ -163,7 +163,7 @@ type V1DatasourcesGetResponseResult struct {
 	Path string `json:"path,omitempty"`
 
 	// path regexp
-	PathRegexp *string `json:"path_regexp,omitempty"`
+	PathRegexp string `json:"path_regexp,omitempty"`
 
 	// policy filter
 	PolicyFilter string `json:"policy_filter,omitempty"`
@@ -172,7 +172,7 @@ type V1DatasourcesGetResponseResult struct {
 	PolicyQuery string `json:"policy_query,omitempty"`
 
 	// polling interval
-	PollingInterval *string `json:"polling_interval,omitempty"`
+	PollingInterval int64 `json:"polling_interval,omitempty"`
 
 	// requests per second
 	RateLimit *float64 `json:"rate_limit,omitempty"`
@@ -196,7 +196,7 @@ type V1DatasourcesGetResponseResult struct {
 	Status *V1DatasourcesGetResponseResultStatus `json:"status,omitempty"`
 
 	// timeout
-	Timeout *string `json:"timeout,omitempty"`
+	Timeout int64 `json:"timeout,omitempty"`
 
 	// `The property is not used`
 	TLSCaCertificate string `json:"tls_ca_certificate,omitempty"`
