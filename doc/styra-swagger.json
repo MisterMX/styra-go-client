@@ -3373,8 +3373,8 @@
                 "responses": {
                     "200": {
                         "description": "OK",
-                        "schema":{
-                            "type":"file"
+                        "schema": {
+                            "type": "file"
                         }
                     },
                     "404": {
@@ -6596,7 +6596,180 @@
                     "type": "string"
                 },
                 "result": {
-                    "type": "object"
+                    "type": "object",
+                    "description": "Response object that contains all ṕossible fields",
+                    "properties": {
+                        "category": {
+                            "type": "string",
+                            "description": "Must be `policy-library`"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "executed": {
+                            "type": "string"
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "metadata": {
+                            "type": "object"
+                        },
+                        "status": {
+                            "type": "object",
+                            "description": "status of the datasource",
+                            "properties": {
+                                "code": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "timestamp": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                }
+                            }
+                        },
+                        "on_premises": {
+                            "type": "boolean",
+                            "description": "Must be `true`"
+                        },
+                        "type": {
+                            "type": "string"
+                        },
+                        "credentials": {
+                            "description": "Secret ID with credentials",
+                            "type": "string"
+                        },
+                        "region": {
+                            "description": "AWS region",
+                            "type": "string"
+                        },
+                        "reference": {
+                            "type": "string"
+                        },
+                        "ssh_credentials": {
+                            "type": "object",
+                            "required": [
+                                "private_key"
+                            ],
+                            "properties": {
+                                "passphrase": {
+                                    "description": "Secret ID with passphrase",
+                                    "type": "string"
+                                },
+                                "private_key": {
+                                    "description": "Secret ID with private key",
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "timeout": {
+                            "type": "integer"
+                        },
+                        "tls_ca_certificate": {
+                            "description": "`The property is not used`",
+                            "type": "string"
+                        },
+                        "tls_certificate": {
+                            "description": "`The property is not used`",
+                            "type": "string"
+                        },
+                        "tls_key": {
+                            "description": "`The property is not used`",
+                            "type": "string"
+                        },
+                        "tls_server_name": {
+                            "description": "`The property is not used`",
+                            "type": "string"
+                        },
+                        "tls_verify_server": {
+                            "description": "`The property is not used`",
+                            "type": "boolean"
+                        },
+                        "url": {
+                            "description": "Git URL",
+                            "type": "string"
+                        },
+                        "polling_interval": {
+                            "type": "integer"
+                        },
+                        "rate_limit": {
+                            "description": "requests per second",
+                            "type": "number",
+                            "default": 3
+                        },
+                        "bucket": {
+                            "description": "S3 Bucket",
+                            "type": "string"
+                        },
+                        "endpoint": {
+                            "description": "Endpoint to S3 storage",
+                            "type": "string"
+                        },
+                        "path": {
+                            "description": "S3 Path within a Bucket",
+                            "type": "string"
+                        },
+                        "ca_certificate": {
+                            "description": "Custom CA certificate",
+                            "type": "string"
+                        },
+                        "headers": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/datasources.HTTP.Header"
+                            }
+                        },
+                        "policy_filter": {
+                            "type": "string"
+                        },
+                        "policy_query": {
+                            "type": "string"
+                        },
+                        "skip_tls_verification": {
+                            "description": "Skip TLS verification",
+                            "type": "boolean"
+                        },
+                        "RegistryId": {
+                            "description": "Registry ID",
+                            "type": "string"
+                        },
+                        "content_type": {
+                            "type": "string"
+                        },
+                        "masks": {
+                            "description": "strip out resource properties given their relative path",
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "namespaces": {
+                            "description": "allows to include/exclude namespaces",
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "boolean"
+                            }
+                        },
+                        "selectors": {
+                            "description": "field selectors per resource [group]",
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        },
+                        "path_regexp": {
+                            "type": "string"
+                        }
+                    }
                 }
             }
         },
@@ -6631,391 +6804,150 @@
             }
         },
         "v1.DatasourcesPutRequest": {
-            "oneOf": [
-                {
-                    "title": "aws/ecr",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/datasources.Common"
-                        },
-                        {
-                            "$ref": "#/definitions/datasources.RateLimiter"
-                        },
-                        {
-                            "$ref": "#/definitions/datasources.Poller"
-                        },
-                        {
-                            "$ref": "#/definitions/datasources.AWS.Common"
-                        },
-                        {
-                            "type": "object",
-                            "properties": {
-                                "RegistryId": {
-                                    "description": "Registry ID",
-                                    "type": "string"
-                                },
-                                "category": {
-                                    "description": "Must be `aws/ecr`"
-                                },
-                                "type": {
-                                    "description": "Must be `pull`"
-                                }
-                            }
-                        }
+            "type": "object",
+            "required": [
+                "category",
+                "on_premises",
+                "type"
+            ],
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "description": "Must be `policy-library`"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "enabled": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "on_premises": {
+                    "type": "boolean",
+                    "description": "Must be `true`"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "pull",
+                        "push"
                     ],
-                    "x-datasource": true,
-                    "example": {
-                        "category": "aws/ecr",
-                        "credentials": "aws_creds",
-                        "on_premises": false,
-                        "region": "us-east-1",
-                        "type": "pull"
+                    "description": "Must be `pull`"
+                },
+                "credentials": {
+                    "description": "Secret ID with credentials",
+                    "type": "string"
+                },
+                "region": {
+                    "description": "AWS region",
+                    "type": "string"
+                },
+                "reference": {
+                    "type": "string",
+                    "default": "refs/heads/master"
+                },
+                "ssh_credentials": {
+                    "type": "object",
+                    "required": [
+                        "private_key"
+                    ],
+                    "properties": {
+                        "passphrase": {
+                            "description": "Secret ID with passphrase",
+                            "type": "string"
+                        },
+                        "private_key": {
+                            "description": "Secret ID with private key",
+                            "type": "string"
+                        }
                     }
                 },
-                {
-                    "title": "bundle/s3",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/datasources.Common"
-                        },
-                        {
-                            "$ref": "#/definitions/datasources.Poller"
-                        },
-                        {
-                            "$ref": "#/definitions/datasources.AWS.Common"
-                        },
-                        {
-                            "type": "object",
-                            "required": [
-                                "bucket",
-                                "path"
-                            ],
-                            "properties": {
-                                "bucket": {
-                                    "description": "S3 Bucket",
-                                    "type": "string"
-                                },
-                                "category": {
-                                    "description": "Must be `bundle/s3`"
-                                },
-                                "endpoint": {
-                                    "description": "Endpoint to S3 storage",
-                                    "type": "string"
-                                },
-                                "path": {
-                                    "description": "S3 Path within a Bucket",
-                                    "type": "string"
-                                },
-                                "type": {
-                                    "description": "Must be `pull`"
-                                }
-                            }
-                        }
-                    ],
-                    "x-datasource": true,
-                    "example": {
-                        "bucket": "foo",
-                        "category": "bundle/s3",
-                        "credentials": "s3_creds",
-                        "endpoint": "https://s3.example.com",
-                        "on_premises": false,
-                        "path": "bar/xyz",
-                        "region": "us-east-1",
-                        "type": "pull"
+                "timeout": {
+                    "type": "string",
+                    "default": "60s"
+                },
+                "url": {
+                    "description": "Git URL",
+                    "type": "string"
+                },
+                "polling_interval": {
+                    "type": "string",
+                    "default": "30s"
+                },
+                "rate_limit": {
+                    "description": "requests per second",
+                    "type": "number",
+                    "default": 3
+                },
+                "bucket": {
+                    "description": "S3 Bucket",
+                    "type": "string"
+                },
+                "endpoint": {
+                    "description": "Endpoint to S3 storage",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "S3 Path within a Bucket",
+                    "type": "string"
+                },
+                "ca_certificate": {
+                    "description": "Custom CA certificate",
+                    "type": "string"
+                },
+                "headers": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/datasources.HTTP.Header"
                     }
                 },
-                {
-                    "title": "git/blame",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/datasources.Git.Common"
-                        },
-                        {
-                            "type": "object",
-                            "properties": {
-                                "category": {
-                                    "description": "Must be `git/blame`"
-                                },
-                                "path_regexp": {
-                                    "type": "string",
-                                    "default": ".*"
-                                },
-                                "type": {
-                                    "description": "Must be `pull`"
-                                }
-                            }
+                "policy_filter": {
+                    "type": "string"
+                },
+                "policy_query": {
+                    "type": "string"
+                },
+                "skip_tls_verification": {
+                    "description": "Skip TLS verification",
+                    "type": "boolean",
+                    "default": false
+                },
+                "RegistryId": {
+                    "description": "Registry ID",
+                    "type": "string"
+                },
+                "content_type": {
+                    "type": "string"
+                },
+                "masks": {
+                    "description": "strip out resource properties given their relative path",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
                         }
-                    ],
-                    "x-datasource": true,
-                    "example": {
-                        "category": "git/blame",
-                        "on_premises": false,
-                        "path_regexp\"": "^foo.+bar$",
-                        "reference\"": "refs/heads/main",
-                        "ssh_credentials": {
-                            "private_key": "git_ssh_key"
-                        },
-                        "type": "pull",
-                        "url": "https://git.example.com"
                     }
                 },
-                {
-                    "title": "git/content",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/datasources.Git.Common"
-                        },
-                        {
-                            "type": "object",
-                            "properties": {
-                                "category": {
-                                    "description": "Must be `git/content`"
-                                },
-                                "type": {
-                                    "description": "Must be `pull`"
-                                }
-                            }
-                        }
-                    ],
-                    "x-datasource": true,
-                    "example": {
-                        "category": "git/content",
-                        "on_premises": false,
-                        "reference\"": "refs/heads/main",
-                        "ssh_credentials": {
-                            "private_key": "git_ssh_key"
-                        },
-                        "type": "pull",
-                        "url": "https://git.example.com"
+                "namespaces": {
+                    "description": "allows to include/exclude namespaces",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "boolean"
                     }
                 },
-                {
-                    "title": "git/rego",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/datasources.Git.Common"
-                        },
-                        {
-                            "type": "object",
-                            "properties": {
-                                "category": {
-                                    "description": "Must be `git/rego`"
-                                },
-                                "path": {
-                                    "type": "string"
-                                },
-                                "type": {
-                                    "description": "Must be `pull`"
-                                }
-                            }
-                        }
-                    ],
-                    "x-datasource": true,
-                    "example": {
-                        "category": "git/rego",
-                        "on_premises": false,
-                        "path": "foo/bar",
-                        "reference\"": "refs/heads/main",
-                        "ssh_credentials": {
-                            "private_key": "git_ssh_key"
-                        },
-                        "type": "pull",
-                        "url": "https://git.example.com"
+                "selectors": {
+                    "description": "field selectors per resource [group]",
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
                     }
                 },
-                {
-                    "title": "http",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/datasources.Common"
-                        },
-                        {
-                            "$ref": "#/definitions/datasources.Poller"
-                        },
-                        {
-                            "type": "object",
-                            "required": [
-                                "url"
-                            ],
-                            "properties": {
-                                "ca_certificate": {
-                                    "description": "Custom CA certificate",
-                                    "type": "string"
-                                },
-                                "category": {
-                                    "description": "Must be `http`"
-                                },
-                                "headers": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/definitions/datasources.HTTP.Header"
-                                    }
-                                },
-                                "policy_filter": {
-                                    "type": "string"
-                                },
-                                "policy_query": {
-                                    "type": "string"
-                                },
-                                "skip_tls_verification": {
-                                    "description": "Skip TLS verification",
-                                    "type": "boolean",
-                                    "default": false
-                                },
-                                "type": {
-                                    "description": "Must be `pull`"
-                                },
-                                "url": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    ],
-                    "x-datasource": true,
-                    "example": {
-                        "ca_certificate": "-----BEGIN CERTIFICATE REQUEST----- MIIB9TCCAWACAQAwgbgxGTAXBgNVBAoMEFF1b1ZhZGlzIExpbWl0ZWQxHDAaBgNV BAsME0RvY3VtZW50IERlcGFydG1lbnQxOTA3BgNVBAMMMFdoeSBhcmUgeW91IGRl Y29kaW5nIG1lPyAgVGhpcyBpcyBvbmx5IGEgdGVzdCEhITERMA8GA1UEBwwISGFt aWx0b24xETAPBgNVBAgMCFBlbWJyb2tlMQswCQYDVQQGEwJCTTEPMA0GCSqGSIb3 DQEJARYAMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCJ9WRanG/fUvcfKiGl EL4aRLjGt537mZ28UU9/3eiJeJznNSOuNLnF+hmabAu7H0LT4K7EdqfF+XUZW/2j RKRYcvOUDGF9A7OjW7UfKk1In3+6QDCi7X34RE161jqoaJjrm/T18TOKcgkkhRzE apQnIDm0Ea/HVzX/PiSOGuertwIDAQABMAsGCSqGSIb3DQEBBQOBgQBzMJdAV4QP Awel8LzGx5uMOshezF/KfP67wJ93UW+N7zXY6AwPgoLj4Kjw+WtU684JL8Dtr9FX ozakE+8p06BpxegR4BR3FMHf6p+0jQxUEAkAyb/mVgm66TyghDGC6/YkiKoZptXQ 98TwDIK/39WEB/V607As+KoYazQG8drorw== -----END CERTIFICATE REQUEST-----\n",
-                        "category": "http",
-                        "headers": {
-                            "name": "TOKEN",
-                            "secret_id": "http_token"
-                        },
-                        "on_premises": false,
-                        "polling_interval": "60s",
-                        "type": "pull"
-                    }
-                },
-                {
-                    "title": "kubernetes/resources",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/datasources.Common"
-                        },
-                        {
-                            "$ref": "#/definitions/datasources.RateLimiter"
-                        },
-                        {
-                            "$ref": "#/definitions/datasources.Poller"
-                        },
-                        {
-                            "type": "object",
-                            "properties": {
-                                "category": {
-                                    "description": "Must be `kubernetes/resources`"
-                                },
-                                "masks": {
-                                    "description": "strip out resource properties given their relative path",
-                                    "type": "object",
-                                    "additionalProperties": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string"
-                                        }
-                                    }
-                                },
-                                "namespaces": {
-                                    "description": "allows to include/exclude namespaces",
-                                    "type": "object",
-                                    "additionalProperties": {
-                                        "type": "boolean"
-                                    }
-                                },
-                                "on_premises": {
-                                    "description": "Must be `true`"
-                                },
-                                "selectors": {
-                                    "description": "field selectors per resource [group]",
-                                    "type": "object",
-                                    "additionalProperties": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": {
-                                    "description": "Must be `pull`"
-                                }
-                            }
-                        }
-                    ],
-                    "x-datasource": true,
-                    "example": {
-                        "category": "kubernetes/resources",
-                        "masks": {
-                            "argoproj.io/workflows": [
-                                "*"
-                            ],
-                            "pods": [
-                                "spec.afinity",
-                                "spec/livenessProbe",
-                                "status",
-                                "metadata.annotations.'kubectl.kubernetes.io/last-applied-configuration'"
-                            ]
-                        },
-                        "namespaces": {
-                            "": false,
-                            "*": false,
-                            "nsName": true
-                        },
-                        "on_premises": true,
-                        "rate_limit": 3,
-                        "selectors": {
-                            "ingress": "metadata.namespace==default",
-                            "pods": "status.phase!=Running,spec.restartPolicy=Always"
-                        },
-                        "type": "pull"
-                    }
-                },
-                {
-                    "title": "policy-library",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/datasources.Common"
-                        },
-                        {
-                            "$ref": "#/definitions/datasources.Poller"
-                        },
-                        {
-                            "type": "object",
-                            "properties": {
-                                "category": {
-                                    "description": "Must be `policy-library`"
-                                },
-                                "type": {
-                                    "description": "Must be `pull`"
-                                }
-                            }
-                        }
-                    ],
-                    "x-datasource": true
-                },
-                {
-                    "title": "rest",
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/datasources.Common"
-                        },
-                        {
-                            "type": "object",
-                            "properties": {
-                                "category": {
-                                    "description": "Must be `rest`"
-                                },
-                                "content_type": {
-                                    "type": "string"
-                                },
-                                "type": {
-                                    "description": "Must be `push`"
-                                }
-                            }
-                        }
-                    ],
-                    "x-datasource": true,
-                    "example": {
-                        "category": "rest",
-                        "content_type": "application/json",
-                        "on_premises": false,
-                        "type": "push"
-                    }
+                "path_regexp": {
+                    "type": "string",
+                    "default": ".*"
                 }
-            ]
+            }
         },
         "v1.DatasourcesPutResponse": {
             "type": "object",

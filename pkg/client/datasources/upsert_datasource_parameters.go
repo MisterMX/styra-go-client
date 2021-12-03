@@ -68,7 +68,7 @@ type UpsertDatasourceParams struct {
 	IfNoneMatch *string
 
 	// Body.
-	Body models.V1DatasourcesPutRequest
+	Body *models.V1DatasourcesPutRequest
 
 	/* Datasource.
 
@@ -141,13 +141,13 @@ func (o *UpsertDatasourceParams) SetIfNoneMatch(ifNoneMatch *string) {
 }
 
 // WithBody adds the body to the upsert datasource params
-func (o *UpsertDatasourceParams) WithBody(body models.V1DatasourcesPutRequest) *UpsertDatasourceParams {
+func (o *UpsertDatasourceParams) WithBody(body *models.V1DatasourcesPutRequest) *UpsertDatasourceParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the upsert datasource params
-func (o *UpsertDatasourceParams) SetBody(body models.V1DatasourcesPutRequest) {
+func (o *UpsertDatasourceParams) SetBody(body *models.V1DatasourcesPutRequest) {
 	o.Body = body
 }
 
