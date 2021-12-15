@@ -74,7 +74,7 @@ type ValidateStackComplianceParams struct {
 	Asyncresponse *string
 
 	// Body.
-	Body *models.V1StacksComplianceRequest
+	Body *models.StacksV1StacksComplianceRequest
 
 	/* Interval.
 
@@ -82,11 +82,11 @@ type ValidateStackComplianceParams struct {
 	*/
 	Interval *string
 
-	/* System.
+	/* Stack.
 
-	   system ID
+	   stack id
 	*/
-	System string
+	Stack string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -164,13 +164,13 @@ func (o *ValidateStackComplianceParams) SetAsyncresponse(asyncresponse *string) 
 }
 
 // WithBody adds the body to the validate stack compliance params
-func (o *ValidateStackComplianceParams) WithBody(body *models.V1StacksComplianceRequest) *ValidateStackComplianceParams {
+func (o *ValidateStackComplianceParams) WithBody(body *models.StacksV1StacksComplianceRequest) *ValidateStackComplianceParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the validate stack compliance params
-func (o *ValidateStackComplianceParams) SetBody(body *models.V1StacksComplianceRequest) {
+func (o *ValidateStackComplianceParams) SetBody(body *models.StacksV1StacksComplianceRequest) {
 	o.Body = body
 }
 
@@ -185,15 +185,15 @@ func (o *ValidateStackComplianceParams) SetInterval(interval *string) {
 	o.Interval = interval
 }
 
-// WithSystem adds the system to the validate stack compliance params
-func (o *ValidateStackComplianceParams) WithSystem(system string) *ValidateStackComplianceParams {
-	o.SetSystem(system)
+// WithStack adds the stack to the validate stack compliance params
+func (o *ValidateStackComplianceParams) WithStack(stack string) *ValidateStackComplianceParams {
+	o.SetStack(stack)
 	return o
 }
 
-// SetSystem adds the system to the validate stack compliance params
-func (o *ValidateStackComplianceParams) SetSystem(system string) {
-	o.System = system
+// SetStack adds the stack to the validate stack compliance params
+func (o *ValidateStackComplianceParams) SetStack(stack string) {
+	o.Stack = stack
 }
 
 // WriteToRequest writes these params to a swagger request
@@ -260,8 +260,8 @@ func (o *ValidateStackComplianceParams) WriteToRequest(r runtime.ClientRequest, 
 		}
 	}
 
-	// path param system
-	if err := r.SetPathParam("system", o.System); err != nil {
+	// path param stack
+	if err := r.SetPathParam("stack", o.Stack); err != nil {
 		return err
 	}
 

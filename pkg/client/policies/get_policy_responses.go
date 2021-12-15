@@ -50,19 +50,19 @@ func NewGetPolicyOK() *GetPolicyOK {
 OK
 */
 type GetPolicyOK struct {
-	Payload *models.V1PolicyGetResponse
+	Payload *models.PoliciesV1PolicyGetResponse
 }
 
 func (o *GetPolicyOK) Error() string {
 	return fmt.Sprintf("[GET /v1/policies/{policy}][%d] getPolicyOK  %+v", 200, o.Payload)
 }
-func (o *GetPolicyOK) GetPayload() *models.V1PolicyGetResponse {
+func (o *GetPolicyOK) GetPayload() *models.PoliciesV1PolicyGetResponse {
 	return o.Payload
 }
 
 func (o *GetPolicyOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1PolicyGetResponse)
+	o.Payload = new(models.PoliciesV1PolicyGetResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewGetPolicyNotFound() *GetPolicyNotFound {
 Not Found
 */
 type GetPolicyNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *GetPolicyNotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/policies/{policy}][%d] getPolicyNotFound  %+v", 404, o.Payload)
 }
-func (o *GetPolicyNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *GetPolicyNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *GetPolicyNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

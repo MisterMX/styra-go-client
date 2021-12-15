@@ -50,19 +50,19 @@ func NewDeleteUserBranchSystemOK() *DeleteUserBranchSystemOK {
 OK
 */
 type DeleteUserBranchSystemOK struct {
-	Payload *models.V1DeleteBranchResponse
+	Payload *models.GitV1DeleteBranchResponse
 }
 
 func (o *DeleteUserBranchSystemOK) Error() string {
 	return fmt.Sprintf("[DELETE /v1/systems/{id}/branch][%d] deleteUserBranchSystemOK  %+v", 200, o.Payload)
 }
-func (o *DeleteUserBranchSystemOK) GetPayload() *models.V1DeleteBranchResponse {
+func (o *DeleteUserBranchSystemOK) GetPayload() *models.GitV1DeleteBranchResponse {
 	return o.Payload
 }
 
 func (o *DeleteUserBranchSystemOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1DeleteBranchResponse)
+	o.Payload = new(models.GitV1DeleteBranchResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewDeleteUserBranchSystemNotFound() *DeleteUserBranchSystemNotFound {
 Not Found
 */
 type DeleteUserBranchSystemNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *DeleteUserBranchSystemNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /v1/systems/{id}/branch][%d] deleteUserBranchSystemNotFound  %+v", 404, o.Payload)
 }
-func (o *DeleteUserBranchSystemNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *DeleteUserBranchSystemNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *DeleteUserBranchSystemNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

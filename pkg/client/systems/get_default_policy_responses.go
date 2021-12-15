@@ -50,19 +50,19 @@ func NewGetDefaultPolicyOK() *GetDefaultPolicyOK {
 OK
 */
 type GetDefaultPolicyOK struct {
-	Payload *models.V1SystemsGetDefaultPolicyResponse
+	Payload *models.SystemsV1SystemsGetDefaultPolicyResponse
 }
 
 func (o *GetDefaultPolicyOK) Error() string {
 	return fmt.Sprintf("[GET /v1/systems/{system}/default-policies/{path}][%d] getDefaultPolicyOK  %+v", 200, o.Payload)
 }
-func (o *GetDefaultPolicyOK) GetPayload() *models.V1SystemsGetDefaultPolicyResponse {
+func (o *GetDefaultPolicyOK) GetPayload() *models.SystemsV1SystemsGetDefaultPolicyResponse {
 	return o.Payload
 }
 
 func (o *GetDefaultPolicyOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1SystemsGetDefaultPolicyResponse)
+	o.Payload = new(models.SystemsV1SystemsGetDefaultPolicyResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewGetDefaultPolicyNotFound() *GetDefaultPolicyNotFound {
 Not Found
 */
 type GetDefaultPolicyNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *GetDefaultPolicyNotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/systems/{system}/default-policies/{path}][%d] getDefaultPolicyNotFound  %+v", 404, o.Payload)
 }
-func (o *GetDefaultPolicyNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *GetDefaultPolicyNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *GetDefaultPolicyNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

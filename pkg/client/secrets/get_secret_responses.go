@@ -50,19 +50,19 @@ func NewGetSecretOK() *GetSecretOK {
 OK
 */
 type GetSecretOK struct {
-	Payload *models.V1SecretsGetResponse
+	Payload *models.SecretsV1SecretsGetResponse
 }
 
 func (o *GetSecretOK) Error() string {
 	return fmt.Sprintf("[GET /v1/secrets/{secretId}][%d] getSecretOK  %+v", 200, o.Payload)
 }
-func (o *GetSecretOK) GetPayload() *models.V1SecretsGetResponse {
+func (o *GetSecretOK) GetPayload() *models.SecretsV1SecretsGetResponse {
 	return o.Payload
 }
 
 func (o *GetSecretOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1SecretsGetResponse)
+	o.Payload = new(models.SecretsV1SecretsGetResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewGetSecretNotFound() *GetSecretNotFound {
 Not Found
 */
 type GetSecretNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *GetSecretNotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/secrets/{secretId}][%d] getSecretNotFound  %+v", 404, o.Payload)
 }
-func (o *GetSecretNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *GetSecretNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *GetSecretNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

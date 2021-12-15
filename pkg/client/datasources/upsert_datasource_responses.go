@@ -44,19 +44,19 @@ func NewUpsertDatasourceOK() *UpsertDatasourceOK {
 OK
 */
 type UpsertDatasourceOK struct {
-	Payload *models.V1DatasourcesPutResponse
+	Payload *models.DatasourcesV1DatasourcesPutResponse
 }
 
 func (o *UpsertDatasourceOK) Error() string {
 	return fmt.Sprintf("[PUT /v1/datasources/{datasource}][%d] upsertDatasourceOK  %+v", 200, o.Payload)
 }
-func (o *UpsertDatasourceOK) GetPayload() *models.V1DatasourcesPutResponse {
+func (o *UpsertDatasourceOK) GetPayload() *models.DatasourcesV1DatasourcesPutResponse {
 	return o.Payload
 }
 
 func (o *UpsertDatasourceOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1DatasourcesPutResponse)
+	o.Payload = new(models.DatasourcesV1DatasourcesPutResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

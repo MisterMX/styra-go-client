@@ -62,7 +62,7 @@ func NewUpdateStackParamsWithHTTPClient(client *http.Client) *UpdateStackParams 
 type UpdateStackParams struct {
 
 	// Body.
-	Body *models.V1StacksPutRequest
+	Body *models.StacksV1StacksPutRequest
 
 	/* Stack.
 
@@ -124,13 +124,13 @@ func (o *UpdateStackParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the update stack params
-func (o *UpdateStackParams) WithBody(body *models.V1StacksPutRequest) *UpdateStackParams {
+func (o *UpdateStackParams) WithBody(body *models.StacksV1StacksPutRequest) *UpdateStackParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the update stack params
-func (o *UpdateStackParams) SetBody(body *models.V1StacksPutRequest) {
+func (o *UpdateStackParams) SetBody(body *models.StacksV1StacksPutRequest) {
 	o.Body = body
 }
 

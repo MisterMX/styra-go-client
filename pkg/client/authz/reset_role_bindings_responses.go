@@ -44,19 +44,19 @@ func NewResetRoleBindingsOK() *ResetRoleBindingsOK {
 OK
 */
 type ResetRoleBindingsOK struct {
-	Payload *models.V2RoleBindingsPutResetResponse
+	Payload *models.AuthzV2RoleBindingsPutResetResponse
 }
 
 func (o *ResetRoleBindingsOK) Error() string {
 	return fmt.Sprintf("[PUT /v2/authz/reset/rolebindings][%d] resetRoleBindingsOK  %+v", 200, o.Payload)
 }
-func (o *ResetRoleBindingsOK) GetPayload() *models.V2RoleBindingsPutResetResponse {
+func (o *ResetRoleBindingsOK) GetPayload() *models.AuthzV2RoleBindingsPutResetResponse {
 	return o.Payload
 }
 
 func (o *ResetRoleBindingsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V2RoleBindingsPutResetResponse)
+	o.Payload = new(models.AuthzV2RoleBindingsPutResetResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

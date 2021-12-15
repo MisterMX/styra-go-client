@@ -50,19 +50,19 @@ func NewUpdateRoleBindingOK() *UpdateRoleBindingOK {
 OK
 */
 type UpdateRoleBindingOK struct {
-	Payload *models.V1RoleBindingsPutResponse
+	Payload *models.AuthzV1RoleBindingsPutResponse
 }
 
 func (o *UpdateRoleBindingOK) Error() string {
 	return fmt.Sprintf("[PUT /v1/authz/rolebindings/{resourcetype}/{resource}/{rolebinding}][%d] updateRoleBindingOK  %+v", 200, o.Payload)
 }
-func (o *UpdateRoleBindingOK) GetPayload() *models.V1RoleBindingsPutResponse {
+func (o *UpdateRoleBindingOK) GetPayload() *models.AuthzV1RoleBindingsPutResponse {
 	return o.Payload
 }
 
 func (o *UpdateRoleBindingOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1RoleBindingsPutResponse)
+	o.Payload = new(models.AuthzV1RoleBindingsPutResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewUpdateRoleBindingNotFound() *UpdateRoleBindingNotFound {
 Not Found
 */
 type UpdateRoleBindingNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *UpdateRoleBindingNotFound) Error() string {
 	return fmt.Sprintf("[PUT /v1/authz/rolebindings/{resourcetype}/{resource}/{rolebinding}][%d] updateRoleBindingNotFound  %+v", 404, o.Payload)
 }
-func (o *UpdateRoleBindingNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *UpdateRoleBindingNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *UpdateRoleBindingNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

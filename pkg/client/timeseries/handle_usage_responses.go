@@ -50,19 +50,19 @@ func NewHandleUsageOK() *HandleUsageOK {
 OK
 */
 type HandleUsageOK struct {
-	Payload *models.V1TimeSeriesUsagePostResponse
+	Payload *models.TimeseriesV1TimeSeriesUsagePostResponse
 }
 
 func (o *HandleUsageOK) Error() string {
 	return fmt.Sprintf("[POST /v1/timeseries/usage][%d] handleUsageOK  %+v", 200, o.Payload)
 }
-func (o *HandleUsageOK) GetPayload() *models.V1TimeSeriesUsagePostResponse {
+func (o *HandleUsageOK) GetPayload() *models.TimeseriesV1TimeSeriesUsagePostResponse {
 	return o.Payload
 }
 
 func (o *HandleUsageOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1TimeSeriesUsagePostResponse)
+	o.Payload = new(models.TimeseriesV1TimeSeriesUsagePostResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewHandleUsageBadRequest() *HandleUsageBadRequest {
 Invalid Parameter
 */
 type HandleUsageBadRequest struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *HandleUsageBadRequest) Error() string {
 	return fmt.Sprintf("[POST /v1/timeseries/usage][%d] handleUsageBadRequest  %+v", 400, o.Payload)
 }
-func (o *HandleUsageBadRequest) GetPayload() *models.V1ErrorResponse {
+func (o *HandleUsageBadRequest) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *HandleUsageBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

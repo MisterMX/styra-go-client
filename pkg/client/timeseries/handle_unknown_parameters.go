@@ -14,6 +14,8 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+
+	"github.com/mistermx/styra-go-client/pkg/models"
 )
 
 // NewHandleUnknownParams creates a new HandleUnknownParams object,
@@ -58,6 +60,10 @@ func NewHandleUnknownParamsWithHTTPClient(client *http.Client) *HandleUnknownPar
    Typically these are written to a http.Request.
 */
 type HandleUnknownParams struct {
+
+	// Body.
+	Body *models.TimeseriesV1TimeSeriesPostRequest
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -111,6 +117,17 @@ func (o *HandleUnknownParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithBody adds the body to the handle unknown params
+func (o *HandleUnknownParams) WithBody(body *models.TimeseriesV1TimeSeriesPostRequest) *HandleUnknownParams {
+	o.SetBody(body)
+	return o
+}
+
+// SetBody adds the body to the handle unknown params
+func (o *HandleUnknownParams) SetBody(body *models.TimeseriesV1TimeSeriesPostRequest) {
+	o.Body = body
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *HandleUnknownParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -118,6 +135,11 @@ func (o *HandleUnknownParams) WriteToRequest(r runtime.ClientRequest, reg strfmt
 		return err
 	}
 	var res []error
+	if o.Body != nil {
+		if err := r.SetBodyParam(o.Body); err != nil {
+			return err
+		}
+	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)

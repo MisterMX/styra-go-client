@@ -50,19 +50,19 @@ func NewListDataOK() *ListDataOK {
 OK
 */
 type ListDataOK struct {
-	Payload *models.V1DataResponse
+	Payload *models.DataV1DataResponse
 }
 
 func (o *ListDataOK) Error() string {
 	return fmt.Sprintf("[GET /v1/data][%d] listDataOK  %+v", 200, o.Payload)
 }
-func (o *ListDataOK) GetPayload() *models.V1DataResponse {
+func (o *ListDataOK) GetPayload() *models.DataV1DataResponse {
 	return o.Payload
 }
 
 func (o *ListDataOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1DataResponse)
+	o.Payload = new(models.DataV1DataResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewListDataNotFound() *ListDataNotFound {
 Not Found
 */
 type ListDataNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *ListDataNotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/data][%d] listDataNotFound  %+v", 404, o.Payload)
 }
-func (o *ListDataNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *ListDataNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *ListDataNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

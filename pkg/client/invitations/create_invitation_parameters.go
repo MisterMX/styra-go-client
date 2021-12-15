@@ -63,7 +63,7 @@ func NewCreateInvitationParamsWithHTTPClient(client *http.Client) *CreateInvitat
 type CreateInvitationParams struct {
 
 	// Body.
-	Body *models.V1InvitationsPostRequest
+	Body *models.InvitationsV1InvitationsPostRequest
 
 	/* Email.
 
@@ -125,13 +125,13 @@ func (o *CreateInvitationParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the create invitation params
-func (o *CreateInvitationParams) WithBody(body *models.V1InvitationsPostRequest) *CreateInvitationParams {
+func (o *CreateInvitationParams) WithBody(body *models.InvitationsV1InvitationsPostRequest) *CreateInvitationParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the create invitation params
-func (o *CreateInvitationParams) SetBody(body *models.V1InvitationsPostRequest) {
+func (o *CreateInvitationParams) SetBody(body *models.InvitationsV1InvitationsPostRequest) {
 	o.Body = body
 }
 

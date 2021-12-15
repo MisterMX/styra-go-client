@@ -50,19 +50,19 @@ func NewGetInvitationOK() *GetInvitationOK {
 OK
 */
 type GetInvitationOK struct {
-	Payload *models.V1InvitationsGetResponse
+	Payload *models.InvitationsV1InvitationsGetResponse
 }
 
 func (o *GetInvitationOK) Error() string {
 	return fmt.Sprintf("[GET /v1/invitations/{id}][%d] getInvitationOK  %+v", 200, o.Payload)
 }
-func (o *GetInvitationOK) GetPayload() *models.V1InvitationsGetResponse {
+func (o *GetInvitationOK) GetPayload() *models.InvitationsV1InvitationsGetResponse {
 	return o.Payload
 }
 
 func (o *GetInvitationOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1InvitationsGetResponse)
+	o.Payload = new(models.InvitationsV1InvitationsGetResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewGetInvitationNotFound() *GetInvitationNotFound {
 Not Found
 */
 type GetInvitationNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *GetInvitationNotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/invitations/{id}][%d] getInvitationNotFound  %+v", 404, o.Payload)
 }
-func (o *GetInvitationNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *GetInvitationNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *GetInvitationNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

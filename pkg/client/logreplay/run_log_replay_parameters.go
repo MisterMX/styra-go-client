@@ -62,7 +62,7 @@ func NewRunLogReplayParamsWithHTTPClient(client *http.Client) *RunLogReplayParam
 type RunLogReplayParams struct {
 
 	// Body.
-	Body *models.V1ReplayRequest
+	Body *models.LogreplayV1ReplayRequest
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,13 +118,13 @@ func (o *RunLogReplayParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the run log replay params
-func (o *RunLogReplayParams) WithBody(body *models.V1ReplayRequest) *RunLogReplayParams {
+func (o *RunLogReplayParams) WithBody(body *models.LogreplayV1ReplayRequest) *RunLogReplayParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the run log replay params
-func (o *RunLogReplayParams) SetBody(body *models.V1ReplayRequest) {
+func (o *RunLogReplayParams) SetBody(body *models.LogreplayV1ReplayRequest) {
 	o.Body = body
 }
 

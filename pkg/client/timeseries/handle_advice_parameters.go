@@ -14,6 +14,8 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+
+	"github.com/mistermx/styra-go-client/pkg/models"
 )
 
 // NewHandleAdviceParams creates a new HandleAdviceParams object,
@@ -58,6 +60,10 @@ func NewHandleAdviceParamsWithHTTPClient(client *http.Client) *HandleAdviceParam
    Typically these are written to a http.Request.
 */
 type HandleAdviceParams struct {
+
+	// Body.
+	Body *models.TimeseriesV1TimeSeriesPostRequest
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -111,6 +117,17 @@ func (o *HandleAdviceParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithBody adds the body to the handle advice params
+func (o *HandleAdviceParams) WithBody(body *models.TimeseriesV1TimeSeriesPostRequest) *HandleAdviceParams {
+	o.SetBody(body)
+	return o
+}
+
+// SetBody adds the body to the handle advice params
+func (o *HandleAdviceParams) SetBody(body *models.TimeseriesV1TimeSeriesPostRequest) {
+	o.Body = body
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *HandleAdviceParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -118,6 +135,11 @@ func (o *HandleAdviceParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 		return err
 	}
 	var res []error
+	if o.Body != nil {
+		if err := r.SetBodyParam(o.Body); err != nil {
+			return err
+		}
+	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)

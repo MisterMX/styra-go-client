@@ -108,6 +108,12 @@ type ListSystemsParams struct {
 	*/
 	Policies *bool
 
+	/* RuleCounts.
+
+	   set to 'true' to include policy rule counts in the output
+	*/
+	RuleCounts *bool
+
 	/* Type.
 
 	   if set returns only systems of the specified type
@@ -253,6 +259,17 @@ func (o *ListSystemsParams) WithPolicies(policies *bool) *ListSystemsParams {
 // SetPolicies adds the policies to the list systems params
 func (o *ListSystemsParams) SetPolicies(policies *bool) {
 	o.Policies = policies
+}
+
+// WithRuleCounts adds the ruleCounts to the list systems params
+func (o *ListSystemsParams) WithRuleCounts(ruleCounts *bool) *ListSystemsParams {
+	o.SetRuleCounts(ruleCounts)
+	return o
+}
+
+// SetRuleCounts adds the ruleCounts to the list systems params
+func (o *ListSystemsParams) SetRuleCounts(ruleCounts *bool) {
+	o.RuleCounts = ruleCounts
 }
 
 // WithType adds the typeVar to the list systems params
@@ -405,6 +422,23 @@ func (o *ListSystemsParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.R
 		if qPolicies != "" {
 
 			if err := r.SetQueryParam("policies", qPolicies); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.RuleCounts != nil {
+
+		// query param rule_counts
+		var qrRuleCounts bool
+
+		if o.RuleCounts != nil {
+			qrRuleCounts = *o.RuleCounts
+		}
+		qRuleCounts := swag.FormatBool(qrRuleCounts)
+		if qRuleCounts != "" {
+
+			if err := r.SetQueryParam("rule_counts", qRuleCounts); err != nil {
 				return err
 			}
 		}

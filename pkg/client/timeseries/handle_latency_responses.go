@@ -50,19 +50,19 @@ func NewHandleLatencyOK() *HandleLatencyOK {
 OK
 */
 type HandleLatencyOK struct {
-	Payload *models.V1TimeSeriesPostResponse
+	Payload *models.TimeseriesV1TimeSeriesPostResponse
 }
 
 func (o *HandleLatencyOK) Error() string {
 	return fmt.Sprintf("[POST /v1/timeseries/latency][%d] handleLatencyOK  %+v", 200, o.Payload)
 }
-func (o *HandleLatencyOK) GetPayload() *models.V1TimeSeriesPostResponse {
+func (o *HandleLatencyOK) GetPayload() *models.TimeseriesV1TimeSeriesPostResponse {
 	return o.Payload
 }
 
 func (o *HandleLatencyOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1TimeSeriesPostResponse)
+	o.Payload = new(models.TimeseriesV1TimeSeriesPostResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewHandleLatencyBadRequest() *HandleLatencyBadRequest {
 Invalid Parameter
 */
 type HandleLatencyBadRequest struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *HandleLatencyBadRequest) Error() string {
 	return fmt.Sprintf("[POST /v1/timeseries/latency][%d] handleLatencyBadRequest  %+v", 400, o.Payload)
 }
-func (o *HandleLatencyBadRequest) GetPayload() *models.V1ErrorResponse {
+func (o *HandleLatencyBadRequest) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *HandleLatencyBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

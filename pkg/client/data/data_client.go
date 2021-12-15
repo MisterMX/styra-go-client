@@ -48,7 +48,7 @@ type ClientService interface {
 /*
   GetData gets data
 
-  Show data at the given `name`.  `name` must be an extension of one of the locations of data as returned by `GET v1/data`
+  Show data at the given `name`. The `name` must be an extension of one of the locations of data as returned by `GET v1/data`
 */
 func (a *Client) GetData(params *GetDataParams, opts ...ClientOption) (*GetDataOK, error) {
 	// TODO: Validate the params before sending
@@ -88,7 +88,7 @@ func (a *Client) GetData(params *GetDataParams, opts ...ClientOption) (*GetDataO
 /*
   ListData lists data
 
-  Data (whether the result of evaluating policy or the data gathered by datasources) is arranged into a tree.  List the locations within the tree that data exists.
+  Data (whether the result of evaluating policy or the data gathered by datasources) is arranged into a tree. List the locations within the tree that data exists.
 */
 func (a *Client) ListData(params *ListDataParams, opts ...ClientOption) (*ListDataOK, error) {
 	// TODO: Validate the params before sending
@@ -168,7 +168,7 @@ func (a *Client) PatchData(params *PatchDataParams, opts ...ClientOption) (*Patc
 /*
   PutData publishes data
 
-  Set the data for the datasource registered at `<name>` to an arbitrary JSON document.  This data can be read by doing `GET v1/data/<path>`
+  Set the data for the datasource registered at `<name>` to an arbitrary JSON document. This data can be read by doing `GET v1/data/<path>`
 */
 func (a *Client) PutData(params *PutDataParams, opts ...ClientOption) (*PutDataOK, error) {
 	// TODO: Validate the params before sending
@@ -246,7 +246,7 @@ func (a *Client) ShowAllData(params *ShowAllDataParams, opts ...ClientOption) (*
 /*
   ShowData shows data
 
-  Show data at the given `name`.  `name` must be an extension of one of the locations of data as returned by `GET v1/data`.
+  Show data at the given `name`. The `name` must be an extension of one of the locations of data as returned by `GET v1/data`.
 */
 func (a *Client) ShowData(params *ShowDataParams, opts ...ClientOption) (*ShowDataOK, error) {
 	// TODO: Validate the params before sending

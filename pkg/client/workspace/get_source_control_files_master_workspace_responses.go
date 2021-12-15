@@ -50,19 +50,19 @@ func NewGetSourceControlFilesMasterWorkspaceOK() *GetSourceControlFilesMasterWor
 OK
 */
 type GetSourceControlFilesMasterWorkspaceOK struct {
-	Payload *models.V1GetFilesResponse
+	Payload *models.GitV1GetFilesResponse
 }
 
 func (o *GetSourceControlFilesMasterWorkspaceOK) Error() string {
 	return fmt.Sprintf("[GET /v1/workspace/{id}/master][%d] getSourceControlFilesMasterWorkspaceOK  %+v", 200, o.Payload)
 }
-func (o *GetSourceControlFilesMasterWorkspaceOK) GetPayload() *models.V1GetFilesResponse {
+func (o *GetSourceControlFilesMasterWorkspaceOK) GetPayload() *models.GitV1GetFilesResponse {
 	return o.Payload
 }
 
 func (o *GetSourceControlFilesMasterWorkspaceOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1GetFilesResponse)
+	o.Payload = new(models.GitV1GetFilesResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewGetSourceControlFilesMasterWorkspaceNotFound() *GetSourceControlFilesMas
 Not Found
 */
 type GetSourceControlFilesMasterWorkspaceNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *GetSourceControlFilesMasterWorkspaceNotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/workspace/{id}/master][%d] getSourceControlFilesMasterWorkspaceNotFound  %+v", 404, o.Payload)
 }
-func (o *GetSourceControlFilesMasterWorkspaceNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *GetSourceControlFilesMasterWorkspaceNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *GetSourceControlFilesMasterWorkspaceNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

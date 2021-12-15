@@ -68,7 +68,7 @@ type CreateRoleBindingParams struct {
 	IfNoneMatch *string
 
 	// Body.
-	Body *models.V2RoleBindingsPostRequest
+	Body *models.AuthzV2RoleBindingsPostRequest
 
 	timeout    time.Duration
 	Context    context.Context
@@ -135,13 +135,13 @@ func (o *CreateRoleBindingParams) SetIfNoneMatch(ifNoneMatch *string) {
 }
 
 // WithBody adds the body to the create role binding params
-func (o *CreateRoleBindingParams) WithBody(body *models.V2RoleBindingsPostRequest) *CreateRoleBindingParams {
+func (o *CreateRoleBindingParams) WithBody(body *models.AuthzV2RoleBindingsPostRequest) *CreateRoleBindingParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the create role binding params
-func (o *CreateRoleBindingParams) SetBody(body *models.V2RoleBindingsPostRequest) {
+func (o *CreateRoleBindingParams) SetBody(body *models.AuthzV2RoleBindingsPostRequest) {
 	o.Body = body
 }
 

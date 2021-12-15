@@ -68,7 +68,7 @@ type CreateUpdateUserParams struct {
 	IfNoneMatch *string
 
 	// Body.
-	Body *models.V1UsersPutRequest
+	Body *models.UsersV1UsersPutRequest
 
 	/* UserID.
 
@@ -141,13 +141,13 @@ func (o *CreateUpdateUserParams) SetIfNoneMatch(ifNoneMatch *string) {
 }
 
 // WithBody adds the body to the create update user params
-func (o *CreateUpdateUserParams) WithBody(body *models.V1UsersPutRequest) *CreateUpdateUserParams {
+func (o *CreateUpdateUserParams) WithBody(body *models.UsersV1UsersPutRequest) *CreateUpdateUserParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the create update user params
-func (o *CreateUpdateUserParams) SetBody(body *models.V1UsersPutRequest) {
+func (o *CreateUpdateUserParams) SetBody(body *models.UsersV1UsersPutRequest) {
 	o.Body = body
 }
 

@@ -62,7 +62,7 @@ func NewShowDataParamsWithHTTPClient(client *http.Client) *ShowDataParams {
 type ShowDataParams struct {
 
 	// Body.
-	Body *models.V1DataRequest
+	Body *models.DataV1DataRequest
 
 	/* Name.
 
@@ -124,13 +124,13 @@ func (o *ShowDataParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the show data params
-func (o *ShowDataParams) WithBody(body *models.V1DataRequest) *ShowDataParams {
+func (o *ShowDataParams) WithBody(body *models.DataV1DataRequest) *ShowDataParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the show data params
-func (o *ShowDataParams) SetBody(body *models.V1DataRequest) {
+func (o *ShowDataParams) SetBody(body *models.DataV1DataRequest) {
 	o.Body = body
 }
 

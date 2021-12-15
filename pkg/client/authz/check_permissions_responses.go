@@ -44,19 +44,19 @@ func NewCheckPermissionsOK() *CheckPermissionsOK {
 OK
 */
 type CheckPermissionsOK struct {
-	Payload *models.V1CheckPermissionsPostResponse
+	Payload *models.AuthzV1CheckPermissionsPostResponse
 }
 
 func (o *CheckPermissionsOK) Error() string {
 	return fmt.Sprintf("[POST /v1/authz/evaluation][%d] checkPermissionsOK  %+v", 200, o.Payload)
 }
-func (o *CheckPermissionsOK) GetPayload() *models.V1CheckPermissionsPostResponse {
+func (o *CheckPermissionsOK) GetPayload() *models.AuthzV1CheckPermissionsPostResponse {
 	return o.Payload
 }
 
 func (o *CheckPermissionsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1CheckPermissionsPostResponse)
+	o.Payload = new(models.AuthzV1CheckPermissionsPostResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

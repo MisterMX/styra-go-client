@@ -44,19 +44,19 @@ func NewInsertNotificationToolTokenOK() *InsertNotificationToolTokenOK {
 OK
 */
 type InsertNotificationToolTokenOK struct {
-	Payload *models.V1NotificationToolTokenResponse
+	Payload *models.NotificationsV1NotificationToolTokenResponse
 }
 
 func (o *InsertNotificationToolTokenOK) Error() string {
 	return fmt.Sprintf("[PUT /v1/notifications/{type}][%d] insertNotificationToolTokenOK  %+v", 200, o.Payload)
 }
-func (o *InsertNotificationToolTokenOK) GetPayload() *models.V1NotificationToolTokenResponse {
+func (o *InsertNotificationToolTokenOK) GetPayload() *models.NotificationsV1NotificationToolTokenResponse {
 	return o.Payload
 }
 
 func (o *InsertNotificationToolTokenOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1NotificationToolTokenResponse)
+	o.Payload = new(models.NotificationsV1NotificationToolTokenResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

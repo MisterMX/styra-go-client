@@ -62,7 +62,7 @@ func NewCheckPermissionsParamsWithHTTPClient(client *http.Client) *CheckPermissi
 type CheckPermissionsParams struct {
 
 	// Body.
-	Body []*models.V1CheckPermissionInput
+	Body []*models.AuthzV1CheckPermissionInput
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,13 +118,13 @@ func (o *CheckPermissionsParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the check permissions params
-func (o *CheckPermissionsParams) WithBody(body []*models.V1CheckPermissionInput) *CheckPermissionsParams {
+func (o *CheckPermissionsParams) WithBody(body []*models.AuthzV1CheckPermissionInput) *CheckPermissionsParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the check permissions params
-func (o *CheckPermissionsParams) SetBody(body []*models.V1CheckPermissionInput) {
+func (o *CheckPermissionsParams) SetBody(body []*models.AuthzV1CheckPermissionInput) {
 	o.Body = body
 }
 

@@ -58,6 +58,13 @@ func NewGetNotificationToolStatusParamsWithHTTPClient(client *http.Client) *GetN
    Typically these are written to a http.Request.
 */
 type GetNotificationToolStatusParams struct {
+
+	/* Type.
+
+	   notification type
+	*/
+	Type string
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -111,6 +118,17 @@ func (o *GetNotificationToolStatusParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithType adds the typeVar to the get notification tool status params
+func (o *GetNotificationToolStatusParams) WithType(typeVar string) *GetNotificationToolStatusParams {
+	o.SetType(typeVar)
+	return o
+}
+
+// SetType adds the type to the get notification tool status params
+func (o *GetNotificationToolStatusParams) SetType(typeVar string) {
+	o.Type = typeVar
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *GetNotificationToolStatusParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -118,6 +136,11 @@ func (o *GetNotificationToolStatusParams) WriteToRequest(r runtime.ClientRequest
 		return err
 	}
 	var res []error
+
+	// path param type
+	if err := r.SetPathParam("type", o.Type); err != nil {
+		return err
+	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)

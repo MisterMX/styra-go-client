@@ -50,19 +50,19 @@ func NewGetSourceControlFilesBranchSystemOK() *GetSourceControlFilesBranchSystem
 OK
 */
 type GetSourceControlFilesBranchSystemOK struct {
-	Payload *models.V1GetFilesResponse
+	Payload *models.GitV1GetFilesResponse
 }
 
 func (o *GetSourceControlFilesBranchSystemOK) Error() string {
 	return fmt.Sprintf("[GET /v1/systems/{id}/branch][%d] getSourceControlFilesBranchSystemOK  %+v", 200, o.Payload)
 }
-func (o *GetSourceControlFilesBranchSystemOK) GetPayload() *models.V1GetFilesResponse {
+func (o *GetSourceControlFilesBranchSystemOK) GetPayload() *models.GitV1GetFilesResponse {
 	return o.Payload
 }
 
 func (o *GetSourceControlFilesBranchSystemOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1GetFilesResponse)
+	o.Payload = new(models.GitV1GetFilesResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewGetSourceControlFilesBranchSystemNotFound() *GetSourceControlFilesBranch
 Not Found
 */
 type GetSourceControlFilesBranchSystemNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *GetSourceControlFilesBranchSystemNotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/systems/{id}/branch][%d] getSourceControlFilesBranchSystemNotFound  %+v", 404, o.Payload)
 }
-func (o *GetSourceControlFilesBranchSystemNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *GetSourceControlFilesBranchSystemNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *GetSourceControlFilesBranchSystemNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

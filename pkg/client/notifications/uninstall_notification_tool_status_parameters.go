@@ -58,6 +58,13 @@ func NewUninstallNotificationToolStatusParamsWithHTTPClient(client *http.Client)
    Typically these are written to a http.Request.
 */
 type UninstallNotificationToolStatusParams struct {
+
+	/* Type.
+
+	   notification type
+	*/
+	Type string
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -111,6 +118,17 @@ func (o *UninstallNotificationToolStatusParams) SetHTTPClient(client *http.Clien
 	o.HTTPClient = client
 }
 
+// WithType adds the typeVar to the uninstall notification tool status params
+func (o *UninstallNotificationToolStatusParams) WithType(typeVar string) *UninstallNotificationToolStatusParams {
+	o.SetType(typeVar)
+	return o
+}
+
+// SetType adds the type to the uninstall notification tool status params
+func (o *UninstallNotificationToolStatusParams) SetType(typeVar string) {
+	o.Type = typeVar
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *UninstallNotificationToolStatusParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -118,6 +136,11 @@ func (o *UninstallNotificationToolStatusParams) WriteToRequest(r runtime.ClientR
 		return err
 	}
 	var res []error
+
+	// path param type
+	if err := r.SetPathParam("type", o.Type); err != nil {
+		return err
+	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)

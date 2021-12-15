@@ -50,19 +50,19 @@ func NewDeleteDatasourceOK() *DeleteDatasourceOK {
 OK
 */
 type DeleteDatasourceOK struct {
-	Payload *models.V1DatasourcesDeleteResponse
+	Payload *models.DatasourcesV1DatasourcesDeleteResponse
 }
 
 func (o *DeleteDatasourceOK) Error() string {
 	return fmt.Sprintf("[DELETE /v1/datasources/{datasource}][%d] deleteDatasourceOK  %+v", 200, o.Payload)
 }
-func (o *DeleteDatasourceOK) GetPayload() *models.V1DatasourcesDeleteResponse {
+func (o *DeleteDatasourceOK) GetPayload() *models.DatasourcesV1DatasourcesDeleteResponse {
 	return o.Payload
 }
 
 func (o *DeleteDatasourceOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1DatasourcesDeleteResponse)
+	o.Payload = new(models.DatasourcesV1DatasourcesDeleteResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewDeleteDatasourceNotFound() *DeleteDatasourceNotFound {
 Not Found
 */
 type DeleteDatasourceNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *DeleteDatasourceNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /v1/datasources/{datasource}][%d] deleteDatasourceNotFound  %+v", 404, o.Payload)
 }
-func (o *DeleteDatasourceNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *DeleteDatasourceNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *DeleteDatasourceNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

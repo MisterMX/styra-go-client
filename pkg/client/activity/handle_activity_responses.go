@@ -50,19 +50,19 @@ func NewHandleActivityOK() *HandleActivityOK {
 OK
 */
 type HandleActivityOK struct {
-	Payload *models.V1ActivityPostResponse
+	Payload *models.ActivityV1ActivityPostResponse
 }
 
 func (o *HandleActivityOK) Error() string {
 	return fmt.Sprintf("[POST /v1/activity][%d] handleActivityOK  %+v", 200, o.Payload)
 }
-func (o *HandleActivityOK) GetPayload() *models.V1ActivityPostResponse {
+func (o *HandleActivityOK) GetPayload() *models.ActivityV1ActivityPostResponse {
 	return o.Payload
 }
 
 func (o *HandleActivityOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ActivityPostResponse)
+	o.Payload = new(models.ActivityV1ActivityPostResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewHandleActivityBadRequest() *HandleActivityBadRequest {
 Invalid Parameter
 */
 type HandleActivityBadRequest struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *HandleActivityBadRequest) Error() string {
 	return fmt.Sprintf("[POST /v1/activity][%d] handleActivityBadRequest  %+v", 400, o.Payload)
 }
-func (o *HandleActivityBadRequest) GetPayload() *models.V1ErrorResponse {
+func (o *HandleActivityBadRequest) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *HandleActivityBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

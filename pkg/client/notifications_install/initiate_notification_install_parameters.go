@@ -65,6 +65,12 @@ type InitiateNotificationInstallParams struct {
 	*/
 	RedirectURL *string
 
+	/* Type.
+
+	   notification type
+	*/
+	Type string
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -129,6 +135,17 @@ func (o *InitiateNotificationInstallParams) SetRedirectURL(redirectURL *string) 
 	o.RedirectURL = redirectURL
 }
 
+// WithType adds the typeVar to the initiate notification install params
+func (o *InitiateNotificationInstallParams) WithType(typeVar string) *InitiateNotificationInstallParams {
+	o.SetType(typeVar)
+	return o
+}
+
+// SetType adds the type to the initiate notification install params
+func (o *InitiateNotificationInstallParams) SetType(typeVar string) {
+	o.Type = typeVar
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *InitiateNotificationInstallParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -152,6 +169,11 @@ func (o *InitiateNotificationInstallParams) WriteToRequest(r runtime.ClientReque
 				return err
 			}
 		}
+	}
+
+	// path param type
+	if err := r.SetPathParam("type", o.Type); err != nil {
+		return err
 	}
 
 	if len(res) > 0 {

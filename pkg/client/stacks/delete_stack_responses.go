@@ -50,19 +50,19 @@ func NewDeleteStackOK() *DeleteStackOK {
 OK
 */
 type DeleteStackOK struct {
-	Payload *models.V1StacksDeleteResponse
+	Payload *models.StacksV1StacksDeleteResponse
 }
 
 func (o *DeleteStackOK) Error() string {
 	return fmt.Sprintf("[DELETE /v1/stacks/{stack}][%d] deleteStackOK  %+v", 200, o.Payload)
 }
-func (o *DeleteStackOK) GetPayload() *models.V1StacksDeleteResponse {
+func (o *DeleteStackOK) GetPayload() *models.StacksV1StacksDeleteResponse {
 	return o.Payload
 }
 
 func (o *DeleteStackOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1StacksDeleteResponse)
+	o.Payload = new(models.StacksV1StacksDeleteResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewDeleteStackNotFound() *DeleteStackNotFound {
 Not Found
 */
 type DeleteStackNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *DeleteStackNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /v1/stacks/{stack}][%d] deleteStackNotFound  %+v", 404, o.Payload)
 }
-func (o *DeleteStackNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *DeleteStackNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *DeleteStackNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

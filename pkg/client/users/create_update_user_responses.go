@@ -50,19 +50,19 @@ func NewCreateUpdateUserOK() *CreateUpdateUserOK {
 OK
 */
 type CreateUpdateUserOK struct {
-	Payload *models.V1UsersPutResponse
+	Payload *models.UsersV1UsersPutResponse
 }
 
 func (o *CreateUpdateUserOK) Error() string {
 	return fmt.Sprintf("[PUT /v1/users/{userId}][%d] createUpdateUserOK  %+v", 200, o.Payload)
 }
-func (o *CreateUpdateUserOK) GetPayload() *models.V1UsersPutResponse {
+func (o *CreateUpdateUserOK) GetPayload() *models.UsersV1UsersPutResponse {
 	return o.Payload
 }
 
 func (o *CreateUpdateUserOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1UsersPutResponse)
+	o.Payload = new(models.UsersV1UsersPutResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewCreateUpdateUserConflict() *CreateUpdateUserConflict {
 User already exists
 */
 type CreateUpdateUserConflict struct {
-	Payload *models.V1UsersPutResponse
+	Payload *models.UsersV1UsersPutResponse
 }
 
 func (o *CreateUpdateUserConflict) Error() string {
 	return fmt.Sprintf("[PUT /v1/users/{userId}][%d] createUpdateUserConflict  %+v", 409, o.Payload)
 }
-func (o *CreateUpdateUserConflict) GetPayload() *models.V1UsersPutResponse {
+func (o *CreateUpdateUserConflict) GetPayload() *models.UsersV1UsersPutResponse {
 	return o.Payload
 }
 
 func (o *CreateUpdateUserConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1UsersPutResponse)
+	o.Payload = new(models.UsersV1UsersPutResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

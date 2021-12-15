@@ -62,7 +62,7 @@ func NewAcceptInvitationParamsWithHTTPClient(client *http.Client) *AcceptInvitat
 type AcceptInvitationParams struct {
 
 	// Body.
-	Body *models.V1InvitationsPutRequest
+	Body *models.InvitationsV1InvitationsPutRequest
 
 	/* Token.
 
@@ -124,13 +124,13 @@ func (o *AcceptInvitationParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the accept invitation params
-func (o *AcceptInvitationParams) WithBody(body *models.V1InvitationsPutRequest) *AcceptInvitationParams {
+func (o *AcceptInvitationParams) WithBody(body *models.InvitationsV1InvitationsPutRequest) *AcceptInvitationParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the accept invitation params
-func (o *AcceptInvitationParams) SetBody(body *models.V1InvitationsPutRequest) {
+func (o *AcceptInvitationParams) SetBody(body *models.InvitationsV1InvitationsPutRequest) {
 	o.Body = body
 }
 

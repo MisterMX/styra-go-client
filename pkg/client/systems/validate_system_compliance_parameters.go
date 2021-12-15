@@ -74,7 +74,7 @@ type ValidateSystemComplianceParams struct {
 	Asyncresponse *string
 
 	// Body.
-	Body *models.V1SystemsComplianceRequest
+	Body *models.SystemsV1SystemsComplianceRequest
 
 	/* Interval.
 
@@ -164,13 +164,13 @@ func (o *ValidateSystemComplianceParams) SetAsyncresponse(asyncresponse *string)
 }
 
 // WithBody adds the body to the validate system compliance params
-func (o *ValidateSystemComplianceParams) WithBody(body *models.V1SystemsComplianceRequest) *ValidateSystemComplianceParams {
+func (o *ValidateSystemComplianceParams) WithBody(body *models.SystemsV1SystemsComplianceRequest) *ValidateSystemComplianceParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the validate system compliance params
-func (o *ValidateSystemComplianceParams) SetBody(body *models.V1SystemsComplianceRequest) {
+func (o *ValidateSystemComplianceParams) SetBody(body *models.SystemsV1SystemsComplianceRequest) {
 	o.Body = body
 }
 

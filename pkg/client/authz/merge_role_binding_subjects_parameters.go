@@ -62,7 +62,13 @@ func NewMergeRoleBindingSubjectsParamsWithHTTPClient(client *http.Client) *Merge
 type MergeRoleBindingSubjectsParams struct {
 
 	// Body.
-	Body *models.V2RoleBindingsPutSubjectsRequest
+	Body *models.AuthzV2RoleBindingsPutSubjectsRequest
+
+	/* ID.
+
+	   rolebinding ID
+	*/
+	ID string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,14 +124,25 @@ func (o *MergeRoleBindingSubjectsParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the merge role binding subjects params
-func (o *MergeRoleBindingSubjectsParams) WithBody(body *models.V2RoleBindingsPutSubjectsRequest) *MergeRoleBindingSubjectsParams {
+func (o *MergeRoleBindingSubjectsParams) WithBody(body *models.AuthzV2RoleBindingsPutSubjectsRequest) *MergeRoleBindingSubjectsParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the merge role binding subjects params
-func (o *MergeRoleBindingSubjectsParams) SetBody(body *models.V2RoleBindingsPutSubjectsRequest) {
+func (o *MergeRoleBindingSubjectsParams) SetBody(body *models.AuthzV2RoleBindingsPutSubjectsRequest) {
 	o.Body = body
+}
+
+// WithID adds the id to the merge role binding subjects params
+func (o *MergeRoleBindingSubjectsParams) WithID(id string) *MergeRoleBindingSubjectsParams {
+	o.SetID(id)
+	return o
+}
+
+// SetID adds the id to the merge role binding subjects params
+func (o *MergeRoleBindingSubjectsParams) SetID(id string) {
+	o.ID = id
 }
 
 // WriteToRequest writes these params to a swagger request
@@ -139,6 +156,11 @@ func (o *MergeRoleBindingSubjectsParams) WriteToRequest(r runtime.ClientRequest,
 		if err := r.SetBodyParam(o.Body); err != nil {
 			return err
 		}
+	}
+
+	// path param id
+	if err := r.SetPathParam("id", o.ID); err != nil {
+		return err
 	}
 
 	if len(res) > 0 {

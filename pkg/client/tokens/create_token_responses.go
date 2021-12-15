@@ -50,19 +50,19 @@ func NewCreateTokenOK() *CreateTokenOK {
 OK
 */
 type CreateTokenOK struct {
-	Payload *models.V1TokensPutResponse
+	Payload *models.TokensV1TokensPutResponse
 }
 
 func (o *CreateTokenOK) Error() string {
 	return fmt.Sprintf("[PUT /v1/tokens/{tokenId}][%d] createTokenOK  %+v", 200, o.Payload)
 }
-func (o *CreateTokenOK) GetPayload() *models.V1TokensPutResponse {
+func (o *CreateTokenOK) GetPayload() *models.TokensV1TokensPutResponse {
 	return o.Payload
 }
 
 func (o *CreateTokenOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1TokensPutResponse)
+	o.Payload = new(models.TokensV1TokensPutResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewCreateTokenConflict() *CreateTokenConflict {
 Token already exists
 */
 type CreateTokenConflict struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *CreateTokenConflict) Error() string {
 	return fmt.Sprintf("[PUT /v1/tokens/{tokenId}][%d] createTokenConflict  %+v", 409, o.Payload)
 }
-func (o *CreateTokenConflict) GetPayload() *models.V1ErrorResponse {
+func (o *CreateTokenConflict) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *CreateTokenConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

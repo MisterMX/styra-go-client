@@ -62,7 +62,13 @@ func NewUpdateRoleBindingSubjectsParamsWithHTTPClient(client *http.Client) *Upda
 type UpdateRoleBindingSubjectsParams struct {
 
 	// Body.
-	Body *models.V2RoleBindingsPostSubjectsRequest
+	Body *models.AuthzV2RoleBindingsPostSubjectsRequest
+
+	/* ID.
+
+	   rolebinding ID
+	*/
+	ID string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,14 +124,25 @@ func (o *UpdateRoleBindingSubjectsParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the update role binding subjects params
-func (o *UpdateRoleBindingSubjectsParams) WithBody(body *models.V2RoleBindingsPostSubjectsRequest) *UpdateRoleBindingSubjectsParams {
+func (o *UpdateRoleBindingSubjectsParams) WithBody(body *models.AuthzV2RoleBindingsPostSubjectsRequest) *UpdateRoleBindingSubjectsParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the update role binding subjects params
-func (o *UpdateRoleBindingSubjectsParams) SetBody(body *models.V2RoleBindingsPostSubjectsRequest) {
+func (o *UpdateRoleBindingSubjectsParams) SetBody(body *models.AuthzV2RoleBindingsPostSubjectsRequest) {
 	o.Body = body
+}
+
+// WithID adds the id to the update role binding subjects params
+func (o *UpdateRoleBindingSubjectsParams) WithID(id string) *UpdateRoleBindingSubjectsParams {
+	o.SetID(id)
+	return o
+}
+
+// SetID adds the id to the update role binding subjects params
+func (o *UpdateRoleBindingSubjectsParams) SetID(id string) {
+	o.ID = id
 }
 
 // WriteToRequest writes these params to a swagger request
@@ -139,6 +156,11 @@ func (o *UpdateRoleBindingSubjectsParams) WriteToRequest(r runtime.ClientRequest
 		if err := r.SetBodyParam(o.Body); err != nil {
 			return err
 		}
+	}
+
+	// path param id
+	if err := r.SetPathParam("id", o.ID); err != nil {
+		return err
 	}
 
 	if len(res) > 0 {

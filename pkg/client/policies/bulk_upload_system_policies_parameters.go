@@ -7,6 +7,7 @@ package policies
 
 import (
 	"context"
+	"io"
 	"net/http"
 	"time"
 
@@ -58,6 +59,14 @@ func NewBulkUploadSystemPoliciesParamsWithHTTPClient(client *http.Client) *BulkU
    Typically these are written to a http.Request.
 */
 type BulkUploadSystemPoliciesParams struct {
+
+	/* Body.
+
+	   Policy bundle
+
+	   Format: binary
+	*/
+	Body io.ReadCloser
 
 	/* System.
 
@@ -118,6 +127,17 @@ func (o *BulkUploadSystemPoliciesParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithBody adds the body to the bulk upload system policies params
+func (o *BulkUploadSystemPoliciesParams) WithBody(body io.ReadCloser) *BulkUploadSystemPoliciesParams {
+	o.SetBody(body)
+	return o
+}
+
+// SetBody adds the body to the bulk upload system policies params
+func (o *BulkUploadSystemPoliciesParams) SetBody(body io.ReadCloser) {
+	o.Body = body
+}
+
 // WithSystem adds the system to the bulk upload system policies params
 func (o *BulkUploadSystemPoliciesParams) WithSystem(system string) *BulkUploadSystemPoliciesParams {
 	o.SetSystem(system)
@@ -136,6 +156,11 @@ func (o *BulkUploadSystemPoliciesParams) WriteToRequest(r runtime.ClientRequest,
 		return err
 	}
 	var res []error
+	if o.Body != nil {
+		if err := r.SetBodyParam(o.Body); err != nil {
+			return err
+		}
+	}
 
 	// path param system
 	if err := r.SetPathParam("system", o.System); err != nil {

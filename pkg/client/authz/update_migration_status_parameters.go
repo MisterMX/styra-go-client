@@ -62,7 +62,7 @@ func NewUpdateMigrationStatusParamsWithHTTPClient(client *http.Client) *UpdateMi
 type UpdateMigrationStatusParams struct {
 
 	// Body.
-	Body *models.V2RoleBindingsPutStatusRequest
+	Body *models.AuthzV2RoleBindingsPutStatusRequest
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,13 +118,13 @@ func (o *UpdateMigrationStatusParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the update migration status params
-func (o *UpdateMigrationStatusParams) WithBody(body *models.V2RoleBindingsPutStatusRequest) *UpdateMigrationStatusParams {
+func (o *UpdateMigrationStatusParams) WithBody(body *models.AuthzV2RoleBindingsPutStatusRequest) *UpdateMigrationStatusParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the update migration status params
-func (o *UpdateMigrationStatusParams) SetBody(body *models.V2RoleBindingsPutStatusRequest) {
+func (o *UpdateMigrationStatusParams) SetBody(body *models.AuthzV2RoleBindingsPutStatusRequest) {
 	o.Body = body
 }
 

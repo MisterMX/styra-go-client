@@ -62,19 +62,19 @@ func NewCreateRoleBindingOK() *CreateRoleBindingOK {
 OK
 */
 type CreateRoleBindingOK struct {
-	Payload *models.V2RoleBindingsPostResponse
+	Payload *models.AuthzV2RoleBindingsPostResponse
 }
 
 func (o *CreateRoleBindingOK) Error() string {
 	return fmt.Sprintf("[POST /v2/authz/rolebindings][%d] createRoleBindingOK  %+v", 200, o.Payload)
 }
-func (o *CreateRoleBindingOK) GetPayload() *models.V2RoleBindingsPostResponse {
+func (o *CreateRoleBindingOK) GetPayload() *models.AuthzV2RoleBindingsPostResponse {
 	return o.Payload
 }
 
 func (o *CreateRoleBindingOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V2RoleBindingsPostResponse)
+	o.Payload = new(models.AuthzV2RoleBindingsPostResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -94,19 +94,19 @@ func NewCreateRoleBindingBadRequest() *CreateRoleBindingBadRequest {
 Invalid Parameter
 */
 type CreateRoleBindingBadRequest struct {
-	Payload *models.V2RoleBindingsPostResponse
+	Payload *models.AuthzV2RoleBindingsPostResponse
 }
 
 func (o *CreateRoleBindingBadRequest) Error() string {
 	return fmt.Sprintf("[POST /v2/authz/rolebindings][%d] createRoleBindingBadRequest  %+v", 400, o.Payload)
 }
-func (o *CreateRoleBindingBadRequest) GetPayload() *models.V2RoleBindingsPostResponse {
+func (o *CreateRoleBindingBadRequest) GetPayload() *models.AuthzV2RoleBindingsPostResponse {
 	return o.Payload
 }
 
 func (o *CreateRoleBindingBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V2RoleBindingsPostResponse)
+	o.Payload = new(models.AuthzV2RoleBindingsPostResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -126,19 +126,19 @@ func NewCreateRoleBindingNotFound() *CreateRoleBindingNotFound {
 Not Found
 */
 type CreateRoleBindingNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *CreateRoleBindingNotFound) Error() string {
 	return fmt.Sprintf("[POST /v2/authz/rolebindings][%d] createRoleBindingNotFound  %+v", 404, o.Payload)
 }
-func (o *CreateRoleBindingNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *CreateRoleBindingNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *CreateRoleBindingNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -158,19 +158,19 @@ func NewCreateRoleBindingConflict() *CreateRoleBindingConflict {
 Conflict
 */
 type CreateRoleBindingConflict struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *CreateRoleBindingConflict) Error() string {
 	return fmt.Sprintf("[POST /v2/authz/rolebindings][%d] createRoleBindingConflict  %+v", 409, o.Payload)
 }
-func (o *CreateRoleBindingConflict) GetPayload() *models.V1ErrorResponse {
+func (o *CreateRoleBindingConflict) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *CreateRoleBindingConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

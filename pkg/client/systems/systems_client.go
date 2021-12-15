@@ -71,9 +71,13 @@ type ClientService interface {
 
 	RuleSuggestions(params *RuleSuggestionsParams, opts ...ClientOption) (*RuleSuggestionsOK, error)
 
+	SourceControlVerifyConfigSystem(params *SourceControlVerifyConfigSystemParams, opts ...ClientOption) (*SourceControlVerifyConfigSystemOK, error)
+
 	TranslateExternalIds(params *TranslateExternalIdsParams, opts ...ClientOption) (*TranslateExternalIdsOK, error)
 
 	UpdateSystem(params *UpdateSystemParams, opts ...ClientOption) (*UpdateSystemOK, error)
+
+	UpdateSystemBundleCompile(params *UpdateSystemBundleCompileParams, opts ...ClientOption) (*UpdateSystemBundleCompileOK, error)
 
 	UpdateSystemBundleDeploy(params *UpdateSystemBundleDeployParams, opts ...ClientOption) (*UpdateSystemBundleDeployOK, error)
 
@@ -81,13 +85,13 @@ type ClientService interface {
 
 	ValidateSystemTests(params *ValidateSystemTestsParams, opts ...ClientOption) (*ValidateSystemTestsOK, error)
 
-	Func1(params *Func1Params, opts ...ClientOption) (*Func1OK, error)
-
 	SetTransport(transport runtime.ClientTransport)
 }
 
 /*
-  CommitFilesToSourceControlSystem commits files to source control associated with a system
+  CommitFilesToSourceControlSystem commits files to system source control
+
+  Commit files to source control associated with a system
 */
 func (a *Client) CommitFilesToSourceControlSystem(params *CommitFilesToSourceControlSystemParams, opts ...ClientOption) (*CommitFilesToSourceControlSystemOK, error) {
 	// TODO: Validate the params before sending
@@ -429,7 +433,7 @@ func (a *Client) GetOPADiscoveryConfig(params *GetOPADiscoveryConfigParams, opts
 }
 
 /*
-  GetSourceControlFilesBranchSystem gets the list of files for the styra d a s created branch
+  GetSourceControlFilesBranchSystem lists files in styra d a s created branch
 
   Gets the list of files for the branch that the Styra DAS creates when modifying rego in the Styra DAS UI and pushing the changes to GitHub in a branch for review.
 */
@@ -469,7 +473,9 @@ func (a *Client) GetSourceControlFilesBranchSystem(params *GetSourceControlFiles
 }
 
 /*
-  GetSourceControlFilesMasterSystem gets the list of files in the currently chosen branch
+  GetSourceControlFilesMasterSystem lists files in current branch
+
+  Gets the list of files in the currently chosen branch.
 */
 func (a *Client) GetSourceControlFilesMasterSystem(params *GetSourceControlFilesMasterSystemParams, opts ...ClientOption) (*GetSourceControlFilesMasterSystemOK, error) {
 	// TODO: Validate the params before sending
@@ -697,7 +703,9 @@ func (a *Client) GetSystemBundleDetails(params *GetSystemBundleDetailsParams, op
 }
 
 /*
-  GetSystemBundles lists system bundles starting from the newest towards the oldest
+  GetSystemBundles lists system bundles
+
+  List system bundles, starting from the newest towards the oldest
 */
 func (a *Client) GetSystemBundles(params *GetSystemBundlesParams, opts ...ClientOption) (*GetSystemBundlesOK, error) {
 	// TODO: Validate the params before sending
@@ -849,7 +857,49 @@ func (a *Client) RuleSuggestions(params *RuleSuggestionsParams, opts ...ClientOp
 }
 
 /*
-  TranslateExternalIds translates external identifiers to system identifiers
+  SourceControlVerifyConfigSystem verifies git access
+
+  Verifies that the repository can be accessed with the provided credentials
+*/
+func (a *Client) SourceControlVerifyConfigSystem(params *SourceControlVerifyConfigSystemParams, opts ...ClientOption) (*SourceControlVerifyConfigSystemOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewSourceControlVerifyConfigSystemParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "SourceControlVerifyConfigSystem",
+		Method:             "POST",
+		PathPattern:        "/v1/systems/source-control/verify-config",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &SourceControlVerifyConfigSystemReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*SourceControlVerifyConfigSystemOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for SourceControlVerifyConfigSystem: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  TranslateExternalIds translates identifiers
+
+  Translate external identifiers to system identifiers
 */
 func (a *Client) TranslateExternalIds(params *TranslateExternalIdsParams, opts ...ClientOption) (*TranslateExternalIdsOK, error) {
 	// TODO: Validate the params before sending
@@ -921,6 +971,44 @@ func (a *Client) UpdateSystem(params *UpdateSystemParams, opts ...ClientOption) 
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for UpdateSystem: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  UpdateSystemBundleCompile compiles a system bundle
+*/
+func (a *Client) UpdateSystemBundleCompile(params *UpdateSystemBundleCompileParams, opts ...ClientOption) (*UpdateSystemBundleCompileOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewUpdateSystemBundleCompileParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "UpdateSystemBundleCompile",
+		Method:             "PUT",
+		PathPattern:        "/v1/systems/{system}/bundle-compile",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &UpdateSystemBundleCompileReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*UpdateSystemBundleCompileOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for UpdateSystemBundleCompile: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
@@ -1036,46 +1124,6 @@ func (a *Client) ValidateSystemTests(params *ValidateSystemTestsParams, opts ...
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for ValidateSystemTests: API contract not enforced by server. Client expected to get an error, but got: %T", result)
-	panic(msg)
-}
-
-/*
-  Func1 verifies git configuration
-
-  verifies that the repository can be accessed with the provided credentials
-*/
-func (a *Client) Func1(params *Func1Params, opts ...ClientOption) (*Func1OK, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewFunc1Params()
-	}
-	op := &runtime.ClientOperation{
-		ID:                 "func1",
-		Method:             "POST",
-		PathPattern:        "/v1/systems/source-control/verify-config",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
-		Params:             params,
-		Reader:             &Func1Reader{formats: a.formats},
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	}
-	for _, opt := range opts {
-		opt(op)
-	}
-
-	result, err := a.transport.Submit(op)
-	if err != nil {
-		return nil, err
-	}
-	success, ok := result.(*Func1OK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for func1: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 

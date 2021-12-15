@@ -84,19 +84,19 @@ func NewGetAssetNotFound() *GetAssetNotFound {
 Not Found
 */
 type GetAssetNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *GetAssetNotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/systems/{system}/assets/{assettype}][%d] getAssetNotFound  %+v", 404, o.Payload)
 }
-func (o *GetAssetNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *GetAssetNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *GetAssetNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

@@ -50,19 +50,19 @@ func NewHandleDecisionOK() *HandleDecisionOK {
 OK
 */
 type HandleDecisionOK struct {
-	Payload *models.V1TimeSeriesPostResponse
+	Payload *models.TimeseriesV1TimeSeriesPostResponse
 }
 
 func (o *HandleDecisionOK) Error() string {
 	return fmt.Sprintf("[POST /v1/timeseries/decision][%d] handleDecisionOK  %+v", 200, o.Payload)
 }
-func (o *HandleDecisionOK) GetPayload() *models.V1TimeSeriesPostResponse {
+func (o *HandleDecisionOK) GetPayload() *models.TimeseriesV1TimeSeriesPostResponse {
 	return o.Payload
 }
 
 func (o *HandleDecisionOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1TimeSeriesPostResponse)
+	o.Payload = new(models.TimeseriesV1TimeSeriesPostResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewHandleDecisionBadRequest() *HandleDecisionBadRequest {
 Invalid Parameter
 */
 type HandleDecisionBadRequest struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *HandleDecisionBadRequest) Error() string {
 	return fmt.Sprintf("[POST /v1/timeseries/decision][%d] handleDecisionBadRequest  %+v", 400, o.Payload)
 }
-func (o *HandleDecisionBadRequest) GetPayload() *models.V1ErrorResponse {
+func (o *HandleDecisionBadRequest) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *HandleDecisionBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

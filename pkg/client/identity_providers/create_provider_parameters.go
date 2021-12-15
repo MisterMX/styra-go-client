@@ -14,6 +14,8 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+
+	"github.com/mistermx/styra-go-client/pkg/models"
 )
 
 // NewCreateProviderParams creates a new CreateProviderParams object,
@@ -58,6 +60,10 @@ func NewCreateProviderParamsWithHTTPClient(client *http.Client) *CreateProviderP
    Typically these are written to a http.Request.
 */
 type CreateProviderParams struct {
+
+	// Body.
+	Body *models.IdentityProvidersV1ProvidersPostRequest
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -111,6 +117,17 @@ func (o *CreateProviderParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithBody adds the body to the create provider params
+func (o *CreateProviderParams) WithBody(body *models.IdentityProvidersV1ProvidersPostRequest) *CreateProviderParams {
+	o.SetBody(body)
+	return o
+}
+
+// SetBody adds the body to the create provider params
+func (o *CreateProviderParams) SetBody(body *models.IdentityProvidersV1ProvidersPostRequest) {
+	o.Body = body
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *CreateProviderParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -118,6 +135,11 @@ func (o *CreateProviderParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 		return err
 	}
 	var res []error
+	if o.Body != nil {
+		if err := r.SetBodyParam(o.Body); err != nil {
+			return err
+		}
+	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)

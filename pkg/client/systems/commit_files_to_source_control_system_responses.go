@@ -50,19 +50,19 @@ func NewCommitFilesToSourceControlSystemOK() *CommitFilesToSourceControlSystemOK
 OK
 */
 type CommitFilesToSourceControlSystemOK struct {
-	Payload *models.V1PostCommitResponse
+	Payload *models.GitV1PostCommitResponse
 }
 
 func (o *CommitFilesToSourceControlSystemOK) Error() string {
 	return fmt.Sprintf("[POST /v1/systems/{id}/commits][%d] commitFilesToSourceControlSystemOK  %+v", 200, o.Payload)
 }
-func (o *CommitFilesToSourceControlSystemOK) GetPayload() *models.V1PostCommitResponse {
+func (o *CommitFilesToSourceControlSystemOK) GetPayload() *models.GitV1PostCommitResponse {
 	return o.Payload
 }
 
 func (o *CommitFilesToSourceControlSystemOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1PostCommitResponse)
+	o.Payload = new(models.GitV1PostCommitResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewCommitFilesToSourceControlSystemNotFound() *CommitFilesToSourceControlSy
 Not Found
 */
 type CommitFilesToSourceControlSystemNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *CommitFilesToSourceControlSystemNotFound) Error() string {
 	return fmt.Sprintf("[POST /v1/systems/{id}/commits][%d] commitFilesToSourceControlSystemNotFound  %+v", 404, o.Payload)
 }
-func (o *CommitFilesToSourceControlSystemNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *CommitFilesToSourceControlSystemNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *CommitFilesToSourceControlSystemNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

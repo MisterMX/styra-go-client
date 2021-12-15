@@ -62,7 +62,7 @@ func NewCreateTokenParamsWithHTTPClient(client *http.Client) *CreateTokenParams 
 type CreateTokenParams struct {
 
 	// Body.
-	Body *models.V1TokensPutRequest
+	Body *models.TokensV1TokensPutRequest
 
 	/* TokenID.
 
@@ -124,13 +124,13 @@ func (o *CreateTokenParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the create token params
-func (o *CreateTokenParams) WithBody(body *models.V1TokensPutRequest) *CreateTokenParams {
+func (o *CreateTokenParams) WithBody(body *models.TokensV1TokensPutRequest) *CreateTokenParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the create token params
-func (o *CreateTokenParams) SetBody(body *models.V1TokensPutRequest) {
+func (o *CreateTokenParams) SetBody(body *models.TokensV1TokensPutRequest) {
 	o.Body = body
 }
 

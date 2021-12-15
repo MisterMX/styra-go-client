@@ -14,6 +14,8 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+
+	"github.com/mistermx/styra-go-client/pkg/models"
 )
 
 // NewHandleViolationParams creates a new HandleViolationParams object,
@@ -58,6 +60,10 @@ func NewHandleViolationParamsWithHTTPClient(client *http.Client) *HandleViolatio
    Typically these are written to a http.Request.
 */
 type HandleViolationParams struct {
+
+	// Body.
+	Body *models.TimeseriesV1TimeSeriesPostRequest
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -111,6 +117,17 @@ func (o *HandleViolationParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithBody adds the body to the handle violation params
+func (o *HandleViolationParams) WithBody(body *models.TimeseriesV1TimeSeriesPostRequest) *HandleViolationParams {
+	o.SetBody(body)
+	return o
+}
+
+// SetBody adds the body to the handle violation params
+func (o *HandleViolationParams) SetBody(body *models.TimeseriesV1TimeSeriesPostRequest) {
+	o.Body = body
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *HandleViolationParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -118,6 +135,11 @@ func (o *HandleViolationParams) WriteToRequest(r runtime.ClientRequest, reg strf
 		return err
 	}
 	var res []error
+	if o.Body != nil {
+		if err := r.SetBodyParam(o.Body); err != nil {
+			return err
+		}
+	}
 
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)

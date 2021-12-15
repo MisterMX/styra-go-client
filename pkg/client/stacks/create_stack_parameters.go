@@ -62,7 +62,7 @@ func NewCreateStackParamsWithHTTPClient(client *http.Client) *CreateStackParams 
 type CreateStackParams struct {
 
 	// Body.
-	Body *models.V1StacksPostRequest
+	Body *models.StacksV1StacksPostRequest
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,13 +118,13 @@ func (o *CreateStackParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the create stack params
-func (o *CreateStackParams) WithBody(body *models.V1StacksPostRequest) *CreateStackParams {
+func (o *CreateStackParams) WithBody(body *models.StacksV1StacksPostRequest) *CreateStackParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the create stack params
-func (o *CreateStackParams) SetBody(body *models.V1StacksPostRequest) {
+func (o *CreateStackParams) SetBody(body *models.StacksV1StacksPostRequest) {
 	o.Body = body
 }
 

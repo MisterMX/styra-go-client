@@ -62,7 +62,13 @@ func NewDeleteRoleBindingSubjectsParamsWithHTTPClient(client *http.Client) *Dele
 type DeleteRoleBindingSubjectsParams struct {
 
 	// Body.
-	Body *models.V2RoleBindingsDeleteSubjectsRequest
+	Body *models.AuthzV2RoleBindingsDeleteSubjectsRequest
+
+	/* ID.
+
+	   rolebinding ID
+	*/
+	ID string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,14 +124,25 @@ func (o *DeleteRoleBindingSubjectsParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the delete role binding subjects params
-func (o *DeleteRoleBindingSubjectsParams) WithBody(body *models.V2RoleBindingsDeleteSubjectsRequest) *DeleteRoleBindingSubjectsParams {
+func (o *DeleteRoleBindingSubjectsParams) WithBody(body *models.AuthzV2RoleBindingsDeleteSubjectsRequest) *DeleteRoleBindingSubjectsParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the delete role binding subjects params
-func (o *DeleteRoleBindingSubjectsParams) SetBody(body *models.V2RoleBindingsDeleteSubjectsRequest) {
+func (o *DeleteRoleBindingSubjectsParams) SetBody(body *models.AuthzV2RoleBindingsDeleteSubjectsRequest) {
 	o.Body = body
+}
+
+// WithID adds the id to the delete role binding subjects params
+func (o *DeleteRoleBindingSubjectsParams) WithID(id string) *DeleteRoleBindingSubjectsParams {
+	o.SetID(id)
+	return o
+}
+
+// SetID adds the id to the delete role binding subjects params
+func (o *DeleteRoleBindingSubjectsParams) SetID(id string) {
+	o.ID = id
 }
 
 // WriteToRequest writes these params to a swagger request
@@ -139,6 +156,11 @@ func (o *DeleteRoleBindingSubjectsParams) WriteToRequest(r runtime.ClientRequest
 		if err := r.SetBodyParam(o.Body); err != nil {
 			return err
 		}
+	}
+
+	// path param id
+	if err := r.SetPathParam("id", o.ID); err != nil {
+		return err
 	}
 
 	if len(res) > 0 {

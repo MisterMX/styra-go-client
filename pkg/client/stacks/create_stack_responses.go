@@ -44,19 +44,19 @@ func NewCreateStackOK() *CreateStackOK {
 OK
 */
 type CreateStackOK struct {
-	Payload *models.V1StacksPostResponse
+	Payload *models.StacksV1StacksPostResponse
 }
 
 func (o *CreateStackOK) Error() string {
 	return fmt.Sprintf("[POST /v1/stacks][%d] createStackOK  %+v", 200, o.Payload)
 }
-func (o *CreateStackOK) GetPayload() *models.V1StacksPostResponse {
+func (o *CreateStackOK) GetPayload() *models.StacksV1StacksPostResponse {
 	return o.Payload
 }
 
 func (o *CreateStackOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1StacksPostResponse)
+	o.Payload = new(models.StacksV1StacksPostResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
