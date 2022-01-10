@@ -8,8 +8,10 @@ package models
 import (
 	"context"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 )
 
 // DatasourcesV1DatasourcesPutResponse datasources v1 datasources put response
@@ -19,15 +21,93 @@ type DatasourcesV1DatasourcesPutResponse struct {
 
 	// request id
 	RequestID string `json:"request_id,omitempty"`
+
+	// result
+	Result struct {
+		DatasourcesV1DatasourcesPutRequest
+
+		// executed
+		// Format: date-time
+		Executed strfmt.DateTime `json:"executed,omitempty"`
+
+		// id
+		ID string `json:"id,omitempty"`
+
+		// metadata
+		Metadata *DatasourcesV1DatasourcesPutResponseResultAO1Metadata `json:"metadata,omitempty"`
+
+		// resources
+		Resources []interface{} `json:"resources"`
+
+		// status
+		Status interface{} `json:"status,omitempty"`
+	} `json:"result,omitempty"`
 }
 
 // Validate validates this datasources v1 datasources put response
 func (m *DatasourcesV1DatasourcesPutResponse) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateResult(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
 	return nil
 }
 
-// ContextValidate validates this datasources v1 datasources put response based on context it is used
+func (m *DatasourcesV1DatasourcesPutResponse) validateResult(formats strfmt.Registry) error {
+	if swag.IsZero(m.Result) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("result"+"."+"executed", "body", "date-time", m.Result.Executed.String(), formats); err != nil {
+		return err
+	}
+
+	if m.Result.Metadata != nil {
+		if err := m.Result.Metadata.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("result" + "." + "metadata")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("result" + "." + "metadata")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this datasources v1 datasources put response based on the context it is used
 func (m *DatasourcesV1DatasourcesPutResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateResult(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesPutResponse) contextValidateResult(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Result.Metadata != nil {
+		if err := m.Result.Metadata.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("result" + "." + "metadata")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("result" + "." + "metadata")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -42,6 +122,97 @@ func (m *DatasourcesV1DatasourcesPutResponse) MarshalBinary() ([]byte, error) {
 // UnmarshalBinary interface implementation
 func (m *DatasourcesV1DatasourcesPutResponse) UnmarshalBinary(b []byte) error {
 	var res DatasourcesV1DatasourcesPutResponse
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
+// DatasourcesV1DatasourcesPutResponseResultAO1Metadata datasources v1 datasources put response result a o1 metadata
+//
+// swagger:model DatasourcesV1DatasourcesPutResponseResultAO1Metadata
+type DatasourcesV1DatasourcesPutResponseResultAO1Metadata struct {
+
+	// created at
+	// Format: date-time
+	CreatedAt strfmt.DateTime `json:"created_at,omitempty"`
+
+	// created by
+	CreatedBy string `json:"created_by,omitempty"`
+
+	// created through
+	CreatedThrough string `json:"created_through,omitempty"`
+
+	// last modified at
+	// Format: date-time
+	LastModifiedAt strfmt.DateTime `json:"last_modified_at,omitempty"`
+
+	// last modified by
+	LastModifiedBy string `json:"last_modified_by,omitempty"`
+
+	// last modified through
+	LastModifiedThrough string `json:"last_modified_through,omitempty"`
+}
+
+// Validate validates this datasources v1 datasources put response result a o1 metadata
+func (m *DatasourcesV1DatasourcesPutResponseResultAO1Metadata) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateCreatedAt(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateLastModifiedAt(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesPutResponseResultAO1Metadata) validateCreatedAt(formats strfmt.Registry) error {
+	if swag.IsZero(m.CreatedAt) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("result"+"."+"metadata"+"."+"created_at", "body", "date-time", m.CreatedAt.String(), formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesPutResponseResultAO1Metadata) validateLastModifiedAt(formats strfmt.Registry) error {
+	if swag.IsZero(m.LastModifiedAt) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("result"+"."+"metadata"+"."+"last_modified_at", "body", "date-time", m.LastModifiedAt.String(), formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validates this datasources v1 datasources put response result a o1 metadata based on context it is used
+func (m *DatasourcesV1DatasourcesPutResponseResultAO1Metadata) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *DatasourcesV1DatasourcesPutResponseResultAO1Metadata) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *DatasourcesV1DatasourcesPutResponseResultAO1Metadata) UnmarshalBinary(b []byte) error {
+	var res DatasourcesV1DatasourcesPutResponseResultAO1Metadata
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

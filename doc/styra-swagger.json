@@ -7108,6 +7108,133 @@
             }
         },
         "data.v1.DataResponse.result": {},
+        "datasources.v1.AWS.Common": {
+            "properties": {
+                "credentials": {
+                    "description": "Secret ID with AWS credentials",
+                    "type": "string"
+                },
+                "region": {
+                    "description": "AWS region",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "region",
+                "credentials"
+            ],
+            "type": "object"
+        },
+        "datasources.v1.AWS.ECR": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.v1.Common"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.RateLimiter"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.Poller"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.AWS.Common"
+                },
+                {
+                    "properties": {
+                        "RegistryId": {
+                            "description": "Registry ID",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                }
+            ],
+            "example": {
+                "category": "aws/ecr",
+                "credentials": "aws_creds",
+                "on_premises": false,
+                "region": "us-east-1",
+                "type": "pull"
+            },
+            "title": "aws/ecr",
+            "x-datasource": true
+        },
+        "datasources.v1.Bundle.S3": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.v1.Common"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.Poller"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.AWS.Common"
+                },
+                {
+                    "properties": {
+                        "bucket": {
+                            "description": "S3 Bucket",
+                            "type": "string"
+                        },
+                        "endpoint": {
+                            "description": "Endpoint to S3 storage",
+                            "type": "string"
+                        },
+                        "path": {
+                            "description": "S3 Path within a Bucket",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "bucket",
+                        "path"
+                    ],
+                    "type": "object"
+                }
+            ],
+            "example": {
+                "bucket": "foo",
+                "category": "bundle/s3",
+                "credentials": "s3_creds",
+                "endpoint": "https://s3.example.com",
+                "on_premises": false,
+                "path": "bar/xyz",
+                "region": "us-east-1",
+                "type": "pull"
+            },
+            "title": "bundle/s3",
+            "x-datasource": true
+        },
+        "datasources.v1.Common": {
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "enabled": {
+                    "default": true,
+                    "type": "boolean"
+                },
+                "on_premises": {
+                    "type": "boolean"
+                },
+                "type": {
+                    "enum": [
+                        "pull",
+                        "push"
+                    ],
+                    "type": "string"
+                }
+            },
+            "required": [
+                "category",
+                "type",
+                "on_premises"
+            ],
+            "type": "object"
+        },
         "datasources.v1.Config": {
             "type": "object"
         },
@@ -7119,9 +7246,6 @@
             }
         },
         "datasources.v1.DatasourcesGetResponse": {
-            "required": [
-                "result"
-            ],
             "properties": {
                 "request_id": {
                     "type": "string"
@@ -7129,28 +7253,28 @@
                 "result": {
                     "type": "object"
                 }
-            }
-        },
-        "datasources.v1.DatasourcesListResponse": {
+            },
             "required": [
                 "result"
-            ],
+            ]
+        },
+        "datasources.v1.DatasourcesListResponse": {
             "properties": {
                 "request_id": {
                     "type": "string"
                 },
                 "result": {
-                    "type": "array",
                     "items": {
                         "$ref": "#/definitions/datasources.v1.Config"
-                    }
+                    },
+                    "type": "array"
                 }
-            }
-        },
-        "datasources.v1.DatasourcesPostResponse": {
+            },
             "required": [
                 "result"
-            ],
+            ]
+        },
+        "datasources.v1.DatasourcesPostResponse": {
             "properties": {
                 "request_id": {
                     "type": "string"
@@ -7158,7 +7282,10 @@
                 "result": {
                     "$ref": "#/definitions/datasources.v1.DatasourcesPostResponse.result"
                 }
-            }
+            },
+            "required": [
+                "result"
+            ]
         },
         "datasources.v1.DatasourcesPostResponse.result": {},
         "datasources.v1.DatasourcesPutRequest": {
@@ -7168,8 +7295,545 @@
             "properties": {
                 "request_id": {
                     "type": "string"
+                },
+                "result": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/datasources.v1.DatasourcesPutRequest"
+                        },
+                        {
+                            "properties": {
+                                "executed": {
+                                    "format": "date-time",
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "metadata": {
+                                    "properties": {
+                                        "created_at": {
+                                            "format": "date-time",
+                                            "type": "string"
+                                        },
+                                        "created_by": {
+                                            "type": "string"
+                                        },
+                                        "created_through": {
+                                            "type": "string"
+                                        },
+                                        "last_modified_at": {
+                                            "format": "date-time",
+                                            "type": "string"
+                                        },
+                                        "last_modified_by": {
+                                            "type": "string"
+                                        },
+                                        "last_modified_through": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "resources": {
+                                    "items": {
+                                        "type": "object"
+                                    },
+                                    "type": "array"
+                                },
+                                "status": {
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    ]
                 }
-            }
+            },
+            "type": "object"
+        },
+        "datasources.v1.Git.Blame": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.v1.Git.Common"
+                },
+                {
+                    "properties": {
+                        "path_regexp": {
+                            "default": ".*",
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                }
+            ],
+            "example": {
+                "category": "git/blame",
+                "on_premises": false,
+                "path_regexp\"": "^foo.+bar$",
+                "reference\"": "refs/heads/main",
+                "ssh_credentials": {
+                    "private_key": "git_ssh_key"
+                },
+                "type": "pull",
+                "url": "https://git.example.com"
+            },
+            "title": "git/blame",
+            "x-datasource": true
+        },
+        "datasources.v1.Git.Common": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.v1.Common"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.Poller"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.RateLimiter"
+                },
+                {
+                    "properties": {
+                        "credentials": {
+                            "description": "Secret ID with credentials",
+                            "type": "string"
+                        },
+                        "reference": {
+                            "default": "refs/heads/master",
+                            "type": "string"
+                        },
+                        "ssh_credentials": {
+                            "properties": {
+                                "passphrase": {
+                                    "description": "Secret ID with passphrase",
+                                    "type": "string"
+                                },
+                                "private_key": {
+                                    "description": "Secret ID with private key",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "private_key"
+                            ],
+                            "type": "object"
+                        },
+                        "timeout": {
+                            "default": "60s",
+                            "type": "string"
+                        },
+                        "url": {
+                            "description": "Git URL",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "url"
+                    ],
+                    "type": "object"
+                }
+            ]
+        },
+        "datasources.v1.Git.Content": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.v1.Git.Common"
+                },
+                {
+                    "properties": {
+                    },
+                    "type": "object"
+                }
+            ],
+            "example": {
+                "category": "git/content",
+                "on_premises": false,
+                "reference\"": "refs/heads/main",
+                "ssh_credentials": {
+                    "private_key": "git_ssh_key"
+                },
+                "type": "pull",
+                "url": "https://git.example.com"
+            },
+            "title": "git/content",
+            "x-datasource": true
+        },
+        "datasources.v1.Git.Rego": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.v1.Git.Common"
+                },
+                {
+                    "properties": {
+                        "path": {
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                }
+            ],
+            "example": {
+                "category": "git/rego",
+                "on_premises": false,
+                "path": "foo/bar",
+                "reference\"": "refs/heads/main",
+                "ssh_credentials": {
+                    "private_key": "git_ssh_key"
+                },
+                "type": "pull",
+                "url": "https://git.example.com"
+            },
+            "title": "git/rego",
+            "x-datasource": true
+        },
+        "datasources.v1.HTTP": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.v1.Common"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.Poller"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.RegoFiltering"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.TLSSettings"
+                },
+                {
+                    "properties": {
+                        "headers": {
+                            "items": {
+                                "$ref": "#/definitions/datasources.v1.HTTP.Header"
+                            },
+                            "type": "array"
+                        },
+                        "url": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "url"
+                    ],
+                    "type": "object"
+                }
+            ],
+            "example": {
+                "ca_certificate": "-----BEGIN CERTIFICATE REQUEST----- MIIB9TCCAWACAQAwgbgxGTAXBgNVBAoMEFF1b1ZhZGlzIExpbWl0ZWQxHDAaBgNV BAsME0RvY3VtZW50IERlcGFydG1lbnQxOTA3BgNVBAMMMFdoeSBhcmUgeW91IGRl Y29kaW5nIG1lPyAgVGhpcyBpcyBvbmx5IGEgdGVzdCEhITERMA8GA1UEBwwISGFt aWx0b24xETAPBgNVBAgMCFBlbWJyb2tlMQswCQYDVQQGEwJCTTEPMA0GCSqGSIb3 DQEJARYAMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCJ9WRanG/fUvcfKiGl EL4aRLjGt537mZ28UU9/3eiJeJznNSOuNLnF+hmabAu7H0LT4K7EdqfF+XUZW/2j RKRYcvOUDGF9A7OjW7UfKk1In3+6QDCi7X34RE161jqoaJjrm/T18TOKcgkkhRzE apQnIDm0Ea/HVzX/PiSOGuertwIDAQABMAsGCSqGSIb3DQEBBQOBgQBzMJdAV4QP Awel8LzGx5uMOshezF/KfP67wJ93UW+N7zXY6AwPgoLj4Kjw+WtU684JL8Dtr9FX ozakE+8p06BpxegR4BR3FMHf6p+0jQxUEAkAyb/mVgm66TyghDGC6/YkiKoZptXQ 98TwDIK/39WEB/V607As+KoYazQG8drorw== -----END CERTIFICATE REQUEST-----\n",
+                "category": "http",
+                "headers": [
+                    {
+                        "name": "TOKEN",
+                        "secret_id": "http_token"
+                    }
+                ],
+                "on_premises": false,
+                "polling_interval": "60s",
+                "type": "pull"
+            },
+            "title": "http",
+            "x-datasource": true
+        },
+        "datasources.v1.HTTP.Header": {
+            "properties": {
+                "name": {
+                    "description": "Header's name",
+                    "type": "string"
+                },
+                "secret_id": {
+                    "description": "Secret ID where the Header's value is stored",
+                    "type": "string"
+                },
+                "value": {
+                    "description": "Header's value",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name"
+            ]
+        },
+        "datasources.v1.Kubernetes.Resources": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.v1.Common"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.RateLimiter"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.Poller"
+                },
+                {
+                    "properties": {
+                        "masks": {
+                            "additionalProperties": {
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            "description": "strip out resource properties given their relative path",
+                            "type": "object"
+                        },
+                        "namespaces": {
+                            "additionalProperties": {
+                                "type": "boolean"
+                            },
+                            "description": "allows to include/exclude namespaces",
+                            "type": "object"
+                        },
+                        "selectors": {
+                            "additionalProperties": {
+                                "type": "string"
+                            },
+                            "description": "field selectors per resource [group]",
+                            "type": "object"
+                        }
+                    },
+                    "type": "object"
+                }
+            ],
+            "example": {
+                "category": "kubernetes/resources",
+                "masks": {
+                    "argoproj.io/workflows": [
+                        "*"
+                    ],
+                    "pods": [
+                        "spec.afinity",
+                        "spec/livenessProbe",
+                        "status",
+                        "metadata.annotations.'kubectl.kubernetes.io/last-applied-configuration'"
+                    ]
+                },
+                "namespaces": {
+                    "": false,
+                    "*": false,
+                    "nsName": true
+                },
+                "on_premises": true,
+                "rate_limit": 3,
+                "selectors": {
+                    "ingress": "metadata.namespace==default",
+                    "pods": "status.phase!=Running,spec.restartPolicy=Always"
+                },
+                "type": "pull"
+            },
+            "title": "kubernetes/resources",
+            "x-datasource": true
+        },
+        "datasources.v1.LDAP": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.v1.Common"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.Poller"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.RegoFiltering"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.TLSSettings"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.RateLimiter"
+                },
+                {
+                    "properties": {
+                        "credentials": {
+                            "description": "Secret ID with credentials",
+                            "type": "string"
+                        },
+                        "search": {
+                            "description": "Search Request.\nDocumentation: https://ldapwiki.com/wiki/SearchRequest\n",
+                            "properties": {
+                                "attributes": {
+                                    "description": "Search attribute selection.\nDocumentation: https://ldapwiki.com/wiki/AttributeSelection\n",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                },
+                                "base_DN": {
+                                    "description": "Search Base DN.\nDocumentation: https://ldapwiki.com/wiki/BaseDN\n",
+                                    "type": "string"
+                                },
+                                "deref": {
+                                    "default": "never",
+                                    "description": "Search dereference policy.\nDocumentation: https://ldapwiki.com/wiki/Dereference%20Policy\n",
+                                    "enum": [
+                                        "never",
+                                        "searching",
+                                        "finding",
+                                        "always"
+                                    ],
+                                    "type": "string"
+                                },
+                                "filter": {
+                                    "description": "Search filter.\nDocumentation: https://ldapwiki.com/wiki/LDAP%20SearchFilters\nExamples: https://ldapwiki.com/wiki/LDAP%20Query%20Examples\n",
+                                    "type": "string"
+                                },
+                                "page_size": {
+                                    "description": "Search page size.\nDocumentation: https://ldapwiki.com/wiki/MaxPageSize\n",
+                                    "maximum": 4294967295,
+                                    "minimum": 0,
+                                    "type": "integer"
+                                },
+                                "scope": {
+                                    "default": "whole-subtree",
+                                    "description": "Search scope.\nDocumentation: https://ldapwiki.com/wiki/LDAP%20Search%20Scopes\n",
+                                    "enum": [
+                                        "base-object",
+                                        "single-level",
+                                        "whole-subtree"
+                                    ],
+                                    "type": "string"
+                                },
+                                "size_limit": {
+                                    "description": "Search page limit.\nDocumentation: https://ldapwiki.com/wiki/SizeLimit\n",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                }
+                            },
+                            "required": [
+                                "base_DN",
+                                "filter"
+                            ],
+                            "type": "object"
+                        },
+                        "urls": {
+                            "description": "List of URLs: main + replicas",
+                            "items": {
+                                "minItems": 1,
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "required": [
+                        "urls"
+                    ],
+                    "type": "object"
+                }
+            ],
+            "example": {
+                "category": "ldap",
+                "credentials": "ldapcreds",
+                "on_premises": false,
+                "polling_interval": "60s",
+                "search": {
+                    "base_DN": "dc=test,dc=styra,dc=com",
+                    "deref": "never",
+                    "filter": "(objectclass=*)",
+                    "scope": "whole-subtree"
+                },
+                "type": "pull",
+                "url": [
+                    "ldaps://example.com:33636",
+                    "ldap://example.com:33389"
+                ]
+            },
+            "title": "ldap",
+            "x-datasource": true
+        },
+        "datasources.v1.ParallelismLimiter": {
+            "properties": {
+                "parallel": {
+                    "default": 10,
+                    "description": "the maximum level of parallelism allowed",
+                    "type": "integer"
+                }
+            },
+            "type": "object"
+        },
+        "datasources.v1.PolicyLibrary": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.v1.Common"
+                },
+                {
+                    "$ref": "#/definitions/datasources.v1.Poller"
+                },
+                {
+                    "properties": {
+
+                    },
+                    "type": "object"
+                }
+            ],
+            "title": "policy-library",
+            "x-datasource": true
+        },
+        "datasources.v1.Poller": {
+            "properties": {
+                "polling_interval": {
+                    "default": "30s",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "datasources.v1.RateLimiter": {
+            "properties": {
+                "rate_limit": {
+                    "default": 3,
+                    "description": "requests per second",
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "datasources.v1.RegoFiltering": {
+            "properties": {
+                "policy_filter": {
+                    "description": "Policy Filter (if set, then policy_query must be set as well)",
+                    "type": "string"
+                },
+                "policy_query": {
+                    "description": "Policy Query (if set, then policy_filter must be set as well)",
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "datasources.v1.Rest": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/datasources.v1.Common"
+                },
+                {
+                    "properties": {
+                        "content_type": {
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                }
+            ],
+            "example": {
+                "category": "rest",
+                "content_type": "application/json",
+                "on_premises": false,
+                "type": "push"
+            },
+            "title": "rest",
+            "x-datasource": true
+        },
+        "datasources.v1.TLSSettings": {
+            "properties": {
+                "ca_certificate": {
+                    "description": "Custom CA certificate",
+                    "type": "string"
+                },
+                "skip_tls_verification": {
+                    "default": false,
+                    "description": "Skip TLS verification",
+                    "type": "boolean"
+                }
+            },
+            "type": "object"
         },
         "git.v1.Commit": {
             "required": [
