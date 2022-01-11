@@ -7,10 +7,13 @@ package models
 
 import (
 	"context"
+	"encoding/json"
+	"strconv"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 )
 
 // DatasourcesV1DatasourcesGetResponse datasources v1 datasources get response
@@ -23,7 +26,7 @@ type DatasourcesV1DatasourcesGetResponse struct {
 
 	// result
 	// Required: true
-	Result interface{} `json:"result"`
+	Result *DatasourcesV1DatasourcesGetResponseResult `json:"result"`
 }
 
 // Validate validates this datasources v1 datasources get response
@@ -42,15 +45,51 @@ func (m *DatasourcesV1DatasourcesGetResponse) Validate(formats strfmt.Registry) 
 
 func (m *DatasourcesV1DatasourcesGetResponse) validateResult(formats strfmt.Registry) error {
 
-	if m.Result == nil {
-		return errors.Required("result", "body", nil)
+	if err := validate.Required("result", "body", m.Result); err != nil {
+		return err
+	}
+
+	if m.Result != nil {
+		if err := m.Result.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("result")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("result")
+			}
+			return err
+		}
 	}
 
 	return nil
 }
 
-// ContextValidate validates this datasources v1 datasources get response based on context it is used
+// ContextValidate validate this datasources v1 datasources get response based on the context it is used
 func (m *DatasourcesV1DatasourcesGetResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateResult(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesGetResponse) contextValidateResult(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Result != nil {
+		if err := m.Result.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("result")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("result")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -65,6 +104,690 @@ func (m *DatasourcesV1DatasourcesGetResponse) MarshalBinary() ([]byte, error) {
 // UnmarshalBinary interface implementation
 func (m *DatasourcesV1DatasourcesGetResponse) UnmarshalBinary(b []byte) error {
 	var res DatasourcesV1DatasourcesGetResponse
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
+// DatasourcesV1DatasourcesGetResponseResult Response object that contains all ṕossible fields
+//
+// swagger:model DatasourcesV1DatasourcesGetResponseResult
+type DatasourcesV1DatasourcesGetResponseResult struct {
+
+	// Registry ID
+	RegistryID string `json:"RegistryId,omitempty"`
+
+	// S3 Bucket
+	Bucket string `json:"bucket,omitempty"`
+
+	// Custom CA certificate
+	CaCertificate string `json:"ca_certificate,omitempty"`
+
+	// Must be `policy-library`
+	Category string `json:"category,omitempty"`
+
+	// content type
+	ContentType string `json:"content_type,omitempty"`
+
+	// Secret ID with credentials
+	Credentials string `json:"credentials,omitempty"`
+
+	// description
+	Description string `json:"description,omitempty"`
+
+	// enabled
+	Enabled bool `json:"enabled,omitempty"`
+
+	// Endpoint to S3 storage
+	Endpoint string `json:"endpoint,omitempty"`
+
+	// executed
+	Executed string `json:"executed,omitempty"`
+
+	// headers
+	Headers []*DatasourcesV1HTTPHeader `json:"headers"`
+
+	// id
+	ID string `json:"id,omitempty"`
+
+	// strip out resource properties given their relative path
+	Masks map[string][]string `json:"masks,omitempty"`
+
+	// metadata
+	Metadata interface{} `json:"metadata,omitempty"`
+
+	// allows to include/exclude namespaces
+	Namespaces map[string]bool `json:"namespaces,omitempty"`
+
+	// Must be `true`
+	OnPremises bool `json:"on_premises,omitempty"`
+
+	// S3 Path within a Bucket
+	Path string `json:"path,omitempty"`
+
+	// path regexp
+	PathRegexp string `json:"path_regexp,omitempty"`
+
+	// policy filter
+	PolicyFilter string `json:"policy_filter,omitempty"`
+
+	// policy query
+	PolicyQuery string `json:"policy_query,omitempty"`
+
+	// polling interval
+	PollingInterval int64 `json:"polling_interval,omitempty"`
+
+	// requests per second
+	RateLimit *float64 `json:"rate_limit,omitempty"`
+
+	// reference
+	Reference string `json:"reference,omitempty"`
+
+	// AWS region
+	Region string `json:"region,omitempty"`
+
+	// search
+	Search *DatasourcesV1DatasourcesGetResponseResultSearch `json:"search,omitempty"`
+
+	// field selectors per resource [group]
+	Selectors map[string]string `json:"selectors,omitempty"`
+
+	// Skip TLS verification
+	SkipTLSVerification bool `json:"skip_tls_verification,omitempty"`
+
+	// ssh credentials
+	SSHCredentials *DatasourcesV1DatasourcesGetResponseResultSSHCredentials `json:"ssh_credentials,omitempty"`
+
+	// status
+	Status *DatasourcesV1DatasourcesGetResponseResultStatus `json:"status,omitempty"`
+
+	// timeout
+	Timeout int64 `json:"timeout,omitempty"`
+
+	// `The property is not used`
+	TLSCaCertificate string `json:"tls_ca_certificate,omitempty"`
+
+	// `The property is not used`
+	TLSCertificate string `json:"tls_certificate,omitempty"`
+
+	// `The property is not used`
+	TLSKey string `json:"tls_key,omitempty"`
+
+	// `The property is not used`
+	TLSServerName string `json:"tls_server_name,omitempty"`
+
+	// `The property is not used`
+	TLSVerifyServer bool `json:"tls_verify_server,omitempty"`
+
+	// type
+	Type string `json:"type,omitempty"`
+
+	// Git URL
+	URL string `json:"url,omitempty"`
+
+	// List of URLs: main + replicas
+	Urls []string `json:"urls"`
+}
+
+// Validate validates this datasources v1 datasources get response result
+func (m *DatasourcesV1DatasourcesGetResponseResult) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateHeaders(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateSearch(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateSSHCredentials(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateStatus(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesGetResponseResult) validateHeaders(formats strfmt.Registry) error {
+	if swag.IsZero(m.Headers) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.Headers); i++ {
+		if swag.IsZero(m.Headers[i]) { // not required
+			continue
+		}
+
+		if m.Headers[i] != nil {
+			if err := m.Headers[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("result" + "." + "headers" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("result" + "." + "headers" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesGetResponseResult) validateSearch(formats strfmt.Registry) error {
+	if swag.IsZero(m.Search) { // not required
+		return nil
+	}
+
+	if m.Search != nil {
+		if err := m.Search.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("result" + "." + "search")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("result" + "." + "search")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesGetResponseResult) validateSSHCredentials(formats strfmt.Registry) error {
+	if swag.IsZero(m.SSHCredentials) { // not required
+		return nil
+	}
+
+	if m.SSHCredentials != nil {
+		if err := m.SSHCredentials.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("result" + "." + "ssh_credentials")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("result" + "." + "ssh_credentials")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesGetResponseResult) validateStatus(formats strfmt.Registry) error {
+	if swag.IsZero(m.Status) { // not required
+		return nil
+	}
+
+	if m.Status != nil {
+		if err := m.Status.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("result" + "." + "status")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("result" + "." + "status")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this datasources v1 datasources get response result based on the context it is used
+func (m *DatasourcesV1DatasourcesGetResponseResult) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateHeaders(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateSearch(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateSSHCredentials(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateStatus(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesGetResponseResult) contextValidateHeaders(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Headers); i++ {
+
+		if m.Headers[i] != nil {
+			if err := m.Headers[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("result" + "." + "headers" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("result" + "." + "headers" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesGetResponseResult) contextValidateSearch(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Search != nil {
+		if err := m.Search.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("result" + "." + "search")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("result" + "." + "search")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesGetResponseResult) contextValidateSSHCredentials(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.SSHCredentials != nil {
+		if err := m.SSHCredentials.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("result" + "." + "ssh_credentials")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("result" + "." + "ssh_credentials")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesGetResponseResult) contextValidateStatus(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Status != nil {
+		if err := m.Status.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("result" + "." + "status")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("result" + "." + "status")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *DatasourcesV1DatasourcesGetResponseResult) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *DatasourcesV1DatasourcesGetResponseResult) UnmarshalBinary(b []byte) error {
+	var res DatasourcesV1DatasourcesGetResponseResult
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
+// DatasourcesV1DatasourcesGetResponseResultSSHCredentials datasources v1 datasources get response result SSH credentials
+//
+// swagger:model DatasourcesV1DatasourcesGetResponseResultSSHCredentials
+type DatasourcesV1DatasourcesGetResponseResultSSHCredentials struct {
+
+	// Secret ID with passphrase
+	Passphrase string `json:"passphrase,omitempty"`
+
+	// Secret ID with private key
+	// Required: true
+	PrivateKey *string `json:"private_key"`
+}
+
+// Validate validates this datasources v1 datasources get response result SSH credentials
+func (m *DatasourcesV1DatasourcesGetResponseResultSSHCredentials) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validatePrivateKey(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesGetResponseResultSSHCredentials) validatePrivateKey(formats strfmt.Registry) error {
+
+	if err := validate.Required("result"+"."+"ssh_credentials"+"."+"private_key", "body", m.PrivateKey); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validates this datasources v1 datasources get response result SSH credentials based on context it is used
+func (m *DatasourcesV1DatasourcesGetResponseResultSSHCredentials) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *DatasourcesV1DatasourcesGetResponseResultSSHCredentials) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *DatasourcesV1DatasourcesGetResponseResultSSHCredentials) UnmarshalBinary(b []byte) error {
+	var res DatasourcesV1DatasourcesGetResponseResultSSHCredentials
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
+// DatasourcesV1DatasourcesGetResponseResultSearch Search Request.
+// Documentation: https://ldapwiki.com/wiki/SearchRequest
+//
+//
+// swagger:model DatasourcesV1DatasourcesGetResponseResultSearch
+type DatasourcesV1DatasourcesGetResponseResultSearch struct {
+
+	// Search attribute selection.
+	// Documentation: https://ldapwiki.com/wiki/AttributeSelection
+	//
+	Attributes []string `json:"attributes"`
+
+	// Search Base DN.
+	// Documentation: https://ldapwiki.com/wiki/BaseDN
+	//
+	BaseDN string `json:"base_DN,omitempty"`
+
+	// Search dereference policy.
+	// Documentation: https://ldapwiki.com/wiki/Dereference%20Policy
+	//
+	// Enum: [never searching finding always]
+	Deref *string `json:"deref,omitempty"`
+
+	// Search filter.
+	// Documentation: https://ldapwiki.com/wiki/LDAP%20SearchFilters
+	// Examples: https://ldapwiki.com/wiki/LDAP%20Query%20Examples
+	//
+	Filter string `json:"filter,omitempty"`
+
+	// Search page size.
+	// Documentation: https://ldapwiki.com/wiki/MaxPageSize
+	//
+	// Maximum: 4.294967295e+09
+	// Minimum: 0
+	PageSize *int64 `json:"page_size,omitempty"`
+
+	// Search scope.
+	// Documentation: https://ldapwiki.com/wiki/LDAP%20Search%20Scopes
+	//
+	// Enum: [base-object single-level whole-subtree]
+	Scope *string `json:"scope,omitempty"`
+
+	// Search page limit.
+	// Documentation: https://ldapwiki.com/wiki/SizeLimit
+	//
+	// Minimum: 0
+	SizeLimit *int64 `json:"size_limit,omitempty"`
+}
+
+// Validate validates this datasources v1 datasources get response result search
+func (m *DatasourcesV1DatasourcesGetResponseResultSearch) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateDeref(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validatePageSize(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateScope(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateSizeLimit(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+var datasourcesV1DatasourcesGetResponseResultSearchTypeDerefPropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["never","searching","finding","always"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		datasourcesV1DatasourcesGetResponseResultSearchTypeDerefPropEnum = append(datasourcesV1DatasourcesGetResponseResultSearchTypeDerefPropEnum, v)
+	}
+}
+
+const (
+
+	// DatasourcesV1DatasourcesGetResponseResultSearchDerefNever captures enum value "never"
+	DatasourcesV1DatasourcesGetResponseResultSearchDerefNever string = "never"
+
+	// DatasourcesV1DatasourcesGetResponseResultSearchDerefSearching captures enum value "searching"
+	DatasourcesV1DatasourcesGetResponseResultSearchDerefSearching string = "searching"
+
+	// DatasourcesV1DatasourcesGetResponseResultSearchDerefFinding captures enum value "finding"
+	DatasourcesV1DatasourcesGetResponseResultSearchDerefFinding string = "finding"
+
+	// DatasourcesV1DatasourcesGetResponseResultSearchDerefAlways captures enum value "always"
+	DatasourcesV1DatasourcesGetResponseResultSearchDerefAlways string = "always"
+)
+
+// prop value enum
+func (m *DatasourcesV1DatasourcesGetResponseResultSearch) validateDerefEnum(path, location string, value string) error {
+	if err := validate.EnumCase(path, location, value, datasourcesV1DatasourcesGetResponseResultSearchTypeDerefPropEnum, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesGetResponseResultSearch) validateDeref(formats strfmt.Registry) error {
+	if swag.IsZero(m.Deref) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := m.validateDerefEnum("result"+"."+"search"+"."+"deref", "body", *m.Deref); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesGetResponseResultSearch) validatePageSize(formats strfmt.Registry) error {
+	if swag.IsZero(m.PageSize) { // not required
+		return nil
+	}
+
+	if err := validate.MinimumInt("result"+"."+"search"+"."+"page_size", "body", *m.PageSize, 0, false); err != nil {
+		return err
+	}
+
+	if err := validate.MaximumInt("result"+"."+"search"+"."+"page_size", "body", *m.PageSize, 4.294967295e+09, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+var datasourcesV1DatasourcesGetResponseResultSearchTypeScopePropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["base-object","single-level","whole-subtree"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		datasourcesV1DatasourcesGetResponseResultSearchTypeScopePropEnum = append(datasourcesV1DatasourcesGetResponseResultSearchTypeScopePropEnum, v)
+	}
+}
+
+const (
+
+	// DatasourcesV1DatasourcesGetResponseResultSearchScopeBaseDashObject captures enum value "base-object"
+	DatasourcesV1DatasourcesGetResponseResultSearchScopeBaseDashObject string = "base-object"
+
+	// DatasourcesV1DatasourcesGetResponseResultSearchScopeSingleDashLevel captures enum value "single-level"
+	DatasourcesV1DatasourcesGetResponseResultSearchScopeSingleDashLevel string = "single-level"
+
+	// DatasourcesV1DatasourcesGetResponseResultSearchScopeWholeDashSubtree captures enum value "whole-subtree"
+	DatasourcesV1DatasourcesGetResponseResultSearchScopeWholeDashSubtree string = "whole-subtree"
+)
+
+// prop value enum
+func (m *DatasourcesV1DatasourcesGetResponseResultSearch) validateScopeEnum(path, location string, value string) error {
+	if err := validate.EnumCase(path, location, value, datasourcesV1DatasourcesGetResponseResultSearchTypeScopePropEnum, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesGetResponseResultSearch) validateScope(formats strfmt.Registry) error {
+	if swag.IsZero(m.Scope) { // not required
+		return nil
+	}
+
+	// value enum
+	if err := m.validateScopeEnum("result"+"."+"search"+"."+"scope", "body", *m.Scope); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesGetResponseResultSearch) validateSizeLimit(formats strfmt.Registry) error {
+	if swag.IsZero(m.SizeLimit) { // not required
+		return nil
+	}
+
+	if err := validate.MinimumInt("result"+"."+"search"+"."+"size_limit", "body", *m.SizeLimit, 0, false); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validates this datasources v1 datasources get response result search based on context it is used
+func (m *DatasourcesV1DatasourcesGetResponseResultSearch) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *DatasourcesV1DatasourcesGetResponseResultSearch) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *DatasourcesV1DatasourcesGetResponseResultSearch) UnmarshalBinary(b []byte) error {
+	var res DatasourcesV1DatasourcesGetResponseResultSearch
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*m = res
+	return nil
+}
+
+// DatasourcesV1DatasourcesGetResponseResultStatus status of the datasource
+//
+// swagger:model DatasourcesV1DatasourcesGetResponseResultStatus
+type DatasourcesV1DatasourcesGetResponseResultStatus struct {
+
+	// code
+	Code string `json:"code,omitempty"`
+
+	// message
+	Message string `json:"message,omitempty"`
+
+	// timestamp
+	// Format: date-time
+	Timestamp strfmt.DateTime `json:"timestamp,omitempty"`
+}
+
+// Validate validates this datasources v1 datasources get response result status
+func (m *DatasourcesV1DatasourcesGetResponseResultStatus) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.validateTimestamp(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *DatasourcesV1DatasourcesGetResponseResultStatus) validateTimestamp(formats strfmt.Registry) error {
+	if swag.IsZero(m.Timestamp) { // not required
+		return nil
+	}
+
+	if err := validate.FormatOf("result"+"."+"status"+"."+"timestamp", "body", "date-time", m.Timestamp.String(), formats); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validates this datasources v1 datasources get response result status based on context it is used
+func (m *DatasourcesV1DatasourcesGetResponseResultStatus) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (m *DatasourcesV1DatasourcesGetResponseResultStatus) MarshalBinary() ([]byte, error) {
+	if m == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(m)
+}
+
+// UnmarshalBinary interface implementation
+func (m *DatasourcesV1DatasourcesGetResponseResultStatus) UnmarshalBinary(b []byte) error {
+	var res DatasourcesV1DatasourcesGetResponseResultStatus
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

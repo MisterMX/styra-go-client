@@ -7251,7 +7251,241 @@
                     "type": "string"
                 },
                 "result": {
-                    "type": "object"
+                    "type": "object",
+                    "description": "Response object that contains all ṕossible fields",
+                    "properties": {
+                        "category": {
+                            "type": "string",
+                            "description": "Must be `policy-library`"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "executed": {
+                            "type": "string"
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "metadata": {
+                            "type": "object"
+                        },
+                        "status": {
+                            "type": "object",
+                            "description": "status of the datasource",
+                            "properties": {
+                                "code": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "timestamp": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                }
+                            }
+                        },
+                        "on_premises": {
+                            "type": "boolean",
+                            "description": "Must be `true`"
+                        },
+                        "type": {
+                            "type": "string"
+                        },
+                        "credentials": {
+                            "description": "Secret ID with credentials",
+                            "type": "string"
+                        },
+                        "region": {
+                            "description": "AWS region",
+                            "type": "string"
+                        },
+                        "reference": {
+                            "type": "string"
+                        },
+                        "ssh_credentials": {
+                            "type": "object",
+                            "required": [
+                                "private_key"
+                            ],
+                            "properties": {
+                                "passphrase": {
+                                    "description": "Secret ID with passphrase",
+                                    "type": "string"
+                                },
+                                "private_key": {
+                                    "description": "Secret ID with private key",
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "timeout": {
+                            "type": "integer"
+                        },
+                        "tls_ca_certificate": {
+                            "description": "`The property is not used`",
+                            "type": "string"
+                        },
+                        "tls_certificate": {
+                            "description": "`The property is not used`",
+                            "type": "string"
+                        },
+                        "tls_key": {
+                            "description": "`The property is not used`",
+                            "type": "string"
+                        },
+                        "tls_server_name": {
+                            "description": "`The property is not used`",
+                            "type": "string"
+                        },
+                        "tls_verify_server": {
+                            "description": "`The property is not used`",
+                            "type": "boolean"
+                        },
+                        "url": {
+                            "description": "Git URL",
+                            "type": "string"
+                        },
+                        "polling_interval": {
+                            "type": "integer"
+                        },
+                        "rate_limit": {
+                            "description": "requests per second",
+                            "type": "number",
+                            "default": 3
+                        },
+                        "bucket": {
+                            "description": "S3 Bucket",
+                            "type": "string"
+                        },
+                        "endpoint": {
+                            "description": "Endpoint to S3 storage",
+                            "type": "string"
+                        },
+                        "path": {
+                            "description": "S3 Path within a Bucket",
+                            "type": "string"
+                        },
+                        "ca_certificate": {
+                            "description": "Custom CA certificate",
+                            "type": "string"
+                        },
+                        "headers": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/datasources.v1.HTTP.Header"
+                            }
+                        },
+                        "policy_filter": {
+                            "type": "string"
+                        },
+                        "policy_query": {
+                            "type": "string"
+                        },
+                        "skip_tls_verification": {
+                            "description": "Skip TLS verification",
+                            "type": "boolean"
+                        },
+                        "RegistryId": {
+                            "description": "Registry ID",
+                            "type": "string"
+                        },
+                        "content_type": {
+                            "type": "string"
+                        },
+                        "masks": {
+                            "description": "strip out resource properties given their relative path",
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "namespaces": {
+                            "description": "allows to include/exclude namespaces",
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "boolean"
+                            }
+                        },
+                        "selectors": {
+                            "description": "field selectors per resource [group]",
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        },
+                        "path_regexp": {
+                            "type": "string"
+                        },
+                        "search": {
+                            "description": "Search Request.\nDocumentation: https://ldapwiki.com/wiki/SearchRequest\n",
+                            "properties": {
+                                "attributes": {
+                                    "description": "Search attribute selection.\nDocumentation: https://ldapwiki.com/wiki/AttributeSelection\n",
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                },
+                                "base_DN": {
+                                    "description": "Search Base DN.\nDocumentation: https://ldapwiki.com/wiki/BaseDN\n",
+                                    "type": "string"
+                                },
+                                "deref": {
+                                    "default": "never",
+                                    "description": "Search dereference policy.\nDocumentation: https://ldapwiki.com/wiki/Dereference%20Policy\n",
+                                    "enum": [
+                                        "never",
+                                        "searching",
+                                        "finding",
+                                        "always"
+                                    ],
+                                    "type": "string"
+                                },
+                                "filter": {
+                                    "description": "Search filter.\nDocumentation: https://ldapwiki.com/wiki/LDAP%20SearchFilters\nExamples: https://ldapwiki.com/wiki/LDAP%20Query%20Examples\n",
+                                    "type": "string"
+                                },
+                                "page_size": {
+                                    "description": "Search page size.\nDocumentation: https://ldapwiki.com/wiki/MaxPageSize\n",
+                                    "maximum": 4294967295,
+                                    "minimum": 0,
+                                    "type": "integer"
+                                },
+                                "scope": {
+                                    "default": "whole-subtree",
+                                    "description": "Search scope.\nDocumentation: https://ldapwiki.com/wiki/LDAP%20Search%20Scopes\n",
+                                    "enum": [
+                                        "base-object",
+                                        "single-level",
+                                        "whole-subtree"
+                                    ],
+                                    "type": "string"
+                                },
+                                "size_limit": {
+                                    "description": "Search page limit.\nDocumentation: https://ldapwiki.com/wiki/SizeLimit\n",
+                                    "minimum": 0,
+                                    "type": "integer"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "urls": {
+                            "description": "List of URLs: main + replicas",
+                            "items": {
+                                "minItems": 1,
+                                "type": "string"
+                            },
+                            "type": "array"
+                        }
+                    }
                 }
             },
             "required": [
