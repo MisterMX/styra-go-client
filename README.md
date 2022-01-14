@@ -1,20 +1,13 @@
 # styra-go-client
 
-Go client for Styra REST API
+Inofficial Go client for Styra REST API primarily used for [crossplane-contrib/provider-styra](https://github.com/crossplane-contrib/provider-styra).
 
-# Code Generation
+## Code Generation
 
-[go-swagger](https://github.com/go-swagger/go-swagger) is used in this repo to generate the client code needed to connect to the Styra API.
+The generated code is based on the [official OpenAPI v2 spec](https://docs.styra.com/reference/api/openapi) by Styra (with some manual adjustments). [go-swagger](https://github.com/go-swagger/go-swagger) is used to generate the client code.
 
-To generate the code [install go-swagger](https://goswagger.io/install.html) and run:
+To generate the Go code run
 
 ```bash
-swagger generate client -f doc/styra-swagger.json --skip-validation -c pkg/client -m pkg/models --default-scheme=https
-```
-
-The generated code might contain some errors regarding integer to string conversion. This is not an issue with swagger but rather the OpenAPI spec being malformed. In this case it should be checked that all integer types (especially query parameters) haven an appropriate type definition:
-
-```yaml 
-    type: "integer"
-    format: "int32"
+make clean generate
 ```
