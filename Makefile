@@ -1,6 +1,5 @@
-SWAGGER_FILE  := "doc/styra-swagger.json"
-SCHEME        := "https"
 PKG_DIR       := "./pkg"
+TEST_DIR      := "./internal"
 OUTPUT_CLIENT := "${PKG_DIR}/client"
 OUTPUT_MODELS := "${PKG_DIR}/models"
 
@@ -31,6 +30,16 @@ clean:
 	@$(OK) Removed generated client
 
 generate:
-	@$(INFO) Generating swagger client
+	@$(INFO) Generating go resources
 	@go generate ${PKG_DIR} || $(FAIL)
-	@$(OK) Generated swagger client
+	@$(OK) Successfully generated go resources
+
+test:
+	@$(INFO) go test unit-tests
+	@CGO_ENABLED=0 go test ${TEST_DIR} || $(FAIL)
+	@$(OK) go test unit-tests
+
+# ensure generate target doesn't create a diff
+check-diff: clean generate
+	@$(INFO) checking that branch is clean
+	@if git status --porcelain | grep . ; then $(FAIL); else $(OK) branch is clean; fi
