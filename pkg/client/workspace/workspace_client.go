@@ -34,21 +34,31 @@ type ClientService interface {
 
 	DeleteUserBranchWorkspace(params *DeleteUserBranchWorkspaceParams, opts ...ClientOption) (*DeleteUserBranchWorkspaceOK, error)
 
+	GetRegions(params *GetRegionsParams, opts ...ClientOption) (*GetRegionsOK, error)
+
+	GetS3Config(params *GetS3ConfigParams, opts ...ClientOption) (*GetS3ConfigOK, error)
+
 	GetSourceControlFilesBranchWorkspace(params *GetSourceControlFilesBranchWorkspaceParams, opts ...ClientOption) (*GetSourceControlFilesBranchWorkspaceOK, error)
 
 	GetSourceControlFilesMasterWorkspace(params *GetSourceControlFilesMasterWorkspaceParams, opts ...ClientOption) (*GetSourceControlFilesMasterWorkspaceOK, error)
 
 	GetWorkspace(params *GetWorkspaceParams, opts ...ClientOption) (*GetWorkspaceOK, error)
 
-	UpdateWorkspace(params *UpdateWorkspaceParams, opts ...ClientOption) (*UpdateWorkspaceOK, error)
+	S3VerifyConfig(params *S3VerifyConfigParams, opts ...ClientOption) (*S3VerifyConfigOK, error)
 
-	Func3(params *Func3Params, opts ...ClientOption) (*Func3OK, error)
+	SourceControlVerifyConfigWorkspace(params *SourceControlVerifyConfigWorkspaceParams, opts ...ClientOption) (*SourceControlVerifyConfigWorkspaceOK, error)
+
+	UpdateS3Config(params *UpdateS3ConfigParams, opts ...ClientOption) (*UpdateS3ConfigOK, error)
+
+	UpdateWorkspace(params *UpdateWorkspaceParams, opts ...ClientOption) (*UpdateWorkspaceOK, error)
 
 	SetTransport(transport runtime.ClientTransport)
 }
 
 /*
-  CommitFilesToSourceControlWorkspace commits files to source control associated with a workspace
+  CommitFilesToSourceControlWorkspace commits files to workspace source control
+
+  Commit files to source control associated with a workspace
 */
 func (a *Client) CommitFilesToSourceControlWorkspace(params *CommitFilesToSourceControlWorkspaceParams, opts ...ClientOption) (*CommitFilesToSourceControlWorkspaceOK, error) {
 	// TODO: Validate the params before sending
@@ -124,7 +134,85 @@ func (a *Client) DeleteUserBranchWorkspace(params *DeleteUserBranchWorkspacePara
 }
 
 /*
-  GetSourceControlFilesBranchWorkspace gets the list of files for the styra d a s created branch
+  GetRegions gets s3 regions list
+
+  Get list of valid regions for S3 integration type
+*/
+func (a *Client) GetRegions(params *GetRegionsParams, opts ...ClientOption) (*GetRegionsOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetRegionsParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "GetRegions",
+		Method:             "GET",
+		PathPattern:        "/v1/workspace/regions/{storagesvc}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetRegionsReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GetRegionsOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for GetRegions: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  GetS3Config gets s3 decision configuration
+*/
+func (a *Client) GetS3Config(params *GetS3ConfigParams, opts ...ClientOption) (*GetS3ConfigOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetS3ConfigParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "GetS3Config",
+		Method:             "GET",
+		PathPattern:        "/v1/workspace/s3-config",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetS3ConfigReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GetS3ConfigOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for GetS3Config: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  GetSourceControlFilesBranchWorkspace lists files in styra d a s created branch
 
   Gets the list of files for the branch that the Styra DAS creates when modifying rego in the Styra DAS UI and pushing the changes to GitHub in a branch for review.
 */
@@ -164,7 +252,9 @@ func (a *Client) GetSourceControlFilesBranchWorkspace(params *GetSourceControlFi
 }
 
 /*
-  GetSourceControlFilesMasterWorkspace gets the list of files in the currently chosen branch
+  GetSourceControlFilesMasterWorkspace lists files in current branch
+
+  Gets the list of files in the currently chosen branch.
 */
 func (a *Client) GetSourceControlFilesMasterWorkspace(params *GetSourceControlFilesMasterWorkspaceParams, opts ...ClientOption) (*GetSourceControlFilesMasterWorkspaceOK, error) {
 	// TODO: Validate the params before sending
@@ -240,7 +330,127 @@ func (a *Client) GetWorkspace(params *GetWorkspaceParams, opts ...ClientOption) 
 }
 
 /*
+  S3VerifyConfig s3s connectivity test
+
+  Verifies that the S3 bucket can be accessed with the provided credentials. Creates styra_test.json file
+*/
+func (a *Client) S3VerifyConfig(params *S3VerifyConfigParams, opts ...ClientOption) (*S3VerifyConfigOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewS3VerifyConfigParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "S3VerifyConfig",
+		Method:             "POST",
+		PathPattern:        "/v1/workspace/s3/verify-config",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &S3VerifyConfigReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*S3VerifyConfigOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for S3VerifyConfig: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  SourceControlVerifyConfigWorkspace verifies git access
+
+  Verifies that the repository can be accessed with the provided credentials
+*/
+func (a *Client) SourceControlVerifyConfigWorkspace(params *SourceControlVerifyConfigWorkspaceParams, opts ...ClientOption) (*SourceControlVerifyConfigWorkspaceOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewSourceControlVerifyConfigWorkspaceParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "SourceControlVerifyConfigWorkspace",
+		Method:             "POST",
+		PathPattern:        "/v1/workspace/source-control/verify-config",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &SourceControlVerifyConfigWorkspaceReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*SourceControlVerifyConfigWorkspaceOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for SourceControlVerifyConfigWorkspace: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  UpdateS3Config updates s3 decision configuration
+*/
+func (a *Client) UpdateS3Config(params *UpdateS3ConfigParams, opts ...ClientOption) (*UpdateS3ConfigOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewUpdateS3ConfigParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "UpdateS3Config",
+		Method:             "PUT",
+		PathPattern:        "/v1/workspace/s3-config",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &UpdateS3ConfigReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*UpdateS3ConfigOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for UpdateS3Config: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
   UpdateWorkspace updates workspace
+
+  Updates workspace configuration
 */
 func (a *Client) UpdateWorkspace(params *UpdateWorkspaceParams, opts ...ClientOption) (*UpdateWorkspaceOK, error) {
 	// TODO: Validate the params before sending
@@ -274,46 +484,6 @@ func (a *Client) UpdateWorkspace(params *UpdateWorkspaceParams, opts ...ClientOp
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for UpdateWorkspace: API contract not enforced by server. Client expected to get an error, but got: %T", result)
-	panic(msg)
-}
-
-/*
-  Func3 verifies git configuration
-
-  verifies that the repository can be accessed with the provided credentials
-*/
-func (a *Client) Func3(params *Func3Params, opts ...ClientOption) (*Func3OK, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewFunc3Params()
-	}
-	op := &runtime.ClientOperation{
-		ID:                 "func3",
-		Method:             "POST",
-		PathPattern:        "/v1/workspace/source-control/verify-config",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
-		Params:             params,
-		Reader:             &Func3Reader{formats: a.formats},
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	}
-	for _, opt := range opts {
-		opt(op)
-	}
-
-	result, err := a.transport.Submit(op)
-	if err != nil {
-		return nil, err
-	}
-	success, ok := result.(*Func3OK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for func3: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 

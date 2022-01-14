@@ -44,19 +44,19 @@ func NewSearchDecisionLogsGetOK() *SearchDecisionLogsGetOK {
 OK
 */
 type SearchDecisionLogsGetOK struct {
-	Payload *models.V1DecisionsResponse
+	Payload *models.AnalysisV1DecisionsResponse
 }
 
 func (o *SearchDecisionLogsGetOK) Error() string {
 	return fmt.Sprintf("[GET /v1/decisions][%d] searchDecisionLogsGetOK  %+v", 200, o.Payload)
 }
-func (o *SearchDecisionLogsGetOK) GetPayload() *models.V1DecisionsResponse {
+func (o *SearchDecisionLogsGetOK) GetPayload() *models.AnalysisV1DecisionsResponse {
 	return o.Payload
 }
 
 func (o *SearchDecisionLogsGetOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1DecisionsResponse)
+	o.Payload = new(models.AnalysisV1DecisionsResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

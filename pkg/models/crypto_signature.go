@@ -7,6 +7,7 @@ package models
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
@@ -33,6 +34,10 @@ func (m *CryptoSignature) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateSignatures(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
@@ -48,9 +53,34 @@ func (m *CryptoSignature) validateExcluded(formats strfmt.Registry) error {
 		if err := m.Excluded.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("excluded")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("excluded")
 			}
 			return err
 		}
+	}
+
+	return nil
+}
+
+func (m *CryptoSignature) validateSignatures(formats strfmt.Registry) error {
+	if swag.IsZero(m.Signatures) { // not required
+		return nil
+	}
+
+	for i := 0; i < len(m.Signatures); i++ {
+
+		if m.Signatures[i] != nil {
+			if err := m.Signatures[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("signatures" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("signatures" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
 	}
 
 	return nil
@@ -61,6 +91,10 @@ func (m *CryptoSignature) ContextValidate(ctx context.Context, formats strfmt.Re
 	var res []error
 
 	if err := m.contextValidateExcluded(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateSignatures(ctx, formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -76,9 +110,29 @@ func (m *CryptoSignature) contextValidateExcluded(ctx context.Context, formats s
 		if err := m.Excluded.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("excluded")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("excluded")
 			}
 			return err
 		}
+	}
+
+	return nil
+}
+
+func (m *CryptoSignature) contextValidateSignatures(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Signatures); i++ {
+
+		if err := m.Signatures[i].ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("signatures" + "." + strconv.Itoa(i))
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("signatures" + "." + strconv.Itoa(i))
+			}
+			return err
+		}
+
 	}
 
 	return nil

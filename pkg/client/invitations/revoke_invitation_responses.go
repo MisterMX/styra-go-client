@@ -44,19 +44,19 @@ func NewRevokeInvitationOK() *RevokeInvitationOK {
 OK
 */
 type RevokeInvitationOK struct {
-	Payload *models.V1InvitationsDeleteResponse
+	Payload *models.InvitationsV1InvitationsDeleteResponse
 }
 
 func (o *RevokeInvitationOK) Error() string {
 	return fmt.Sprintf("[DELETE /v1/invitations/{id}][%d] revokeInvitationOK  %+v", 200, o.Payload)
 }
-func (o *RevokeInvitationOK) GetPayload() *models.V1InvitationsDeleteResponse {
+func (o *RevokeInvitationOK) GetPayload() *models.InvitationsV1InvitationsDeleteResponse {
 	return o.Payload
 }
 
 func (o *RevokeInvitationOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1InvitationsDeleteResponse)
+	o.Payload = new(models.InvitationsV1InvitationsDeleteResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

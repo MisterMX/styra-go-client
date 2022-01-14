@@ -62,7 +62,7 @@ func NewResetRoleBindingsParamsWithHTTPClient(client *http.Client) *ResetRoleBin
 type ResetRoleBindingsParams struct {
 
 	// Body.
-	Body models.V2RoleBindingsPutResetRequest
+	Body models.AuthzV2RoleBindingsPutResetRequest
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,13 +118,13 @@ func (o *ResetRoleBindingsParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the reset role bindings params
-func (o *ResetRoleBindingsParams) WithBody(body models.V2RoleBindingsPutResetRequest) *ResetRoleBindingsParams {
+func (o *ResetRoleBindingsParams) WithBody(body models.AuthzV2RoleBindingsPutResetRequest) *ResetRoleBindingsParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the reset role bindings params
-func (o *ResetRoleBindingsParams) SetBody(body models.V2RoleBindingsPutResetRequest) {
+func (o *ResetRoleBindingsParams) SetBody(body models.AuthzV2RoleBindingsPutResetRequest) {
 	o.Body = body
 }
 

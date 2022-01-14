@@ -44,19 +44,19 @@ func NewDeleteSecretOK() *DeleteSecretOK {
 OK
 */
 type DeleteSecretOK struct {
-	Payload *models.V1SecretsDeleteResponse
+	Payload *models.SecretsV1SecretsDeleteResponse
 }
 
 func (o *DeleteSecretOK) Error() string {
 	return fmt.Sprintf("[DELETE /v1/secrets/{secretId}][%d] deleteSecretOK  %+v", 200, o.Payload)
 }
-func (o *DeleteSecretOK) GetPayload() *models.V1SecretsDeleteResponse {
+func (o *DeleteSecretOK) GetPayload() *models.SecretsV1SecretsDeleteResponse {
 	return o.Payload
 }
 
 func (o *DeleteSecretOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1SecretsDeleteResponse)
+	o.Payload = new(models.SecretsV1SecretsDeleteResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

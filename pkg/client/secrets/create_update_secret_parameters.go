@@ -68,7 +68,7 @@ type CreateUpdateSecretParams struct {
 	IfNoneMatch *string
 
 	// Body.
-	Body *models.V1SecretsPutRequest
+	Body *models.SecretsV1SecretsPutRequest
 
 	/* SecretID.
 
@@ -141,13 +141,13 @@ func (o *CreateUpdateSecretParams) SetIfNoneMatch(ifNoneMatch *string) {
 }
 
 // WithBody adds the body to the create update secret params
-func (o *CreateUpdateSecretParams) WithBody(body *models.V1SecretsPutRequest) *CreateUpdateSecretParams {
+func (o *CreateUpdateSecretParams) WithBody(body *models.SecretsV1SecretsPutRequest) *CreateUpdateSecretParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the create update secret params
-func (o *CreateUpdateSecretParams) SetBody(body *models.V1SecretsPutRequest) {
+func (o *CreateUpdateSecretParams) SetBody(body *models.SecretsV1SecretsPutRequest) {
 	o.Body = body
 }
 

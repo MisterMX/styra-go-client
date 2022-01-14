@@ -50,19 +50,19 @@ func NewDeleteUserBranchWorkspaceOK() *DeleteUserBranchWorkspaceOK {
 OK
 */
 type DeleteUserBranchWorkspaceOK struct {
-	Payload *models.V1DeleteBranchResponse
+	Payload *models.GitV1DeleteBranchResponse
 }
 
 func (o *DeleteUserBranchWorkspaceOK) Error() string {
 	return fmt.Sprintf("[DELETE /v1/workspace/{id}/branch][%d] deleteUserBranchWorkspaceOK  %+v", 200, o.Payload)
 }
-func (o *DeleteUserBranchWorkspaceOK) GetPayload() *models.V1DeleteBranchResponse {
+func (o *DeleteUserBranchWorkspaceOK) GetPayload() *models.GitV1DeleteBranchResponse {
 	return o.Payload
 }
 
 func (o *DeleteUserBranchWorkspaceOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1DeleteBranchResponse)
+	o.Payload = new(models.GitV1DeleteBranchResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewDeleteUserBranchWorkspaceNotFound() *DeleteUserBranchWorkspaceNotFound {
 Not Found
 */
 type DeleteUserBranchWorkspaceNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *DeleteUserBranchWorkspaceNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /v1/workspace/{id}/branch][%d] deleteUserBranchWorkspaceNotFound  %+v", 404, o.Payload)
 }
-func (o *DeleteUserBranchWorkspaceNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *DeleteUserBranchWorkspaceNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *DeleteUserBranchWorkspaceNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

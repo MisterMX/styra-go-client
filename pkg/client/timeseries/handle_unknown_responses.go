@@ -50,19 +50,19 @@ func NewHandleUnknownOK() *HandleUnknownOK {
 OK
 */
 type HandleUnknownOK struct {
-	Payload *models.V1TimeSeriesPostResponse
+	Payload *models.TimeseriesV1TimeSeriesPostResponse
 }
 
 func (o *HandleUnknownOK) Error() string {
 	return fmt.Sprintf("[POST /v1/timeseries/unknown][%d] handleUnknownOK  %+v", 200, o.Payload)
 }
-func (o *HandleUnknownOK) GetPayload() *models.V1TimeSeriesPostResponse {
+func (o *HandleUnknownOK) GetPayload() *models.TimeseriesV1TimeSeriesPostResponse {
 	return o.Payload
 }
 
 func (o *HandleUnknownOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1TimeSeriesPostResponse)
+	o.Payload = new(models.TimeseriesV1TimeSeriesPostResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewHandleUnknownBadRequest() *HandleUnknownBadRequest {
 Invalid Parameter
 */
 type HandleUnknownBadRequest struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *HandleUnknownBadRequest) Error() string {
 	return fmt.Sprintf("[POST /v1/timeseries/unknown][%d] handleUnknownBadRequest  %+v", 400, o.Payload)
 }
-func (o *HandleUnknownBadRequest) GetPayload() *models.V1ErrorResponse {
+func (o *HandleUnknownBadRequest) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *HandleUnknownBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

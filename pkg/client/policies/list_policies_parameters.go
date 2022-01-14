@@ -64,13 +64,13 @@ type ListPoliciesParams struct {
 
 	   return rego metadata for draft policies (when metadata flag is used)
 	*/
-	Drafts bool
+	Drafts *bool
 
 	/* Metadata.
 
 	   return rego metadata of specified type or all if no type provided
 	*/
-	Metadata string
+	Metadata *string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -126,24 +126,24 @@ func (o *ListPoliciesParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithDrafts adds the drafts to the list policies params
-func (o *ListPoliciesParams) WithDrafts(drafts bool) *ListPoliciesParams {
+func (o *ListPoliciesParams) WithDrafts(drafts *bool) *ListPoliciesParams {
 	o.SetDrafts(drafts)
 	return o
 }
 
 // SetDrafts adds the drafts to the list policies params
-func (o *ListPoliciesParams) SetDrafts(drafts bool) {
+func (o *ListPoliciesParams) SetDrafts(drafts *bool) {
 	o.Drafts = drafts
 }
 
 // WithMetadata adds the metadata to the list policies params
-func (o *ListPoliciesParams) WithMetadata(metadata string) *ListPoliciesParams {
+func (o *ListPoliciesParams) WithMetadata(metadata *string) *ListPoliciesParams {
 	o.SetMetadata(metadata)
 	return o
 }
 
 // SetMetadata adds the metadata to the list policies params
-func (o *ListPoliciesParams) SetMetadata(metadata string) {
+func (o *ListPoliciesParams) SetMetadata(metadata *string) {
 	o.Metadata = metadata
 }
 
@@ -155,14 +155,38 @@ func (o *ListPoliciesParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.
 	}
 	var res []error
 
-	// path param drafts
-	if err := r.SetPathParam("drafts", swag.FormatBool(o.Drafts)); err != nil {
-		return err
+	if o.Drafts != nil {
+
+		// query param drafts
+		var qrDrafts bool
+
+		if o.Drafts != nil {
+			qrDrafts = *o.Drafts
+		}
+		qDrafts := swag.FormatBool(qrDrafts)
+		if qDrafts != "" {
+
+			if err := r.SetQueryParam("drafts", qDrafts); err != nil {
+				return err
+			}
+		}
 	}
 
-	// path param metadata
-	if err := r.SetPathParam("metadata", o.Metadata); err != nil {
-		return err
+	if o.Metadata != nil {
+
+		// query param metadata
+		var qrMetadata string
+
+		if o.Metadata != nil {
+			qrMetadata = *o.Metadata
+		}
+		qMetadata := qrMetadata
+		if qMetadata != "" {
+
+			if err := r.SetQueryParam("metadata", qMetadata); err != nil {
+				return err
+			}
+		}
 	}
 
 	if len(res) > 0 {

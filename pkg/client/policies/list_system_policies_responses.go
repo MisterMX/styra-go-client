@@ -44,19 +44,19 @@ func NewListSystemPoliciesOK() *ListSystemPoliciesOK {
 OK
 */
 type ListSystemPoliciesOK struct {
-	Payload *models.V1PoliciesListResponse
+	Payload *models.PoliciesV1PoliciesListResponse
 }
 
 func (o *ListSystemPoliciesOK) Error() string {
 	return fmt.Sprintf("[GET /v1/policies/systems/{system}][%d] listSystemPoliciesOK  %+v", 200, o.Payload)
 }
-func (o *ListSystemPoliciesOK) GetPayload() *models.V1PoliciesListResponse {
+func (o *ListSystemPoliciesOK) GetPayload() *models.PoliciesV1PoliciesListResponse {
 	return o.Payload
 }
 
 func (o *ListSystemPoliciesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1PoliciesListResponse)
+	o.Payload = new(models.PoliciesV1PoliciesListResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

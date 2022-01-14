@@ -14,6 +14,8 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+
+	"github.com/mistermx/styra-go-client/pkg/models"
 )
 
 // NewRelayPOSTParams creates a new RelayPOSTParams object,
@@ -58,6 +60,9 @@ func NewRelayPOSTParamsWithHTTPClient(client *http.Client) *RelayPOSTParams {
    Typically these are written to a http.Request.
 */
 type RelayPOSTParams struct {
+
+	// Body.
+	Body models.MetaV1RequestObject
 
 	/* Key.
 
@@ -124,6 +129,17 @@ func (o *RelayPOSTParams) SetHTTPClient(client *http.Client) {
 	o.HTTPClient = client
 }
 
+// WithBody adds the body to the relay p o s t params
+func (o *RelayPOSTParams) WithBody(body models.MetaV1RequestObject) *RelayPOSTParams {
+	o.SetBody(body)
+	return o
+}
+
+// SetBody adds the body to the relay p o s t params
+func (o *RelayPOSTParams) SetBody(body models.MetaV1RequestObject) {
+	o.Body = body
+}
+
 // WithKey adds the key to the relay p o s t params
 func (o *RelayPOSTParams) WithKey(key string) *RelayPOSTParams {
 	o.SetKey(key)
@@ -153,6 +169,11 @@ func (o *RelayPOSTParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 		return err
 	}
 	var res []error
+	if o.Body != nil {
+		if err := r.SetBodyParam(o.Body); err != nil {
+			return err
+		}
+	}
 
 	// path param key
 	if err := r.SetPathParam("key", o.Key); err != nil {

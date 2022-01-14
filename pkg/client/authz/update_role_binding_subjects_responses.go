@@ -56,19 +56,19 @@ func NewUpdateRoleBindingSubjectsOK() *UpdateRoleBindingSubjectsOK {
 OK
 */
 type UpdateRoleBindingSubjectsOK struct {
-	Payload *models.V2RoleBindingsPostSubjectsResponse
+	Payload *models.AuthzV2RoleBindingsPostSubjectsResponse
 }
 
 func (o *UpdateRoleBindingSubjectsOK) Error() string {
 	return fmt.Sprintf("[POST /v2/authz/rolebindings/{id}/subjects][%d] updateRoleBindingSubjectsOK  %+v", 200, o.Payload)
 }
-func (o *UpdateRoleBindingSubjectsOK) GetPayload() *models.V2RoleBindingsPostSubjectsResponse {
+func (o *UpdateRoleBindingSubjectsOK) GetPayload() *models.AuthzV2RoleBindingsPostSubjectsResponse {
 	return o.Payload
 }
 
 func (o *UpdateRoleBindingSubjectsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V2RoleBindingsPostSubjectsResponse)
+	o.Payload = new(models.AuthzV2RoleBindingsPostSubjectsResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -88,19 +88,19 @@ func NewUpdateRoleBindingSubjectsBadRequest() *UpdateRoleBindingSubjectsBadReque
 Invalid Parameter
 */
 type UpdateRoleBindingSubjectsBadRequest struct {
-	Payload *models.V2RoleBindingsPostResponse
+	Payload *models.AuthzV2RoleBindingsPostResponse
 }
 
 func (o *UpdateRoleBindingSubjectsBadRequest) Error() string {
 	return fmt.Sprintf("[POST /v2/authz/rolebindings/{id}/subjects][%d] updateRoleBindingSubjectsBadRequest  %+v", 400, o.Payload)
 }
-func (o *UpdateRoleBindingSubjectsBadRequest) GetPayload() *models.V2RoleBindingsPostResponse {
+func (o *UpdateRoleBindingSubjectsBadRequest) GetPayload() *models.AuthzV2RoleBindingsPostResponse {
 	return o.Payload
 }
 
 func (o *UpdateRoleBindingSubjectsBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V2RoleBindingsPostResponse)
+	o.Payload = new(models.AuthzV2RoleBindingsPostResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -120,19 +120,19 @@ func NewUpdateRoleBindingSubjectsNotFound() *UpdateRoleBindingSubjectsNotFound {
 Not Found
 */
 type UpdateRoleBindingSubjectsNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *UpdateRoleBindingSubjectsNotFound) Error() string {
 	return fmt.Sprintf("[POST /v2/authz/rolebindings/{id}/subjects][%d] updateRoleBindingSubjectsNotFound  %+v", 404, o.Payload)
 }
-func (o *UpdateRoleBindingSubjectsNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *UpdateRoleBindingSubjectsNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *UpdateRoleBindingSubjectsNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

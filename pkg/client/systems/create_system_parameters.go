@@ -62,7 +62,7 @@ func NewCreateSystemParamsWithHTTPClient(client *http.Client) *CreateSystemParam
 type CreateSystemParams struct {
 
 	// Body.
-	Body *models.V1SystemsPostRequest
+	Body *models.SystemsV1SystemsPostRequest
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,13 +118,13 @@ func (o *CreateSystemParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the create system params
-func (o *CreateSystemParams) WithBody(body *models.V1SystemsPostRequest) *CreateSystemParams {
+func (o *CreateSystemParams) WithBody(body *models.SystemsV1SystemsPostRequest) *CreateSystemParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the create system params
-func (o *CreateSystemParams) SetBody(body *models.V1SystemsPostRequest) {
+func (o *CreateSystemParams) SetBody(body *models.SystemsV1SystemsPostRequest) {
 	o.Body = body
 }
 

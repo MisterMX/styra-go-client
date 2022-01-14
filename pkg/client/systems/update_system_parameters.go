@@ -68,7 +68,7 @@ type UpdateSystemParams struct {
 	IfNoneMatch *string
 
 	// Body.
-	Body *models.V1SystemsPutRequest
+	Body *models.SystemsV1SystemsPutRequest
 
 	/* System.
 
@@ -141,13 +141,13 @@ func (o *UpdateSystemParams) SetIfNoneMatch(ifNoneMatch *string) {
 }
 
 // WithBody adds the body to the update system params
-func (o *UpdateSystemParams) WithBody(body *models.V1SystemsPutRequest) *UpdateSystemParams {
+func (o *UpdateSystemParams) WithBody(body *models.SystemsV1SystemsPutRequest) *UpdateSystemParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the update system params
-func (o *UpdateSystemParams) SetBody(body *models.V1SystemsPutRequest) {
+func (o *UpdateSystemParams) SetBody(body *models.SystemsV1SystemsPutRequest) {
 	o.Body = body
 }
 

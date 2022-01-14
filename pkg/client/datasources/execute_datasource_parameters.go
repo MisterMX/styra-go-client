@@ -63,7 +63,7 @@ func NewExecuteDatasourceParamsWithHTTPClient(client *http.Client) *ExecuteDatas
 type ExecuteDatasourceParams struct {
 
 	// Body.
-	Body models.V1DatasourcesPostRequest
+	Body models.DatasourcesV1DatasourcesPutRequest
 
 	/* Datasource.
 
@@ -76,6 +76,12 @@ type ExecuteDatasourceParams struct {
 	   execute datasource
 	*/
 	Execute *bool
+
+	/* Preview.
+
+	   preview datasource
+	*/
+	Preview *bool
 
 	timeout    time.Duration
 	Context    context.Context
@@ -131,13 +137,13 @@ func (o *ExecuteDatasourceParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the execute datasource params
-func (o *ExecuteDatasourceParams) WithBody(body models.V1DatasourcesPostRequest) *ExecuteDatasourceParams {
+func (o *ExecuteDatasourceParams) WithBody(body models.DatasourcesV1DatasourcesPutRequest) *ExecuteDatasourceParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the execute datasource params
-func (o *ExecuteDatasourceParams) SetBody(body models.V1DatasourcesPostRequest) {
+func (o *ExecuteDatasourceParams) SetBody(body models.DatasourcesV1DatasourcesPutRequest) {
 	o.Body = body
 }
 
@@ -161,6 +167,17 @@ func (o *ExecuteDatasourceParams) WithExecute(execute *bool) *ExecuteDatasourceP
 // SetExecute adds the execute to the execute datasource params
 func (o *ExecuteDatasourceParams) SetExecute(execute *bool) {
 	o.Execute = execute
+}
+
+// WithPreview adds the preview to the execute datasource params
+func (o *ExecuteDatasourceParams) WithPreview(preview *bool) *ExecuteDatasourceParams {
+	o.SetPreview(preview)
+	return o
+}
+
+// SetPreview adds the preview to the execute datasource params
+func (o *ExecuteDatasourceParams) SetPreview(preview *bool) {
+	o.Preview = preview
 }
 
 // WriteToRequest writes these params to a swagger request
@@ -193,6 +210,23 @@ func (o *ExecuteDatasourceParams) WriteToRequest(r runtime.ClientRequest, reg st
 		if qExecute != "" {
 
 			if err := r.SetQueryParam("execute", qExecute); err != nil {
+				return err
+			}
+		}
+	}
+
+	if o.Preview != nil {
+
+		// query param preview
+		var qrPreview bool
+
+		if o.Preview != nil {
+			qrPreview = *o.Preview
+		}
+		qPreview := swag.FormatBool(qrPreview)
+		if qPreview != "" {
+
+			if err := r.SetQueryParam("preview", qPreview); err != nil {
 				return err
 			}
 		}

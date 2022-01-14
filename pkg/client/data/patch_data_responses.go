@@ -50,19 +50,19 @@ func NewPatchDataOK() *PatchDataOK {
 OK
 */
 type PatchDataOK struct {
-	Payload *models.V1DataPatchResponse
+	Payload *models.DataV1DataPatchResponse
 }
 
 func (o *PatchDataOK) Error() string {
 	return fmt.Sprintf("[PATCH /v1/data/{name}][%d] patchDataOK  %+v", 200, o.Payload)
 }
-func (o *PatchDataOK) GetPayload() *models.V1DataPatchResponse {
+func (o *PatchDataOK) GetPayload() *models.DataV1DataPatchResponse {
 	return o.Payload
 }
 
 func (o *PatchDataOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1DataPatchResponse)
+	o.Payload = new(models.DataV1DataPatchResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewPatchDataNotFound() *PatchDataNotFound {
 Not Found
 */
 type PatchDataNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *PatchDataNotFound) Error() string {
 	return fmt.Sprintf("[PATCH /v1/data/{name}][%d] patchDataNotFound  %+v", 404, o.Payload)
 }
-func (o *PatchDataNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *PatchDataNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *PatchDataNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

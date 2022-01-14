@@ -62,7 +62,7 @@ func NewValidateSystemTestsParamsWithHTTPClient(client *http.Client) *ValidateSy
 type ValidateSystemTestsParams struct {
 
 	// Body.
-	Body *models.V1SystemsTestsRequest
+	Body *models.SystemsV1SystemsTestsRequest
 
 	/* System.
 
@@ -124,13 +124,13 @@ func (o *ValidateSystemTestsParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the validate system tests params
-func (o *ValidateSystemTestsParams) WithBody(body *models.V1SystemsTestsRequest) *ValidateSystemTestsParams {
+func (o *ValidateSystemTestsParams) WithBody(body *models.SystemsV1SystemsTestsRequest) *ValidateSystemTestsParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the validate system tests params
-func (o *ValidateSystemTestsParams) SetBody(body *models.V1SystemsTestsRequest) {
+func (o *ValidateSystemTestsParams) SetBody(body *models.SystemsV1SystemsTestsRequest) {
 	o.Body = body
 }
 

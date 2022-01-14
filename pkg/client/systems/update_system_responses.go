@@ -44,19 +44,19 @@ func NewUpdateSystemOK() *UpdateSystemOK {
 OK
 */
 type UpdateSystemOK struct {
-	Payload *models.V1SystemsPutResponse
+	Payload *models.SystemsV1SystemsPutResponse
 }
 
 func (o *UpdateSystemOK) Error() string {
 	return fmt.Sprintf("[PUT /v1/systems/{system}][%d] updateSystemOK  %+v", 200, o.Payload)
 }
-func (o *UpdateSystemOK) GetPayload() *models.V1SystemsPutResponse {
+func (o *UpdateSystemOK) GetPayload() *models.SystemsV1SystemsPutResponse {
 	return o.Payload
 }
 
 func (o *UpdateSystemOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1SystemsPutResponse)
+	o.Payload = new(models.SystemsV1SystemsPutResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

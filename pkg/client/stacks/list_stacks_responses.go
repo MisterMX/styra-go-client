@@ -44,19 +44,19 @@ func NewListStacksOK() *ListStacksOK {
 OK
 */
 type ListStacksOK struct {
-	Payload *models.V1StacksListResponse
+	Payload *models.StacksV1StacksListResponse
 }
 
 func (o *ListStacksOK) Error() string {
 	return fmt.Sprintf("[GET /v1/stacks][%d] listStacksOK  %+v", 200, o.Payload)
 }
-func (o *ListStacksOK) GetPayload() *models.V1StacksListResponse {
+func (o *ListStacksOK) GetPayload() *models.StacksV1StacksListResponse {
 	return o.Payload
 }
 
 func (o *ListStacksOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1StacksListResponse)
+	o.Payload = new(models.StacksV1StacksListResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

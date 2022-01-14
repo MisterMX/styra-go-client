@@ -50,19 +50,19 @@ func NewHandleViolationOK() *HandleViolationOK {
 OK
 */
 type HandleViolationOK struct {
-	Payload *models.V1TimeSeriesPostResponse
+	Payload *models.TimeseriesV1TimeSeriesPostResponse
 }
 
 func (o *HandleViolationOK) Error() string {
 	return fmt.Sprintf("[POST /v1/timeseries/violation][%d] handleViolationOK  %+v", 200, o.Payload)
 }
-func (o *HandleViolationOK) GetPayload() *models.V1TimeSeriesPostResponse {
+func (o *HandleViolationOK) GetPayload() *models.TimeseriesV1TimeSeriesPostResponse {
 	return o.Payload
 }
 
 func (o *HandleViolationOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1TimeSeriesPostResponse)
+	o.Payload = new(models.TimeseriesV1TimeSeriesPostResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewHandleViolationBadRequest() *HandleViolationBadRequest {
 Invalid Parameter
 */
 type HandleViolationBadRequest struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *HandleViolationBadRequest) Error() string {
 	return fmt.Sprintf("[POST /v1/timeseries/violation][%d] handleViolationBadRequest  %+v", 400, o.Payload)
 }
-func (o *HandleViolationBadRequest) GetPayload() *models.V1ErrorResponse {
+func (o *HandleViolationBadRequest) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *HandleViolationBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

@@ -50,19 +50,19 @@ func NewCreateUpdateSecretOK() *CreateUpdateSecretOK {
 OK
 */
 type CreateUpdateSecretOK struct {
-	Payload *models.V1SecretsPutResponse
+	Payload *models.SecretsV1SecretsPutResponse
 }
 
 func (o *CreateUpdateSecretOK) Error() string {
 	return fmt.Sprintf("[PUT /v1/secrets/{secretId}][%d] createUpdateSecretOK  %+v", 200, o.Payload)
 }
-func (o *CreateUpdateSecretOK) GetPayload() *models.V1SecretsPutResponse {
+func (o *CreateUpdateSecretOK) GetPayload() *models.SecretsV1SecretsPutResponse {
 	return o.Payload
 }
 
 func (o *CreateUpdateSecretOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1SecretsPutResponse)
+	o.Payload = new(models.SecretsV1SecretsPutResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewCreateUpdateSecretConflict() *CreateUpdateSecretConflict {
 Secret already exists
 */
 type CreateUpdateSecretConflict struct {
-	Payload *models.V1SecretsPutResponse
+	Payload *models.SecretsV1SecretsPutResponse
 }
 
 func (o *CreateUpdateSecretConflict) Error() string {
 	return fmt.Sprintf("[PUT /v1/secrets/{secretId}][%d] createUpdateSecretConflict  %+v", 409, o.Payload)
 }
-func (o *CreateUpdateSecretConflict) GetPayload() *models.V1SecretsPutResponse {
+func (o *CreateUpdateSecretConflict) GetPayload() *models.SecretsV1SecretsPutResponse {
 	return o.Payload
 }
 
 func (o *CreateUpdateSecretConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1SecretsPutResponse)
+	o.Payload = new(models.SecretsV1SecretsPutResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

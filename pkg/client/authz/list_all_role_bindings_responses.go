@@ -44,19 +44,19 @@ func NewListAllRoleBindingsOK() *ListAllRoleBindingsOK {
 OK
 */
 type ListAllRoleBindingsOK struct {
-	Payload *models.V1RoleBindingsListAllResponse
+	Payload *models.AuthzV1RoleBindingsListAllResponse
 }
 
 func (o *ListAllRoleBindingsOK) Error() string {
 	return fmt.Sprintf("[GET /v1/authz/rolebindings][%d] listAllRoleBindingsOK  %+v", 200, o.Payload)
 }
-func (o *ListAllRoleBindingsOK) GetPayload() *models.V1RoleBindingsListAllResponse {
+func (o *ListAllRoleBindingsOK) GetPayload() *models.AuthzV1RoleBindingsListAllResponse {
 	return o.Payload
 }
 
 func (o *ListAllRoleBindingsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1RoleBindingsListAllResponse)
+	o.Payload = new(models.AuthzV1RoleBindingsListAllResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

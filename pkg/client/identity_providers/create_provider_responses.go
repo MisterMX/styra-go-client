@@ -50,19 +50,19 @@ func NewCreateProviderOK() *CreateProviderOK {
 OK
 */
 type CreateProviderOK struct {
-	Payload *models.V1ProvidersPostResponse
+	Payload *models.IdentityProvidersV1ProvidersPostResponse
 }
 
 func (o *CreateProviderOK) Error() string {
 	return fmt.Sprintf("[POST /v1/identity-providers][%d] createProviderOK  %+v", 200, o.Payload)
 }
-func (o *CreateProviderOK) GetPayload() *models.V1ProvidersPostResponse {
+func (o *CreateProviderOK) GetPayload() *models.IdentityProvidersV1ProvidersPostResponse {
 	return o.Payload
 }
 
 func (o *CreateProviderOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ProvidersPostResponse)
+	o.Payload = new(models.IdentityProvidersV1ProvidersPostResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewCreateProviderNotFound() *CreateProviderNotFound {
 Not Found
 */
 type CreateProviderNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *CreateProviderNotFound) Error() string {
 	return fmt.Sprintf("[POST /v1/identity-providers][%d] createProviderNotFound  %+v", 404, o.Payload)
 }
-func (o *CreateProviderNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *CreateProviderNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *CreateProviderNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

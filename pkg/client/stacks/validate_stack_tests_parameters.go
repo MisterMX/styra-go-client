@@ -62,13 +62,13 @@ func NewValidateStackTestsParamsWithHTTPClient(client *http.Client) *ValidateSta
 type ValidateStackTestsParams struct {
 
 	// Body.
-	Body *models.V1StacksTestsRequest
+	Body *models.StacksV1StacksTestsRequest
 
-	/* System.
+	/* Stack.
 
-	   system ID
+	   stack id
 	*/
-	System string
+	Stack string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -124,25 +124,25 @@ func (o *ValidateStackTestsParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the validate stack tests params
-func (o *ValidateStackTestsParams) WithBody(body *models.V1StacksTestsRequest) *ValidateStackTestsParams {
+func (o *ValidateStackTestsParams) WithBody(body *models.StacksV1StacksTestsRequest) *ValidateStackTestsParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the validate stack tests params
-func (o *ValidateStackTestsParams) SetBody(body *models.V1StacksTestsRequest) {
+func (o *ValidateStackTestsParams) SetBody(body *models.StacksV1StacksTestsRequest) {
 	o.Body = body
 }
 
-// WithSystem adds the system to the validate stack tests params
-func (o *ValidateStackTestsParams) WithSystem(system string) *ValidateStackTestsParams {
-	o.SetSystem(system)
+// WithStack adds the stack to the validate stack tests params
+func (o *ValidateStackTestsParams) WithStack(stack string) *ValidateStackTestsParams {
+	o.SetStack(stack)
 	return o
 }
 
-// SetSystem adds the system to the validate stack tests params
-func (o *ValidateStackTestsParams) SetSystem(system string) {
-	o.System = system
+// SetStack adds the stack to the validate stack tests params
+func (o *ValidateStackTestsParams) SetStack(stack string) {
+	o.Stack = stack
 }
 
 // WriteToRequest writes these params to a swagger request
@@ -158,8 +158,8 @@ func (o *ValidateStackTestsParams) WriteToRequest(r runtime.ClientRequest, reg s
 		}
 	}
 
-	// path param system
-	if err := r.SetPathParam("system", o.System); err != nil {
+	// path param stack
+	if err := r.SetPathParam("stack", o.Stack); err != nil {
 		return err
 	}
 

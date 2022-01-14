@@ -62,7 +62,7 @@ func NewTranslateExternalIdsParamsWithHTTPClient(client *http.Client) *Translate
 type TranslateExternalIdsParams struct {
 
 	// Body.
-	Body *models.V1SystemsTranslateExternalIdsRequest
+	Body *models.SystemsV1SystemsTranslateExternalIdsRequest
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,13 +118,13 @@ func (o *TranslateExternalIdsParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the translate external ids params
-func (o *TranslateExternalIdsParams) WithBody(body *models.V1SystemsTranslateExternalIdsRequest) *TranslateExternalIdsParams {
+func (o *TranslateExternalIdsParams) WithBody(body *models.SystemsV1SystemsTranslateExternalIdsRequest) *TranslateExternalIdsParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the translate external ids params
-func (o *TranslateExternalIdsParams) SetBody(body *models.V1SystemsTranslateExternalIdsRequest) {
+func (o *TranslateExternalIdsParams) SetBody(body *models.SystemsV1SystemsTranslateExternalIdsRequest) {
 	o.Body = body
 }
 

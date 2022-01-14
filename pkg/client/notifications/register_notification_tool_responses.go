@@ -44,19 +44,19 @@ func NewRegisterNotificationToolTemporaryRedirect() *RegisterNotificationToolTem
 OK
 */
 type RegisterNotificationToolTemporaryRedirect struct {
-	Payload *models.V1NotificationIntegrationResponse
+	Payload *models.NotificationsV1NotificationIntegrationResponse
 }
 
 func (o *RegisterNotificationToolTemporaryRedirect) Error() string {
 	return fmt.Sprintf("[GET /v1/notifications-install/callback/{type}][%d] registerNotificationToolTemporaryRedirect  %+v", 307, o.Payload)
 }
-func (o *RegisterNotificationToolTemporaryRedirect) GetPayload() *models.V1NotificationIntegrationResponse {
+func (o *RegisterNotificationToolTemporaryRedirect) GetPayload() *models.NotificationsV1NotificationIntegrationResponse {
 	return o.Payload
 }
 
 func (o *RegisterNotificationToolTemporaryRedirect) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1NotificationIntegrationResponse)
+	o.Payload = new(models.NotificationsV1NotificationIntegrationResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

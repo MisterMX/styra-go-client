@@ -56,19 +56,19 @@ func NewValidateStackComplianceOK() *ValidateStackComplianceOK {
 OK
 */
 type ValidateStackComplianceOK struct {
-	Payload *models.V1StacksComplianceResponse
+	Payload *models.StacksV1StacksComplianceResponse
 }
 
 func (o *ValidateStackComplianceOK) Error() string {
 	return fmt.Sprintf("[POST /v1/stacks/{stack}/validate/compliance][%d] validateStackComplianceOK  %+v", 200, o.Payload)
 }
-func (o *ValidateStackComplianceOK) GetPayload() *models.V1StacksComplianceResponse {
+func (o *ValidateStackComplianceOK) GetPayload() *models.StacksV1StacksComplianceResponse {
 	return o.Payload
 }
 
 func (o *ValidateStackComplianceOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1StacksComplianceResponse)
+	o.Payload = new(models.StacksV1StacksComplianceResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -109,19 +109,19 @@ func NewValidateStackComplianceNotFound() *ValidateStackComplianceNotFound {
 Not Found
 */
 type ValidateStackComplianceNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *ValidateStackComplianceNotFound) Error() string {
 	return fmt.Sprintf("[POST /v1/stacks/{stack}/validate/compliance][%d] validateStackComplianceNotFound  %+v", 404, o.Payload)
 }
-func (o *ValidateStackComplianceNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *ValidateStackComplianceNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *ValidateStackComplianceNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

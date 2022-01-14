@@ -71,6 +71,12 @@ type RegisterNotificationToolParams struct {
 	*/
 	State *string
 
+	/* Type.
+
+	   notification type
+	*/
+	Type string
+
 	timeout    time.Duration
 	Context    context.Context
 	HTTPClient *http.Client
@@ -146,6 +152,17 @@ func (o *RegisterNotificationToolParams) SetState(state *string) {
 	o.State = state
 }
 
+// WithType adds the typeVar to the register notification tool params
+func (o *RegisterNotificationToolParams) WithType(typeVar string) *RegisterNotificationToolParams {
+	o.SetType(typeVar)
+	return o
+}
+
+// SetType adds the type to the register notification tool params
+func (o *RegisterNotificationToolParams) SetType(typeVar string) {
+	o.Type = typeVar
+}
+
 // WriteToRequest writes these params to a swagger request
 func (o *RegisterNotificationToolParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Registry) error {
 
@@ -186,6 +203,11 @@ func (o *RegisterNotificationToolParams) WriteToRequest(r runtime.ClientRequest,
 				return err
 			}
 		}
+	}
+
+	// path param type
+	if err := r.SetPathParam("type", o.Type); err != nil {
+		return err
 	}
 
 	if len(res) > 0 {

@@ -34,17 +34,25 @@ type ClientService interface {
 
 	CreateRoleBinding(params *CreateRoleBindingParams, opts ...ClientOption) (*CreateRoleBindingOK, error)
 
-	DeleteRoleBinding(params *DeleteRoleBindingParams, opts ...ClientOption) (*DeleteRoleBindingOK, error)
+	DeleteRoleBindingV1(params *DeleteRoleBindingV1Params, opts ...ClientOption) (*DeleteRoleBindingV1OK, error)
+
+	DeleteRoleBindingV2(params *DeleteRoleBindingV2Params, opts ...ClientOption) (*DeleteRoleBindingV2OK, error)
 
 	DeleteRoleBindingSubjects(params *DeleteRoleBindingSubjectsParams, opts ...ClientOption) (*DeleteRoleBindingSubjectsOK, error)
 
-	GetRoleBinding(params *GetRoleBindingParams, opts ...ClientOption) (*GetRoleBindingOK, error)
+	GetRoleBindingV1(params *GetRoleBindingV1Params, opts ...ClientOption) (*GetRoleBindingV1OK, error)
+
+	GetRoleBindingV2(params *GetRoleBindingV2Params, opts ...ClientOption) (*GetRoleBindingV2OK, error)
 
 	ListAllRoleBindings(params *ListAllRoleBindingsParams, opts ...ClientOption) (*ListAllRoleBindingsOK, error)
 
-	ListRoleBindings(params *ListRoleBindingsParams, opts ...ClientOption) (*ListRoleBindingsOK, error)
+	ListRoleBindingsV1(params *ListRoleBindingsV1Params, opts ...ClientOption) (*ListRoleBindingsV1OK, error)
+
+	ListRoleBindingsV2(params *ListRoleBindingsV2Params, opts ...ClientOption) (*ListRoleBindingsV2OK, error)
 
 	ListRoles(params *ListRolesParams, opts ...ClientOption) (*ListRolesOK, error)
+
+	ListRolesV1(params *ListRolesV1Params, opts ...ClientOption) (*ListRolesV1OK, error)
 
 	MergeRoleBindingSubjects(params *MergeRoleBindingSubjectsParams, opts ...ClientOption) (*MergeRoleBindingSubjectsOK, error)
 
@@ -136,22 +144,22 @@ func (a *Client) CreateRoleBinding(params *CreateRoleBindingParams, opts ...Clie
 }
 
 /*
-  DeleteRoleBinding deletes rolebinding
+  DeleteRoleBindingV1 deletes a resource role binding
 */
-func (a *Client) DeleteRoleBinding(params *DeleteRoleBindingParams, opts ...ClientOption) (*DeleteRoleBindingOK, error) {
+func (a *Client) DeleteRoleBindingV1(params *DeleteRoleBindingV1Params, opts ...ClientOption) (*DeleteRoleBindingV1OK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewDeleteRoleBindingParams()
+		params = NewDeleteRoleBindingV1Params()
 	}
 	op := &runtime.ClientOperation{
-		ID:                 "DeleteRoleBinding",
+		ID:                 "DeleteRoleBinding.v1",
 		Method:             "DELETE",
-		PathPattern:        "/v2/authz/rolebindings/{id}",
+		PathPattern:        "/v1/authz/rolebindings/{resourcetype}/{resource}/{rolebinding}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
 		Params:             params,
-		Reader:             &DeleteRoleBindingReader{formats: a.formats},
+		Reader:             &DeleteRoleBindingV1Reader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	}
@@ -163,13 +171,51 @@ func (a *Client) DeleteRoleBinding(params *DeleteRoleBindingParams, opts ...Clie
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*DeleteRoleBindingOK)
+	success, ok := result.(*DeleteRoleBindingV1OK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for DeleteRoleBinding: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	msg := fmt.Sprintf("unexpected success response for DeleteRoleBinding.v1: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  DeleteRoleBindingV2 deletes rolebinding
+*/
+func (a *Client) DeleteRoleBindingV2(params *DeleteRoleBindingV2Params, opts ...ClientOption) (*DeleteRoleBindingV2OK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewDeleteRoleBindingV2Params()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "DeleteRoleBinding.v2",
+		Method:             "DELETE",
+		PathPattern:        "/v2/authz/rolebindings/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &DeleteRoleBindingV2Reader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*DeleteRoleBindingV2OK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for DeleteRoleBinding.v2: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
@@ -212,22 +258,22 @@ func (a *Client) DeleteRoleBindingSubjects(params *DeleteRoleBindingSubjectsPara
 }
 
 /*
-  GetRoleBinding gets rolebinding
+  GetRoleBindingV1 gets a role binding
 */
-func (a *Client) GetRoleBinding(params *GetRoleBindingParams, opts ...ClientOption) (*GetRoleBindingOK, error) {
+func (a *Client) GetRoleBindingV1(params *GetRoleBindingV1Params, opts ...ClientOption) (*GetRoleBindingV1OK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewGetRoleBindingParams()
+		params = NewGetRoleBindingV1Params()
 	}
 	op := &runtime.ClientOperation{
-		ID:                 "GetRoleBinding",
+		ID:                 "GetRoleBinding.v1",
 		Method:             "GET",
-		PathPattern:        "/v2/authz/rolebindings/{id}",
+		PathPattern:        "/v1/authz/rolebindings/{resourcetype}/{resource}/{rolebinding}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
 		Params:             params,
-		Reader:             &GetRoleBindingReader{formats: a.formats},
+		Reader:             &GetRoleBindingV1Reader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	}
@@ -239,13 +285,51 @@ func (a *Client) GetRoleBinding(params *GetRoleBindingParams, opts ...ClientOpti
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*GetRoleBindingOK)
+	success, ok := result.(*GetRoleBindingV1OK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for GetRoleBinding: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	msg := fmt.Sprintf("unexpected success response for GetRoleBinding.v1: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  GetRoleBindingV2 gets rolebinding
+*/
+func (a *Client) GetRoleBindingV2(params *GetRoleBindingV2Params, opts ...ClientOption) (*GetRoleBindingV2OK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewGetRoleBindingV2Params()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "GetRoleBinding.v2",
+		Method:             "GET",
+		PathPattern:        "/v2/authz/rolebindings/{id}",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &GetRoleBindingV2Reader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*GetRoleBindingV2OK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for GetRoleBinding.v2: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
@@ -288,22 +372,22 @@ func (a *Client) ListAllRoleBindings(params *ListAllRoleBindingsParams, opts ...
 }
 
 /*
-  ListRoleBindings lists role bindings
+  ListRoleBindingsV1 lists role bindings
 */
-func (a *Client) ListRoleBindings(params *ListRoleBindingsParams, opts ...ClientOption) (*ListRoleBindingsOK, error) {
+func (a *Client) ListRoleBindingsV1(params *ListRoleBindingsV1Params, opts ...ClientOption) (*ListRoleBindingsV1OK, error) {
 	// TODO: Validate the params before sending
 	if params == nil {
-		params = NewListRoleBindingsParams()
+		params = NewListRoleBindingsV1Params()
 	}
 	op := &runtime.ClientOperation{
-		ID:                 "ListRoleBindings",
+		ID:                 "ListRoleBindings.v1",
 		Method:             "GET",
-		PathPattern:        "/v2/authz/rolebindings",
+		PathPattern:        "/v1/authz/rolebindings/{resourcetype}/{resource}",
 		ProducesMediaTypes: []string{"application/json"},
 		ConsumesMediaTypes: []string{"application/json"},
 		Schemes:            []string{"https"},
 		Params:             params,
-		Reader:             &ListRoleBindingsReader{formats: a.formats},
+		Reader:             &ListRoleBindingsV1Reader{formats: a.formats},
 		Context:            params.Context,
 		Client:             params.HTTPClient,
 	}
@@ -315,13 +399,51 @@ func (a *Client) ListRoleBindings(params *ListRoleBindingsParams, opts ...Client
 	if err != nil {
 		return nil, err
 	}
-	success, ok := result.(*ListRoleBindingsOK)
+	success, ok := result.(*ListRoleBindingsV1OK)
 	if ok {
 		return success, nil
 	}
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for ListRoleBindings: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	msg := fmt.Sprintf("unexpected success response for ListRoleBindings.v1: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  ListRoleBindingsV2 lists role bindings
+*/
+func (a *Client) ListRoleBindingsV2(params *ListRoleBindingsV2Params, opts ...ClientOption) (*ListRoleBindingsV2OK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewListRoleBindingsV2Params()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "ListRoleBindings.v2",
+		Method:             "GET",
+		PathPattern:        "/v2/authz/rolebindings",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &ListRoleBindingsV2Reader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*ListRoleBindingsV2OK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for ListRoleBindings.v2: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
@@ -360,6 +482,44 @@ func (a *Client) ListRoles(params *ListRolesParams, opts ...ClientOption) (*List
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for ListRoles: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  ListRolesV1 lists styra defined roles
+*/
+func (a *Client) ListRolesV1(params *ListRolesV1Params, opts ...ClientOption) (*ListRolesV1OK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewListRolesV1Params()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "ListRoles.v1",
+		Method:             "GET",
+		PathPattern:        "/v1/authz/roles",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &ListRolesV1Reader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*ListRolesV1OK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for ListRoles.v1: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 

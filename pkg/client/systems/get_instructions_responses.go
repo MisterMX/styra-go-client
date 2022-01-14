@@ -50,19 +50,19 @@ func NewGetInstructionsOK() *GetInstructionsOK {
 OK
 */
 type GetInstructionsOK struct {
-	Payload *models.V1SystemsSuggestedRulesResponse
+	Payload *models.SystemsV1SystemsGetInstructionsResponse
 }
 
 func (o *GetInstructionsOK) Error() string {
 	return fmt.Sprintf("[GET /v1/systems/{system}/instructions][%d] getInstructionsOK  %+v", 200, o.Payload)
 }
-func (o *GetInstructionsOK) GetPayload() *models.V1SystemsSuggestedRulesResponse {
+func (o *GetInstructionsOK) GetPayload() *models.SystemsV1SystemsGetInstructionsResponse {
 	return o.Payload
 }
 
 func (o *GetInstructionsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1SystemsSuggestedRulesResponse)
+	o.Payload = new(models.SystemsV1SystemsGetInstructionsResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewGetInstructionsNotFound() *GetInstructionsNotFound {
 Not Found
 */
 type GetInstructionsNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *GetInstructionsNotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/systems/{system}/instructions][%d] getInstructionsNotFound  %+v", 404, o.Payload)
 }
-func (o *GetInstructionsNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *GetInstructionsNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *GetInstructionsNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

@@ -50,19 +50,19 @@ func NewGetSystemAgentsOK() *GetSystemAgentsOK {
 OK
 */
 type GetSystemAgentsOK struct {
-	Payload *models.V1SystemsGetAgentsResponse
+	Payload *models.SystemsV1SystemsGetAgentsResponse
 }
 
 func (o *GetSystemAgentsOK) Error() string {
 	return fmt.Sprintf("[GET /v1/systems/{system}/agents][%d] getSystemAgentsOK  %+v", 200, o.Payload)
 }
-func (o *GetSystemAgentsOK) GetPayload() *models.V1SystemsGetAgentsResponse {
+func (o *GetSystemAgentsOK) GetPayload() *models.SystemsV1SystemsGetAgentsResponse {
 	return o.Payload
 }
 
 func (o *GetSystemAgentsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1SystemsGetAgentsResponse)
+	o.Payload = new(models.SystemsV1SystemsGetAgentsResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewGetSystemAgentsNotFound() *GetSystemAgentsNotFound {
 Not Found
 */
 type GetSystemAgentsNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *GetSystemAgentsNotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/systems/{system}/agents][%d] getSystemAgentsNotFound  %+v", 404, o.Payload)
 }
-func (o *GetSystemAgentsNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *GetSystemAgentsNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *GetSystemAgentsNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

@@ -62,7 +62,7 @@ func NewShowAllDataParamsWithHTTPClient(client *http.Client) *ShowAllDataParams 
 type ShowAllDataParams struct {
 
 	// Body.
-	Body *models.V1DataRequest
+	Body *models.DataV1DataRequest
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,13 +118,13 @@ func (o *ShowAllDataParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the show all data params
-func (o *ShowAllDataParams) WithBody(body *models.V1DataRequest) *ShowAllDataParams {
+func (o *ShowAllDataParams) WithBody(body *models.DataV1DataRequest) *ShowAllDataParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the show all data params
-func (o *ShowAllDataParams) SetBody(body *models.V1DataRequest) {
+func (o *ShowAllDataParams) SetBody(body *models.DataV1DataRequest) {
 	o.Body = body
 }
 

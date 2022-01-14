@@ -75,10 +75,8 @@ type GetSystemBundleParams struct {
 	/* Version.
 
 	   version #
-
-	   Format: int32
 	*/
-	Version int32
+	Version int64
 
 	timeout    time.Duration
 	Context    context.Context
@@ -156,13 +154,13 @@ func (o *GetSystemBundleParams) SetSystem(system string) {
 }
 
 // WithVersion adds the version to the get system bundle params
-func (o *GetSystemBundleParams) WithVersion(version int32) *GetSystemBundleParams {
+func (o *GetSystemBundleParams) WithVersion(version int64) *GetSystemBundleParams {
 	o.SetVersion(version)
 	return o
 }
 
 // SetVersion adds the version to the get system bundle params
-func (o *GetSystemBundleParams) SetVersion(version int32) {
+func (o *GetSystemBundleParams) SetVersion(version int64) {
 	o.Version = version
 }
 
@@ -185,7 +183,7 @@ func (o *GetSystemBundleParams) WriteToRequest(r runtime.ClientRequest, reg strf
 	}
 
 	// path param version
-	if err := r.SetPathParam("version", swag.FormatInt32(o.Version)); err != nil {
+	if err := r.SetPathParam("version", swag.FormatInt64(o.Version)); err != nil {
 		return err
 	}
 

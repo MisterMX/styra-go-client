@@ -50,19 +50,19 @@ func NewDeleteSystemOK() *DeleteSystemOK {
 OK
 */
 type DeleteSystemOK struct {
-	Payload *models.V1SystemsDeleteResponse
+	Payload *models.SystemsV1SystemsDeleteResponse
 }
 
 func (o *DeleteSystemOK) Error() string {
 	return fmt.Sprintf("[DELETE /v1/systems/{system}][%d] deleteSystemOK  %+v", 200, o.Payload)
 }
-func (o *DeleteSystemOK) GetPayload() *models.V1SystemsDeleteResponse {
+func (o *DeleteSystemOK) GetPayload() *models.SystemsV1SystemsDeleteResponse {
 	return o.Payload
 }
 
 func (o *DeleteSystemOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1SystemsDeleteResponse)
+	o.Payload = new(models.SystemsV1SystemsDeleteResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewDeleteSystemNotFound() *DeleteSystemNotFound {
 Not Found
 */
 type DeleteSystemNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *DeleteSystemNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /v1/systems/{system}][%d] deleteSystemNotFound  %+v", 404, o.Payload)
 }
-func (o *DeleteSystemNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *DeleteSystemNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *DeleteSystemNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

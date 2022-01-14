@@ -44,19 +44,19 @@ func NewInitiateNotificationInstallOK() *InitiateNotificationInstallOK {
 OK
 */
 type InitiateNotificationInstallOK struct {
-	Payload *models.V1NotificationInstallNewStateResponse
+	Payload *models.NotificationsV1NotificationInstallNewStateResponse
 }
 
 func (o *InitiateNotificationInstallOK) Error() string {
 	return fmt.Sprintf("[GET /v1/notifications-install/state/{type}][%d] initiateNotificationInstallOK  %+v", 200, o.Payload)
 }
-func (o *InitiateNotificationInstallOK) GetPayload() *models.V1NotificationInstallNewStateResponse {
+func (o *InitiateNotificationInstallOK) GetPayload() *models.NotificationsV1NotificationInstallNewStateResponse {
 	return o.Payload
 }
 
 func (o *InitiateNotificationInstallOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1NotificationInstallNewStateResponse)
+	o.Payload = new(models.NotificationsV1NotificationInstallNewStateResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

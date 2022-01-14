@@ -107,19 +107,19 @@ func NewGetPolicyBundle2NotFound() *GetPolicyBundle2NotFound {
 Not Found
 */
 type GetPolicyBundle2NotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *GetPolicyBundle2NotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/bundles/{policy}][%d] getPolicyBundle2NotFound  %+v", 404, o.Payload)
 }
-func (o *GetPolicyBundle2NotFound) GetPayload() *models.V1ErrorResponse {
+func (o *GetPolicyBundle2NotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *GetPolicyBundle2NotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

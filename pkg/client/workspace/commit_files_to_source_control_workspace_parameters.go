@@ -14,6 +14,8 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+
+	"github.com/mistermx/styra-go-client/pkg/models"
 )
 
 // NewCommitFilesToSourceControlWorkspaceParams creates a new CommitFilesToSourceControlWorkspaceParams object,
@@ -58,6 +60,9 @@ func NewCommitFilesToSourceControlWorkspaceParamsWithHTTPClient(client *http.Cli
    Typically these are written to a http.Request.
 */
 type CommitFilesToSourceControlWorkspaceParams struct {
+
+	// Body.
+	Body *models.GitV1CommitInput
 
 	/* ID.
 
@@ -118,6 +123,17 @@ func (o *CommitFilesToSourceControlWorkspaceParams) SetHTTPClient(client *http.C
 	o.HTTPClient = client
 }
 
+// WithBody adds the body to the commit files to source control workspace params
+func (o *CommitFilesToSourceControlWorkspaceParams) WithBody(body *models.GitV1CommitInput) *CommitFilesToSourceControlWorkspaceParams {
+	o.SetBody(body)
+	return o
+}
+
+// SetBody adds the body to the commit files to source control workspace params
+func (o *CommitFilesToSourceControlWorkspaceParams) SetBody(body *models.GitV1CommitInput) {
+	o.Body = body
+}
+
 // WithID adds the id to the commit files to source control workspace params
 func (o *CommitFilesToSourceControlWorkspaceParams) WithID(id string) *CommitFilesToSourceControlWorkspaceParams {
 	o.SetID(id)
@@ -136,6 +152,11 @@ func (o *CommitFilesToSourceControlWorkspaceParams) WriteToRequest(r runtime.Cli
 		return err
 	}
 	var res []error
+	if o.Body != nil {
+		if err := r.SetBodyParam(o.Body); err != nil {
+			return err
+		}
+	}
 
 	// path param id
 	if err := r.SetPathParam("id", o.ID); err != nil {

@@ -62,7 +62,7 @@ func NewUpdateWorkspaceParamsWithHTTPClient(client *http.Client) *UpdateWorkspac
 type UpdateWorkspaceParams struct {
 
 	// Body.
-	Body *models.V1WorkspacePutRequest
+	Body *models.WorkspaceV1WorkspacePutRequest
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,13 +118,13 @@ func (o *UpdateWorkspaceParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the update workspace params
-func (o *UpdateWorkspaceParams) WithBody(body *models.V1WorkspacePutRequest) *UpdateWorkspaceParams {
+func (o *UpdateWorkspaceParams) WithBody(body *models.WorkspaceV1WorkspacePutRequest) *UpdateWorkspaceParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the update workspace params
-func (o *UpdateWorkspaceParams) SetBody(body *models.V1WorkspacePutRequest) {
+func (o *UpdateWorkspaceParams) SetBody(body *models.WorkspaceV1WorkspacePutRequest) {
 	o.Body = body
 }
 

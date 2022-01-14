@@ -14,6 +14,8 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+
+	"github.com/mistermx/styra-go-client/pkg/models"
 )
 
 // NewPatchDataParams creates a new PatchDataParams object,
@@ -64,6 +66,9 @@ type PatchDataParams struct {
 	   etag
 	*/
 	IfMatch *string
+
+	// Body.
+	Body models.MetaV1RequestObject
 
 	/* Name.
 
@@ -135,6 +140,17 @@ func (o *PatchDataParams) SetIfMatch(ifMatch *string) {
 	o.IfMatch = ifMatch
 }
 
+// WithBody adds the body to the patch data params
+func (o *PatchDataParams) WithBody(body models.MetaV1RequestObject) *PatchDataParams {
+	o.SetBody(body)
+	return o
+}
+
+// SetBody adds the body to the patch data params
+func (o *PatchDataParams) SetBody(body models.MetaV1RequestObject) {
+	o.Body = body
+}
+
 // WithName adds the name to the patch data params
 func (o *PatchDataParams) WithName(name string) *PatchDataParams {
 	o.SetName(name)
@@ -158,6 +174,11 @@ func (o *PatchDataParams) WriteToRequest(r runtime.ClientRequest, reg strfmt.Reg
 
 		// header param If-Match
 		if err := r.SetHeaderParam("If-Match", *o.IfMatch); err != nil {
+			return err
+		}
+	}
+	if o.Body != nil {
+		if err := r.SetBodyParam(o.Body); err != nil {
 			return err
 		}
 	}

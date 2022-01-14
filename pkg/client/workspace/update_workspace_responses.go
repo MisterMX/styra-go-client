@@ -29,6 +29,12 @@ func (o *UpdateWorkspaceReader) ReadResponse(response runtime.ClientResponse, co
 			return nil, err
 		}
 		return result, nil
+	case 400:
+		result := NewUpdateWorkspaceBadRequest()
+		if err := result.readResponse(response, consumer, o.formats); err != nil {
+			return nil, err
+		}
+		return nil, result
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
@@ -44,19 +50,51 @@ func NewUpdateWorkspaceOK() *UpdateWorkspaceOK {
 OK
 */
 type UpdateWorkspaceOK struct {
-	Payload *models.V1WorkspacePutResponse
+	Payload *models.WorkspaceV1WorkspacePutResponse
 }
 
 func (o *UpdateWorkspaceOK) Error() string {
 	return fmt.Sprintf("[PUT /v1/workspace][%d] updateWorkspaceOK  %+v", 200, o.Payload)
 }
-func (o *UpdateWorkspaceOK) GetPayload() *models.V1WorkspacePutResponse {
+func (o *UpdateWorkspaceOK) GetPayload() *models.WorkspaceV1WorkspacePutResponse {
 	return o.Payload
 }
 
 func (o *UpdateWorkspaceOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1WorkspacePutResponse)
+	o.Payload = new(models.WorkspaceV1WorkspacePutResponse)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
+
+	return nil
+}
+
+// NewUpdateWorkspaceBadRequest creates a UpdateWorkspaceBadRequest with default headers values
+func NewUpdateWorkspaceBadRequest() *UpdateWorkspaceBadRequest {
+	return &UpdateWorkspaceBadRequest{}
+}
+
+/* UpdateWorkspaceBadRequest describes a response with status code 400, with default header values.
+
+Invalid Parameter
+*/
+type UpdateWorkspaceBadRequest struct {
+	Payload *models.MetaV1ErrorResponse
+}
+
+func (o *UpdateWorkspaceBadRequest) Error() string {
+	return fmt.Sprintf("[PUT /v1/workspace][%d] updateWorkspaceBadRequest  %+v", 400, o.Payload)
+}
+func (o *UpdateWorkspaceBadRequest) GetPayload() *models.MetaV1ErrorResponse {
+	return o.Payload
+}
+
+func (o *UpdateWorkspaceBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

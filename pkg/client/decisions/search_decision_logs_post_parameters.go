@@ -62,7 +62,7 @@ func NewSearchDecisionLogsPostParamsWithHTTPClient(client *http.Client) *SearchD
 type SearchDecisionLogsPostParams struct {
 
 	// Body.
-	Body *models.V1DecisionsGetRequest
+	Body *models.AnalysisV1DecisionsGetRequest
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,13 +118,13 @@ func (o *SearchDecisionLogsPostParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the search decision logs post params
-func (o *SearchDecisionLogsPostParams) WithBody(body *models.V1DecisionsGetRequest) *SearchDecisionLogsPostParams {
+func (o *SearchDecisionLogsPostParams) WithBody(body *models.AnalysisV1DecisionsGetRequest) *SearchDecisionLogsPostParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the search decision logs post params
-func (o *SearchDecisionLogsPostParams) SetBody(body *models.V1DecisionsGetRequest) {
+func (o *SearchDecisionLogsPostParams) SetBody(body *models.AnalysisV1DecisionsGetRequest) {
 	o.Body = body
 }
 

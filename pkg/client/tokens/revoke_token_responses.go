@@ -44,19 +44,19 @@ func NewRevokeTokenOK() *RevokeTokenOK {
 OK
 */
 type RevokeTokenOK struct {
-	Payload *models.V1TokensDeleteResponse
+	Payload *models.TokensV1TokensDeleteResponse
 }
 
 func (o *RevokeTokenOK) Error() string {
 	return fmt.Sprintf("[DELETE /v1/tokens/{tokenId}][%d] revokeTokenOK  %+v", 200, o.Payload)
 }
-func (o *RevokeTokenOK) GetPayload() *models.V1TokensDeleteResponse {
+func (o *RevokeTokenOK) GetPayload() *models.TokensV1TokensDeleteResponse {
 	return o.Payload
 }
 
 func (o *RevokeTokenOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1TokensDeleteResponse)
+	o.Payload = new(models.TokensV1TokensDeleteResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

@@ -11,21 +11,24 @@ import (
 	"github.com/go-openapi/strfmt"
 
 	"github.com/mistermx/styra-go-client/pkg/client/activity"
+	"github.com/mistermx/styra-go-client/pkg/client/agents"
 	"github.com/mistermx/styra-go-client/pkg/client/authz"
 	"github.com/mistermx/styra-go-client/pkg/client/bundles"
 	"github.com/mistermx/styra-go-client/pkg/client/data"
 	"github.com/mistermx/styra-go-client/pkg/client/datasources"
 	"github.com/mistermx/styra-go-client/pkg/client/decisions"
-	"github.com/mistermx/styra-go-client/pkg/client/docs"
 	"github.com/mistermx/styra-go-client/pkg/client/identity_providers"
 	"github.com/mistermx/styra-go-client/pkg/client/invitations"
 	"github.com/mistermx/styra-go-client/pkg/client/logreplay"
+	"github.com/mistermx/styra-go-client/pkg/client/logs"
 	"github.com/mistermx/styra-go-client/pkg/client/notifications"
 	"github.com/mistermx/styra-go-client/pkg/client/notifications_install"
+	"github.com/mistermx/styra-go-client/pkg/client/openapi"
 	"github.com/mistermx/styra-go-client/pkg/client/policies"
 	"github.com/mistermx/styra-go-client/pkg/client/relay_server"
 	"github.com/mistermx/styra-go-client/pkg/client/secrets"
 	"github.com/mistermx/styra-go-client/pkg/client/stacks"
+	"github.com/mistermx/styra-go-client/pkg/client/status"
 	"github.com/mistermx/styra-go-client/pkg/client/systems"
 	"github.com/mistermx/styra-go-client/pkg/client/timeseries"
 	"github.com/mistermx/styra-go-client/pkg/client/tokens"
@@ -76,21 +79,24 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *StyraAPI {
 	cli := new(StyraAPI)
 	cli.Transport = transport
 	cli.Activity = activity.New(transport, formats)
+	cli.Agents = agents.New(transport, formats)
 	cli.Authz = authz.New(transport, formats)
 	cli.Bundles = bundles.New(transport, formats)
 	cli.Data = data.New(transport, formats)
 	cli.Datasources = datasources.New(transport, formats)
 	cli.Decisions = decisions.New(transport, formats)
-	cli.Docs = docs.New(transport, formats)
 	cli.IdentityProviders = identity_providers.New(transport, formats)
 	cli.Invitations = invitations.New(transport, formats)
 	cli.Logreplay = logreplay.New(transport, formats)
+	cli.Logs = logs.New(transport, formats)
 	cli.Notifications = notifications.New(transport, formats)
 	cli.NotificationsInstall = notifications_install.New(transport, formats)
+	cli.Openapi = openapi.New(transport, formats)
 	cli.Policies = policies.New(transport, formats)
 	cli.RelayServer = relay_server.New(transport, formats)
 	cli.Secrets = secrets.New(transport, formats)
 	cli.Stacks = stacks.New(transport, formats)
+	cli.Status = status.New(transport, formats)
 	cli.Systems = systems.New(transport, formats)
 	cli.Timeseries = timeseries.New(transport, formats)
 	cli.Tokens = tokens.New(transport, formats)
@@ -142,6 +148,8 @@ func (cfg *TransportConfig) WithSchemes(schemes []string) *TransportConfig {
 type StyraAPI struct {
 	Activity activity.ClientService
 
+	Agents agents.ClientService
+
 	Authz authz.ClientService
 
 	Bundles bundles.ClientService
@@ -152,17 +160,19 @@ type StyraAPI struct {
 
 	Decisions decisions.ClientService
 
-	Docs docs.ClientService
-
 	IdentityProviders identity_providers.ClientService
 
 	Invitations invitations.ClientService
 
 	Logreplay logreplay.ClientService
 
+	Logs logs.ClientService
+
 	Notifications notifications.ClientService
 
 	NotificationsInstall notifications_install.ClientService
+
+	Openapi openapi.ClientService
 
 	Policies policies.ClientService
 
@@ -171,6 +181,8 @@ type StyraAPI struct {
 	Secrets secrets.ClientService
 
 	Stacks stacks.ClientService
+
+	Status status.ClientService
 
 	Systems systems.ClientService
 
@@ -189,21 +201,24 @@ type StyraAPI struct {
 func (c *StyraAPI) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
 	c.Activity.SetTransport(transport)
+	c.Agents.SetTransport(transport)
 	c.Authz.SetTransport(transport)
 	c.Bundles.SetTransport(transport)
 	c.Data.SetTransport(transport)
 	c.Datasources.SetTransport(transport)
 	c.Decisions.SetTransport(transport)
-	c.Docs.SetTransport(transport)
 	c.IdentityProviders.SetTransport(transport)
 	c.Invitations.SetTransport(transport)
 	c.Logreplay.SetTransport(transport)
+	c.Logs.SetTransport(transport)
 	c.Notifications.SetTransport(transport)
 	c.NotificationsInstall.SetTransport(transport)
+	c.Openapi.SetTransport(transport)
 	c.Policies.SetTransport(transport)
 	c.RelayServer.SetTransport(transport)
 	c.Secrets.SetTransport(transport)
 	c.Stacks.SetTransport(transport)
+	c.Status.SetTransport(transport)
 	c.Systems.SetTransport(transport)
 	c.Timeseries.SetTransport(transport)
 	c.Tokens.SetTransport(transport)

@@ -50,19 +50,19 @@ func NewGetUserOK() *GetUserOK {
 OK
 */
 type GetUserOK struct {
-	Payload *models.V1UsersGetResponse
+	Payload *models.UsersV1UsersGetResponse
 }
 
 func (o *GetUserOK) Error() string {
 	return fmt.Sprintf("[GET /v1/users/{userId}][%d] getUserOK  %+v", 200, o.Payload)
 }
-func (o *GetUserOK) GetPayload() *models.V1UsersGetResponse {
+func (o *GetUserOK) GetPayload() *models.UsersV1UsersGetResponse {
 	return o.Payload
 }
 
 func (o *GetUserOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1UsersGetResponse)
+	o.Payload = new(models.UsersV1UsersGetResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewGetUserNotFound() *GetUserNotFound {
 Not Found
 */
 type GetUserNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *GetUserNotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/users/{userId}][%d] getUserNotFound  %+v", 404, o.Payload)
 }
-func (o *GetUserNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *GetUserNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *GetUserNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

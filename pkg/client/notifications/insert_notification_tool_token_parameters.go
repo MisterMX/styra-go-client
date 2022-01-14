@@ -62,7 +62,13 @@ func NewInsertNotificationToolTokenParamsWithHTTPClient(client *http.Client) *In
 type InsertNotificationToolTokenParams struct {
 
 	// Body.
-	Body *models.V1NotificationToolTokenRequest
+	Body *models.NotificationsV1NotificationToolTokenRequest
+
+	/* Type.
+
+	   notification type
+	*/
+	Type string
 
 	timeout    time.Duration
 	Context    context.Context
@@ -118,14 +124,25 @@ func (o *InsertNotificationToolTokenParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the insert notification tool token params
-func (o *InsertNotificationToolTokenParams) WithBody(body *models.V1NotificationToolTokenRequest) *InsertNotificationToolTokenParams {
+func (o *InsertNotificationToolTokenParams) WithBody(body *models.NotificationsV1NotificationToolTokenRequest) *InsertNotificationToolTokenParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the insert notification tool token params
-func (o *InsertNotificationToolTokenParams) SetBody(body *models.V1NotificationToolTokenRequest) {
+func (o *InsertNotificationToolTokenParams) SetBody(body *models.NotificationsV1NotificationToolTokenRequest) {
 	o.Body = body
+}
+
+// WithType adds the typeVar to the insert notification tool token params
+func (o *InsertNotificationToolTokenParams) WithType(typeVar string) *InsertNotificationToolTokenParams {
+	o.SetType(typeVar)
+	return o
+}
+
+// SetType adds the type to the insert notification tool token params
+func (o *InsertNotificationToolTokenParams) SetType(typeVar string) {
+	o.Type = typeVar
 }
 
 // WriteToRequest writes these params to a swagger request
@@ -139,6 +156,11 @@ func (o *InsertNotificationToolTokenParams) WriteToRequest(r runtime.ClientReque
 		if err := r.SetBodyParam(o.Body); err != nil {
 			return err
 		}
+	}
+
+	// path param type
+	if err := r.SetPathParam("type", o.Type); err != nil {
+		return err
 	}
 
 	if len(res) > 0 {

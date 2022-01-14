@@ -50,19 +50,19 @@ func NewExecuteDatasourceOK() *ExecuteDatasourceOK {
 OK
 */
 type ExecuteDatasourceOK struct {
-	Payload *models.V1DatasourcesPostResponse
+	Payload *models.DatasourcesV1DatasourcesPostResponse
 }
 
 func (o *ExecuteDatasourceOK) Error() string {
 	return fmt.Sprintf("[POST /v1/datasources/{datasource}][%d] executeDatasourceOK  %+v", 200, o.Payload)
 }
-func (o *ExecuteDatasourceOK) GetPayload() *models.V1DatasourcesPostResponse {
+func (o *ExecuteDatasourceOK) GetPayload() *models.DatasourcesV1DatasourcesPostResponse {
 	return o.Payload
 }
 
 func (o *ExecuteDatasourceOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1DatasourcesPostResponse)
+	o.Payload = new(models.DatasourcesV1DatasourcesPostResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewExecuteDatasourceNotFound() *ExecuteDatasourceNotFound {
 Not Found
 */
 type ExecuteDatasourceNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *ExecuteDatasourceNotFound) Error() string {
 	return fmt.Sprintf("[POST /v1/datasources/{datasource}][%d] executeDatasourceNotFound  %+v", 404, o.Payload)
 }
-func (o *ExecuteDatasourceNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *ExecuteDatasourceNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *ExecuteDatasourceNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

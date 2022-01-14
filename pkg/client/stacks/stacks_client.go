@@ -46,19 +46,21 @@ type ClientService interface {
 
 	ListStacks(params *ListStacksParams, opts ...ClientOption) (*ListStacksOK, error)
 
+	SourceControlVerifyConfigStack(params *SourceControlVerifyConfigStackParams, opts ...ClientOption) (*SourceControlVerifyConfigStackOK, error)
+
 	UpdateStack(params *UpdateStackParams, opts ...ClientOption) (*UpdateStackOK, error)
 
 	ValidateStackCompliance(params *ValidateStackComplianceParams, opts ...ClientOption) (*ValidateStackComplianceOK, *ValidateStackComplianceAccepted, error)
 
 	ValidateStackTests(params *ValidateStackTestsParams, opts ...ClientOption) (*ValidateStackTestsOK, error)
 
-	Func2(params *Func2Params, opts ...ClientOption) (*Func2OK, error)
-
 	SetTransport(transport runtime.ClientTransport)
 }
 
 /*
-  CommitFilesToSourceControlStack commits files to source control associated with a stack
+  CommitFilesToSourceControlStack commits files to stack source control
+
+  Commit files to source control associated with a stack
 */
 func (a *Client) CommitFilesToSourceControlStack(params *CommitFilesToSourceControlStackParams, opts ...ClientOption) (*CommitFilesToSourceControlStackOK, error) {
 	// TODO: Validate the params before sending
@@ -210,7 +212,7 @@ func (a *Client) DeleteUserBranchStack(params *DeleteUserBranchStackParams, opts
 }
 
 /*
-  GetSourceControlFilesBranchStack gets the list of files for the styra d a s created branch
+  GetSourceControlFilesBranchStack lists files in styra d a s created branch
 
   Gets the list of files for the branch that the Styra DAS creates when modifying rego in the Styra DAS UI and pushing the changes to GitHub in a branch for review.
 */
@@ -250,7 +252,9 @@ func (a *Client) GetSourceControlFilesBranchStack(params *GetSourceControlFilesB
 }
 
 /*
-  GetSourceControlFilesMasterStack gets the list of files in the currently chosen branch
+  GetSourceControlFilesMasterStack lists files in current branch
+
+  Gets the list of files in the currently chosen branch.
 */
 func (a *Client) GetSourceControlFilesMasterStack(params *GetSourceControlFilesMasterStackParams, opts ...ClientOption) (*GetSourceControlFilesMasterStackOK, error) {
 	// TODO: Validate the params before sending
@@ -360,6 +364,46 @@ func (a *Client) ListStacks(params *ListStacksParams, opts ...ClientOption) (*Li
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for ListStacks: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
+}
+
+/*
+  SourceControlVerifyConfigStack verifies git access
+
+  Verifies that the repository can be accessed with the provided credentials
+*/
+func (a *Client) SourceControlVerifyConfigStack(params *SourceControlVerifyConfigStackParams, opts ...ClientOption) (*SourceControlVerifyConfigStackOK, error) {
+	// TODO: Validate the params before sending
+	if params == nil {
+		params = NewSourceControlVerifyConfigStackParams()
+	}
+	op := &runtime.ClientOperation{
+		ID:                 "SourceControlVerifyConfigStack",
+		Method:             "POST",
+		PathPattern:        "/v1/stacks/source-control/verify-config",
+		ProducesMediaTypes: []string{"application/json"},
+		ConsumesMediaTypes: []string{"application/json"},
+		Schemes:            []string{"https"},
+		Params:             params,
+		Reader:             &SourceControlVerifyConfigStackReader{formats: a.formats},
+		Context:            params.Context,
+		Client:             params.HTTPClient,
+	}
+	for _, opt := range opts {
+		opt(op)
+	}
+
+	result, err := a.transport.Submit(op)
+	if err != nil {
+		return nil, err
+	}
+	success, ok := result.(*SourceControlVerifyConfigStackOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for SourceControlVerifyConfigStack: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 
@@ -475,46 +519,6 @@ func (a *Client) ValidateStackTests(params *ValidateStackTestsParams, opts ...Cl
 	// unexpected success response
 	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
 	msg := fmt.Sprintf("unexpected success response for ValidateStackTests: API contract not enforced by server. Client expected to get an error, but got: %T", result)
-	panic(msg)
-}
-
-/*
-  Func2 verifies git configuration
-
-  verifies that the repository can be accessed with the provided credentials
-*/
-func (a *Client) Func2(params *Func2Params, opts ...ClientOption) (*Func2OK, error) {
-	// TODO: Validate the params before sending
-	if params == nil {
-		params = NewFunc2Params()
-	}
-	op := &runtime.ClientOperation{
-		ID:                 "func2",
-		Method:             "POST",
-		PathPattern:        "/v1/stacks/source-control/verify-config",
-		ProducesMediaTypes: []string{"application/json"},
-		ConsumesMediaTypes: []string{"application/json"},
-		Schemes:            []string{"https"},
-		Params:             params,
-		Reader:             &Func2Reader{formats: a.formats},
-		Context:            params.Context,
-		Client:             params.HTTPClient,
-	}
-	for _, opt := range opts {
-		opt(op)
-	}
-
-	result, err := a.transport.Submit(op)
-	if err != nil {
-		return nil, err
-	}
-	success, ok := result.(*Func2OK)
-	if ok {
-		return success, nil
-	}
-	// unexpected success response
-	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
-	msg := fmt.Sprintf("unexpected success response for func2: API contract not enforced by server. Client expected to get an error, but got: %T", result)
 	panic(msg)
 }
 

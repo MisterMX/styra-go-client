@@ -36,7 +36,9 @@ type ClientService interface {
 }
 
 /*
-  HandleActivity handles activity
+  HandleActivity retrieves activity log
+
+  At most 256 entries returned per request. If only start_time or end_time is provided by the caller then the request defaults to 1 hour range
 */
 func (a *Client) HandleActivity(params *HandleActivityParams, opts ...ClientOption) (*HandleActivityOK, error) {
 	// TODO: Validate the params before sending

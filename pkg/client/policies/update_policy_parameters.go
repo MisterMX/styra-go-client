@@ -68,7 +68,7 @@ type UpdatePolicyParams struct {
 	IfNoneMatch *string
 
 	// Body.
-	Body *models.V1PoliciesPutRequest
+	Body *models.PoliciesV1PoliciesPutRequest
 
 	/* Policy.
 
@@ -141,13 +141,13 @@ func (o *UpdatePolicyParams) SetIfNoneMatch(ifNoneMatch *string) {
 }
 
 // WithBody adds the body to the update policy params
-func (o *UpdatePolicyParams) WithBody(body *models.V1PoliciesPutRequest) *UpdatePolicyParams {
+func (o *UpdatePolicyParams) WithBody(body *models.PoliciesV1PoliciesPutRequest) *UpdatePolicyParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the update policy params
-func (o *UpdatePolicyParams) SetBody(body *models.V1PoliciesPutRequest) {
+func (o *UpdatePolicyParams) SetBody(body *models.PoliciesV1PoliciesPutRequest) {
 	o.Body = body
 }
 

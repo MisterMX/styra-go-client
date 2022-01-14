@@ -56,19 +56,19 @@ func NewUpdateSystemBundleDeployOK() *UpdateSystemBundleDeployOK {
 OK
 */
 type UpdateSystemBundleDeployOK struct {
-	Payload *models.V1SystemsPutBundleDeployResponse
+	Payload *models.SystemsV1SystemsPutBundleDeployResponse
 }
 
 func (o *UpdateSystemBundleDeployOK) Error() string {
 	return fmt.Sprintf("[PUT /v1/systems/{system}/bundle-deploy][%d] updateSystemBundleDeployOK  %+v", 200, o.Payload)
 }
-func (o *UpdateSystemBundleDeployOK) GetPayload() *models.V1SystemsPutBundleDeployResponse {
+func (o *UpdateSystemBundleDeployOK) GetPayload() *models.SystemsV1SystemsPutBundleDeployResponse {
 	return o.Payload
 }
 
 func (o *UpdateSystemBundleDeployOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1SystemsPutBundleDeployResponse)
+	o.Payload = new(models.SystemsV1SystemsPutBundleDeployResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -88,19 +88,19 @@ func NewUpdateSystemBundleDeployNotFound() *UpdateSystemBundleDeployNotFound {
 Not Found
 */
 type UpdateSystemBundleDeployNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *UpdateSystemBundleDeployNotFound) Error() string {
 	return fmt.Sprintf("[PUT /v1/systems/{system}/bundle-deploy][%d] updateSystemBundleDeployNotFound  %+v", 404, o.Payload)
 }
-func (o *UpdateSystemBundleDeployNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *UpdateSystemBundleDeployNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *UpdateSystemBundleDeployNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -120,19 +120,19 @@ func NewUpdateSystemBundleDeployConflict() *UpdateSystemBundleDeployConflict {
 Conflict
 */
 type UpdateSystemBundleDeployConflict struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *UpdateSystemBundleDeployConflict) Error() string {
 	return fmt.Sprintf("[PUT /v1/systems/{system}/bundle-deploy][%d] updateSystemBundleDeployConflict  %+v", 409, o.Payload)
 }
-func (o *UpdateSystemBundleDeployConflict) GetPayload() *models.V1ErrorResponse {
+func (o *UpdateSystemBundleDeployConflict) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *UpdateSystemBundleDeployConflict) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

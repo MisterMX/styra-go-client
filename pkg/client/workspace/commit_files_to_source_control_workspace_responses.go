@@ -50,19 +50,19 @@ func NewCommitFilesToSourceControlWorkspaceOK() *CommitFilesToSourceControlWorks
 OK
 */
 type CommitFilesToSourceControlWorkspaceOK struct {
-	Payload *models.V1PostCommitResponse
+	Payload *models.GitV1PostCommitResponse
 }
 
 func (o *CommitFilesToSourceControlWorkspaceOK) Error() string {
 	return fmt.Sprintf("[POST /v1/workspace/{id}/commits][%d] commitFilesToSourceControlWorkspaceOK  %+v", 200, o.Payload)
 }
-func (o *CommitFilesToSourceControlWorkspaceOK) GetPayload() *models.V1PostCommitResponse {
+func (o *CommitFilesToSourceControlWorkspaceOK) GetPayload() *models.GitV1PostCommitResponse {
 	return o.Payload
 }
 
 func (o *CommitFilesToSourceControlWorkspaceOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1PostCommitResponse)
+	o.Payload = new(models.GitV1PostCommitResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewCommitFilesToSourceControlWorkspaceNotFound() *CommitFilesToSourceContro
 Not Found
 */
 type CommitFilesToSourceControlWorkspaceNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *CommitFilesToSourceControlWorkspaceNotFound) Error() string {
 	return fmt.Sprintf("[POST /v1/workspace/{id}/commits][%d] commitFilesToSourceControlWorkspaceNotFound  %+v", 404, o.Payload)
 }
-func (o *CommitFilesToSourceControlWorkspaceNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *CommitFilesToSourceControlWorkspaceNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *CommitFilesToSourceControlWorkspaceNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

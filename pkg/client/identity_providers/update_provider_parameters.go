@@ -14,6 +14,8 @@ import (
 	"github.com/go-openapi/runtime"
 	cr "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
+
+	"github.com/mistermx/styra-go-client/pkg/models"
 )
 
 // NewUpdateProviderParams creates a new UpdateProviderParams object,
@@ -64,6 +66,9 @@ type UpdateProviderParams struct {
 	   if set to '*' then creates a new provider with type-specific related objects
 	*/
 	IfNoneMatch *string
+
+	// Body.
+	Body *models.IdentityProvidersV1ProvidersPutRequest
 
 	/* ProviderID.
 
@@ -135,6 +140,17 @@ func (o *UpdateProviderParams) SetIfNoneMatch(ifNoneMatch *string) {
 	o.IfNoneMatch = ifNoneMatch
 }
 
+// WithBody adds the body to the update provider params
+func (o *UpdateProviderParams) WithBody(body *models.IdentityProvidersV1ProvidersPutRequest) *UpdateProviderParams {
+	o.SetBody(body)
+	return o
+}
+
+// SetBody adds the body to the update provider params
+func (o *UpdateProviderParams) SetBody(body *models.IdentityProvidersV1ProvidersPutRequest) {
+	o.Body = body
+}
+
 // WithProviderID adds the providerID to the update provider params
 func (o *UpdateProviderParams) WithProviderID(providerID string) *UpdateProviderParams {
 	o.SetProviderID(providerID)
@@ -158,6 +174,11 @@ func (o *UpdateProviderParams) WriteToRequest(r runtime.ClientRequest, reg strfm
 
 		// header param If-None-Match
 		if err := r.SetHeaderParam("If-None-Match", *o.IfNoneMatch); err != nil {
+			return err
+		}
+	}
+	if o.Body != nil {
+		if err := r.SetBodyParam(o.Body); err != nil {
 			return err
 		}
 	}

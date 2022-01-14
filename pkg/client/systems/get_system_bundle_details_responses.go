@@ -50,19 +50,19 @@ func NewGetSystemBundleDetailsOK() *GetSystemBundleDetailsOK {
 OK
 */
 type GetSystemBundleDetailsOK struct {
-	Payload *models.V1SystemsGetBundleDetailsResponse
+	Payload *models.SystemsV1SystemsGetBundleDetailsResponse
 }
 
 func (o *GetSystemBundleDetailsOK) Error() string {
 	return fmt.Sprintf("[GET /v1/systems/{system}/bundles/{bundle}/{version}/details][%d] getSystemBundleDetailsOK  %+v", 200, o.Payload)
 }
-func (o *GetSystemBundleDetailsOK) GetPayload() *models.V1SystemsGetBundleDetailsResponse {
+func (o *GetSystemBundleDetailsOK) GetPayload() *models.SystemsV1SystemsGetBundleDetailsResponse {
 	return o.Payload
 }
 
 func (o *GetSystemBundleDetailsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1SystemsGetBundleDetailsResponse)
+	o.Payload = new(models.SystemsV1SystemsGetBundleDetailsResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewGetSystemBundleDetailsNotFound() *GetSystemBundleDetailsNotFound {
 Not Found
 */
 type GetSystemBundleDetailsNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *GetSystemBundleDetailsNotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/systems/{system}/bundles/{bundle}/{version}/details][%d] getSystemBundleDetailsNotFound  %+v", 404, o.Payload)
 }
-func (o *GetSystemBundleDetailsNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *GetSystemBundleDetailsNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *GetSystemBundleDetailsNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

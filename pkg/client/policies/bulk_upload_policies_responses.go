@@ -44,19 +44,19 @@ func NewBulkUploadPoliciesOK() *BulkUploadPoliciesOK {
 OK
 */
 type BulkUploadPoliciesOK struct {
-	Payload *models.V1PoliciesBulkUploadResponse
+	Payload *models.PoliciesV1PoliciesBulkUploadResponse
 }
 
 func (o *BulkUploadPoliciesOK) Error() string {
 	return fmt.Sprintf("[POST /v1/policies][%d] bulkUploadPoliciesOK  %+v", 200, o.Payload)
 }
-func (o *BulkUploadPoliciesOK) GetPayload() *models.V1PoliciesBulkUploadResponse {
+func (o *BulkUploadPoliciesOK) GetPayload() *models.PoliciesV1PoliciesBulkUploadResponse {
 	return o.Payload
 }
 
 func (o *BulkUploadPoliciesOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1PoliciesBulkUploadResponse)
+	o.Payload = new(models.PoliciesV1PoliciesBulkUploadResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

@@ -56,19 +56,19 @@ func NewRuleSuggestionsOK() *RuleSuggestionsOK {
 OK
 */
 type RuleSuggestionsOK struct {
-	Payload *models.V1SystemsSuggestedRulesResponse
+	Payload *models.SystemsV1SystemsSuggestedRulesResponse
 }
 
 func (o *RuleSuggestionsOK) Error() string {
 	return fmt.Sprintf("[GET /v1/systems/{system}/suggestions][%d] ruleSuggestionsOK  %+v", 200, o.Payload)
 }
-func (o *RuleSuggestionsOK) GetPayload() *models.V1SystemsSuggestedRulesResponse {
+func (o *RuleSuggestionsOK) GetPayload() *models.SystemsV1SystemsSuggestedRulesResponse {
 	return o.Payload
 }
 
 func (o *RuleSuggestionsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1SystemsSuggestedRulesResponse)
+	o.Payload = new(models.SystemsV1SystemsSuggestedRulesResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -88,19 +88,19 @@ func NewRuleSuggestionsNotFound() *RuleSuggestionsNotFound {
 Not Found
 */
 type RuleSuggestionsNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *RuleSuggestionsNotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/systems/{system}/suggestions][%d] ruleSuggestionsNotFound  %+v", 404, o.Payload)
 }
-func (o *RuleSuggestionsNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *RuleSuggestionsNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *RuleSuggestionsNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -120,19 +120,19 @@ func NewRuleSuggestionsServiceUnavailable() *RuleSuggestionsServiceUnavailable {
 Not available, please retry later
 */
 type RuleSuggestionsServiceUnavailable struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *RuleSuggestionsServiceUnavailable) Error() string {
 	return fmt.Sprintf("[GET /v1/systems/{system}/suggestions][%d] ruleSuggestionsServiceUnavailable  %+v", 503, o.Payload)
 }
-func (o *RuleSuggestionsServiceUnavailable) GetPayload() *models.V1ErrorResponse {
+func (o *RuleSuggestionsServiceUnavailable) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *RuleSuggestionsServiceUnavailable) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

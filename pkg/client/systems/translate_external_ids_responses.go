@@ -44,19 +44,19 @@ func NewTranslateExternalIdsOK() *TranslateExternalIdsOK {
 OK
 */
 type TranslateExternalIdsOK struct {
-	Payload *models.V1SystemsTranslateExternalIdsResponse
+	Payload *models.SystemsV1SystemsTranslateExternalIdsResponse
 }
 
 func (o *TranslateExternalIdsOK) Error() string {
 	return fmt.Sprintf("[POST /v1/systems/external-ids][%d] translateExternalIdsOK  %+v", 200, o.Payload)
 }
-func (o *TranslateExternalIdsOK) GetPayload() *models.V1SystemsTranslateExternalIdsResponse {
+func (o *TranslateExternalIdsOK) GetPayload() *models.SystemsV1SystemsTranslateExternalIdsResponse {
 	return o.Payload
 }
 
 func (o *TranslateExternalIdsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1SystemsTranslateExternalIdsResponse)
+	o.Payload = new(models.SystemsV1SystemsTranslateExternalIdsResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

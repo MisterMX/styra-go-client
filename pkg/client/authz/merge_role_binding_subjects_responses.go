@@ -56,19 +56,19 @@ func NewMergeRoleBindingSubjectsOK() *MergeRoleBindingSubjectsOK {
 OK
 */
 type MergeRoleBindingSubjectsOK struct {
-	Payload *models.V2RoleBindingsPutSubjectsResponse
+	Payload *models.AuthzV2RoleBindingsPutSubjectsResponse
 }
 
 func (o *MergeRoleBindingSubjectsOK) Error() string {
 	return fmt.Sprintf("[PUT /v2/authz/rolebindings/{id}/subjects][%d] mergeRoleBindingSubjectsOK  %+v", 200, o.Payload)
 }
-func (o *MergeRoleBindingSubjectsOK) GetPayload() *models.V2RoleBindingsPutSubjectsResponse {
+func (o *MergeRoleBindingSubjectsOK) GetPayload() *models.AuthzV2RoleBindingsPutSubjectsResponse {
 	return o.Payload
 }
 
 func (o *MergeRoleBindingSubjectsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V2RoleBindingsPutSubjectsResponse)
+	o.Payload = new(models.AuthzV2RoleBindingsPutSubjectsResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -88,19 +88,19 @@ func NewMergeRoleBindingSubjectsBadRequest() *MergeRoleBindingSubjectsBadRequest
 Invalid Parameter
 */
 type MergeRoleBindingSubjectsBadRequest struct {
-	Payload *models.V2RoleBindingsPostResponse
+	Payload *models.AuthzV2RoleBindingsPostResponse
 }
 
 func (o *MergeRoleBindingSubjectsBadRequest) Error() string {
 	return fmt.Sprintf("[PUT /v2/authz/rolebindings/{id}/subjects][%d] mergeRoleBindingSubjectsBadRequest  %+v", 400, o.Payload)
 }
-func (o *MergeRoleBindingSubjectsBadRequest) GetPayload() *models.V2RoleBindingsPostResponse {
+func (o *MergeRoleBindingSubjectsBadRequest) GetPayload() *models.AuthzV2RoleBindingsPostResponse {
 	return o.Payload
 }
 
 func (o *MergeRoleBindingSubjectsBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V2RoleBindingsPostResponse)
+	o.Payload = new(models.AuthzV2RoleBindingsPostResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -120,19 +120,19 @@ func NewMergeRoleBindingSubjectsNotFound() *MergeRoleBindingSubjectsNotFound {
 Not Found
 */
 type MergeRoleBindingSubjectsNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *MergeRoleBindingSubjectsNotFound) Error() string {
 	return fmt.Sprintf("[PUT /v2/authz/rolebindings/{id}/subjects][%d] mergeRoleBindingSubjectsNotFound  %+v", 404, o.Payload)
 }
-func (o *MergeRoleBindingSubjectsNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *MergeRoleBindingSubjectsNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *MergeRoleBindingSubjectsNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

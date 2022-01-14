@@ -50,19 +50,19 @@ func NewPutDataOK() *PutDataOK {
 OK
 */
 type PutDataOK struct {
-	Payload *models.V1DataPutResponse
+	Payload *models.DataV1DataPutResponse
 }
 
 func (o *PutDataOK) Error() string {
 	return fmt.Sprintf("[PUT /v1/data/{name}][%d] putDataOK  %+v", 200, o.Payload)
 }
-func (o *PutDataOK) GetPayload() *models.V1DataPutResponse {
+func (o *PutDataOK) GetPayload() *models.DataV1DataPutResponse {
 	return o.Payload
 }
 
 func (o *PutDataOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1DataPutResponse)
+	o.Payload = new(models.DataV1DataPutResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewPutDataNotFound() *PutDataNotFound {
 Not Found
 */
 type PutDataNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *PutDataNotFound) Error() string {
 	return fmt.Sprintf("[PUT /v1/data/{name}][%d] putDataNotFound  %+v", 404, o.Payload)
 }
-func (o *PutDataNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *PutDataNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *PutDataNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

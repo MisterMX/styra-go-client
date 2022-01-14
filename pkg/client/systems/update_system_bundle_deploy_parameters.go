@@ -62,7 +62,7 @@ func NewUpdateSystemBundleDeployParamsWithHTTPClient(client *http.Client) *Updat
 type UpdateSystemBundleDeployParams struct {
 
 	// Body.
-	Body *models.V1SystemsPutBundleDeployRequest
+	Body *models.SystemsV1SystemsPutBundleDeployRequest
 
 	/* System.
 
@@ -124,13 +124,13 @@ func (o *UpdateSystemBundleDeployParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the update system bundle deploy params
-func (o *UpdateSystemBundleDeployParams) WithBody(body *models.V1SystemsPutBundleDeployRequest) *UpdateSystemBundleDeployParams {
+func (o *UpdateSystemBundleDeployParams) WithBody(body *models.SystemsV1SystemsPutBundleDeployRequest) *UpdateSystemBundleDeployParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the update system bundle deploy params
-func (o *UpdateSystemBundleDeployParams) SetBody(body *models.V1SystemsPutBundleDeployRequest) {
+func (o *UpdateSystemBundleDeployParams) SetBody(body *models.SystemsV1SystemsPutBundleDeployRequest) {
 	o.Body = body
 }
 

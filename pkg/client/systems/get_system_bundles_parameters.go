@@ -75,10 +75,8 @@ type GetSystemBundlesParams struct {
 	/* Version.
 
 	   if set, the newest version to return
-
-	   Format: int32
 	*/
-	Version *int32
+	Version *int64
 
 	timeout    time.Duration
 	Context    context.Context
@@ -156,13 +154,13 @@ func (o *GetSystemBundlesParams) SetSystem(system string) {
 }
 
 // WithVersion adds the version to the get system bundles params
-func (o *GetSystemBundlesParams) WithVersion(version *int32) *GetSystemBundlesParams {
+func (o *GetSystemBundlesParams) WithVersion(version *int64) *GetSystemBundlesParams {
 	o.SetVersion(version)
 	return o
 }
 
 // SetVersion adds the version to the get system bundles params
-func (o *GetSystemBundlesParams) SetVersion(version *int32) {
+func (o *GetSystemBundlesParams) SetVersion(version *int64) {
 	o.Version = version
 }
 
@@ -199,12 +197,12 @@ func (o *GetSystemBundlesParams) WriteToRequest(r runtime.ClientRequest, reg str
 	if o.Version != nil {
 
 		// query param version
-		var qrVersion int32
+		var qrVersion int64
 
 		if o.Version != nil {
 			qrVersion = *o.Version
 		}
-		qVersion := swag.FormatInt32(qrVersion)
+		qVersion := swag.FormatInt64(qrVersion)
 		if qVersion != "" {
 
 			if err := r.SetQueryParam("version", qVersion); err != nil {

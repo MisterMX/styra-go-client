@@ -50,19 +50,19 @@ func NewGetWorkspaceOK() *GetWorkspaceOK {
 OK
 */
 type GetWorkspaceOK struct {
-	Payload *models.V1WorkspaceGetResponse
+	Payload *models.WorkspaceV1WorkspaceGetResponse
 }
 
 func (o *GetWorkspaceOK) Error() string {
 	return fmt.Sprintf("[GET /v1/workspace][%d] getWorkspaceOK  %+v", 200, o.Payload)
 }
-func (o *GetWorkspaceOK) GetPayload() *models.V1WorkspaceGetResponse {
+func (o *GetWorkspaceOK) GetPayload() *models.WorkspaceV1WorkspaceGetResponse {
 	return o.Payload
 }
 
 func (o *GetWorkspaceOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1WorkspaceGetResponse)
+	o.Payload = new(models.WorkspaceV1WorkspaceGetResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,13 +82,24 @@ func NewGetWorkspaceNotFound() *GetWorkspaceNotFound {
 Not found
 */
 type GetWorkspaceNotFound struct {
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *GetWorkspaceNotFound) Error() string {
-	return fmt.Sprintf("[GET /v1/workspace][%d] getWorkspaceNotFound ", 404)
+	return fmt.Sprintf("[GET /v1/workspace][%d] getWorkspaceNotFound  %+v", 404, o.Payload)
+}
+func (o *GetWorkspaceNotFound) GetPayload() *models.MetaV1ErrorResponse {
+	return o.Payload
 }
 
 func (o *GetWorkspaceNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
+
+	o.Payload = new(models.MetaV1ErrorResponse)
+
+	// response payload
+	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
+		return err
+	}
 
 	return nil
 }

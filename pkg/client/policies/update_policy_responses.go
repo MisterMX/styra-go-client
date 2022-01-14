@@ -44,19 +44,19 @@ func NewUpdatePolicyOK() *UpdatePolicyOK {
 OK
 */
 type UpdatePolicyOK struct {
-	Payload *models.V1PolicyPutResponse
+	Payload *models.PoliciesV1PolicyPutResponse
 }
 
 func (o *UpdatePolicyOK) Error() string {
 	return fmt.Sprintf("[PUT /v1/policies/{policy}][%d] updatePolicyOK  %+v", 200, o.Payload)
 }
-func (o *UpdatePolicyOK) GetPayload() *models.V1PolicyPutResponse {
+func (o *UpdatePolicyOK) GetPayload() *models.PoliciesV1PolicyPutResponse {
 	return o.Payload
 }
 
 func (o *UpdatePolicyOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1PolicyPutResponse)
+	o.Payload = new(models.PoliciesV1PolicyPutResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

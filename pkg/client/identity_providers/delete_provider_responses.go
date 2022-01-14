@@ -50,19 +50,19 @@ func NewDeleteProviderOK() *DeleteProviderOK {
 OK
 */
 type DeleteProviderOK struct {
-	Payload *models.V1ProvidersDeleteResponse
+	Payload *models.IdentityProvidersV1ProvidersDeleteResponse
 }
 
 func (o *DeleteProviderOK) Error() string {
 	return fmt.Sprintf("[DELETE /v1/identity-providers/{providerId}][%d] deleteProviderOK  %+v", 200, o.Payload)
 }
-func (o *DeleteProviderOK) GetPayload() *models.V1ProvidersDeleteResponse {
+func (o *DeleteProviderOK) GetPayload() *models.IdentityProvidersV1ProvidersDeleteResponse {
 	return o.Payload
 }
 
 func (o *DeleteProviderOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ProvidersDeleteResponse)
+	o.Payload = new(models.IdentityProvidersV1ProvidersDeleteResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewDeleteProviderNotFound() *DeleteProviderNotFound {
 Not Found
 */
 type DeleteProviderNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *DeleteProviderNotFound) Error() string {
 	return fmt.Sprintf("[DELETE /v1/identity-providers/{providerId}][%d] deleteProviderNotFound  %+v", 404, o.Payload)
 }
-func (o *DeleteProviderNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *DeleteProviderNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *DeleteProviderNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

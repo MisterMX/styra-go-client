@@ -62,7 +62,7 @@ func NewUpdateRoleBindingParamsWithHTTPClient(client *http.Client) *UpdateRoleBi
 type UpdateRoleBindingParams struct {
 
 	// Body.
-	Body *models.V1RoleBindingsPutRequest
+	Body *models.AuthzV1RoleBindingsPutRequest
 
 	/* Resource.
 
@@ -136,13 +136,13 @@ func (o *UpdateRoleBindingParams) SetHTTPClient(client *http.Client) {
 }
 
 // WithBody adds the body to the update role binding params
-func (o *UpdateRoleBindingParams) WithBody(body *models.V1RoleBindingsPutRequest) *UpdateRoleBindingParams {
+func (o *UpdateRoleBindingParams) WithBody(body *models.AuthzV1RoleBindingsPutRequest) *UpdateRoleBindingParams {
 	o.SetBody(body)
 	return o
 }
 
 // SetBody adds the body to the update role binding params
-func (o *UpdateRoleBindingParams) SetBody(body *models.V1RoleBindingsPutRequest) {
+func (o *UpdateRoleBindingParams) SetBody(body *models.AuthzV1RoleBindingsPutRequest) {
 	o.Body = body
 }
 

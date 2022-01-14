@@ -50,19 +50,19 @@ func NewGetTokenOK() *GetTokenOK {
 OK
 */
 type GetTokenOK struct {
-	Payload *models.V1TokensGetResponse
+	Payload *models.TokensV1TokensGetResponse
 }
 
 func (o *GetTokenOK) Error() string {
 	return fmt.Sprintf("[GET /v1/tokens/{tokenId}][%d] getTokenOK  %+v", 200, o.Payload)
 }
-func (o *GetTokenOK) GetPayload() *models.V1TokensGetResponse {
+func (o *GetTokenOK) GetPayload() *models.TokensV1TokensGetResponse {
 	return o.Payload
 }
 
 func (o *GetTokenOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1TokensGetResponse)
+	o.Payload = new(models.TokensV1TokensGetResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
@@ -82,19 +82,19 @@ func NewGetTokenNotFound() *GetTokenNotFound {
 Not Found
 */
 type GetTokenNotFound struct {
-	Payload *models.V1ErrorResponse
+	Payload *models.MetaV1ErrorResponse
 }
 
 func (o *GetTokenNotFound) Error() string {
 	return fmt.Sprintf("[GET /v1/tokens/{tokenId}][%d] getTokenNotFound  %+v", 404, o.Payload)
 }
-func (o *GetTokenNotFound) GetPayload() *models.V1ErrorResponse {
+func (o *GetTokenNotFound) GetPayload() *models.MetaV1ErrorResponse {
 	return o.Payload
 }
 
 func (o *GetTokenNotFound) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V1ErrorResponse)
+	o.Payload = new(models.MetaV1ErrorResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {

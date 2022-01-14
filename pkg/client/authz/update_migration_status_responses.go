@@ -44,19 +44,19 @@ func NewUpdateMigrationStatusOK() *UpdateMigrationStatusOK {
 OK
 */
 type UpdateMigrationStatusOK struct {
-	Payload *models.V2RoleBindingsPutStatusResponse
+	Payload *models.AuthzV2RoleBindingsPutStatusResponse
 }
 
 func (o *UpdateMigrationStatusOK) Error() string {
 	return fmt.Sprintf("[PUT /v2/authz/migration/status][%d] updateMigrationStatusOK  %+v", 200, o.Payload)
 }
-func (o *UpdateMigrationStatusOK) GetPayload() *models.V2RoleBindingsPutStatusResponse {
+func (o *UpdateMigrationStatusOK) GetPayload() *models.AuthzV2RoleBindingsPutStatusResponse {
 	return o.Payload
 }
 
 func (o *UpdateMigrationStatusOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
-	o.Payload = new(models.V2RoleBindingsPutStatusResponse)
+	o.Payload = new(models.AuthzV2RoleBindingsPutStatusResponse)
 
 	// response payload
 	if err := consumer.Consume(response.Body(), o.Payload); err != nil && err != io.EOF {
